@@ -55,11 +55,11 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100">
+    <main className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
       {/* Hero Section */}
-      <section className="relative h-96 md:h-[500px] bg-gradient-to-br from-orange-600 via-red-600 to-orange-700">
+      <section className="relative h-110 md:h-[500px] bg-gradient-to-br from-green-600 via-emerald-700 to-green-800">
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+        <div className="absolute inset-0 bg- bg-opacity-30"></div>
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-16 text-center h-full flex flex-col justify-center">
@@ -71,20 +71,20 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
             Ingredienser in
             <br />
-            <span className="text-yellow-200">recept ut!</span>
+            <span className="text-emerald-200">recept ut!</span>
           </h1>
           <h2 className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8 drop-shadow-md leading-relaxed">
-            Tomt i huvudet men fullt i kylen? MatMatch hjälper dig trolla fram
+            Tomt i huvudet men fullt i kylen? MatMatch hjälper dig ta fram
             recept på det du redan har hemma.
           </h2>
           <div className="flex items-center justify-center gap-2 text-white/70 text-sm">
-            <span>⚡</span>
-            <span>Snabb & enkel</span>
+            <span>🌿</span>
+            <span>Hållbart</span>
             <span>•</span>
             <span>🎯</span>
             <span>Personliga recept</span>
             <span>•</span>
-            <span>🌱</span>
+            <span>♻️</span>
             <span>Minimalt slöseri</span>
           </div>
         </div>
@@ -92,7 +92,7 @@ export default function HomePage() {
 
       {/* Form Section */}
       <section className="container mx-auto px-4 py-16 max-w-2xl">
-        <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
               Vad har du hemma?
@@ -113,22 +113,22 @@ export default function HomePage() {
                 <div className="relative">
                   <input
                     id="ingredients"
-                    className="w-full h-16 p-4 pr-12 border-2 border-gray-200 rounded-xl text-lg shadow-sm focus:ring-4 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                    className="w-full h-16 p-4 pr-12 border-2 border-green-200 rounded-xl text-lg shadow-sm focus:ring-4 focus:ring-green-500 focus:border-green-500 transition-all duration-200 bg-white/50 backdrop-blur-sm"
                     type="text"
                     value={ingredients}
                     onChange={(e) => setIngredients(e.target.value)}
-                    placeholder="t.ex. potatis, mjöl, mjölk, ägg"
+                    placeholder="t.ex. ägg, mjölk och mjöl"
                     disabled={loading}
                   />
                   <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></div>
                 </div>
-                <p className="text-xs text-gray-500">
+                {/*<p className="text-xs text-gray-500">
                   Separera ingredienser med kommatecken
-                </p>
+                </p>*/}
               </div>
 
               <Button
-                className="h-16 w-full text-lg font-semibold shadow-lg bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white transition-all duration-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-16 w-full text-lg font-semibold shadow-lg bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white transition-all duration-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={loading || !ingredients.trim()}
               >
@@ -147,7 +147,7 @@ export default function HomePage() {
 
             {/* Error Display */}
             {error && (
-              <div className="mt-6 p-6 bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-xl">
+              <div className="mt-6 p-6 bg-gradient-to-br from-red-50 to-green-50 border-2 border-red-200 rounded-xl">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                     <span className="text-2xl">⚠️</span>
@@ -180,10 +180,10 @@ export default function HomePage() {
             {/* Recipe Display */}
             {recipes.length > 0 && (
               <div className="mt-8">
-                <Card className="bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200">
+                <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
                   <CardHeader className="pb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-green-600 to-emerald-700 rounded-full flex items-center justify-center">
                         <span className="text-white text-3xl">👨‍🍳</span>
                       </div>
                       <div>
@@ -201,82 +201,83 @@ export default function HomePage() {
                       {recipes.map((recipe, index) => (
                         <div
                           key={index}
-                          className="border-b border-orange-200 pb-8 last:border-b-0"
+                          className="border-b border-green-200 pb-0 last:border-b-0 flex"
                         >
-                          <div className="flex flex-col lg:flex-row gap-6 mb-6">
-                            <div className="lg:w-2/3">
-                              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-start">
+                            <div>
+                              <h2 className="text-2xl font-bold text-gray-800 whitespace-nowrap">
                                 {recipe.recipeName}
                               </h2>
 
-                              <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                  <h3 className="font-semibold text-gray-700 mb-2">
-                                    Ingredienser du har:
-                                  </h3>
-                                  <ul className="list-disc list-inside text-sm text-gray-600">
-                                    {recipe.ingredientsYouHave.map(
-                                      (ingredient, i) => (
-                                        <li key={i}>{ingredient}</li>
-                                      )
-                                    )}
-                                  </ul>
+                              <div>
+                                <h3 className="font-semibold text-gray-700 mb-2 pt-4">
+                                  Ingredienser du har:
+                                </h3>
+                                <ul className="list-disc list-inside text-sm text-green-600 font-medium">
+                                  {recipe.ingredientsYouHave.map(
+                                    (ingredient, i) => (
+                                      <li key={i}>{ingredient}</li>
+                                    )
+                                  )}
+                                </ul>
 
-                                  <h3 className="font-semibold text-gray-700 mb-2 mt-4">
-                                    Saknade ingredienser:
-                                  </h3>
-                                  <ul className="list-disc list-inside text-sm text-gray-600">
-                                    {recipe.missingIngredients.map(
-                                      (ingredient, i) => (
-                                        <li key={i}>{ingredient}</li>
-                                      )
-                                    )}
-                                  </ul>
-                                </div>
+                                <h3 className="font-semibold text-gray-700 mb-2 mt-4">
+                                  Saknade ingredienser:
+                                </h3>
+                                <ul className="list-disc list-inside text-sm text-red-600 font-medium">
+                                  {recipe.missingIngredients.map(
+                                    (ingredient, i) => (
+                                      <li key={i}>{ingredient}</li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+                            </div>
 
-                                <div>
-                                  <h3 className="font-semibold text-gray-700 mb-2">
-                                    Tid:
-                                  </h3>
-                                  {/* <img
-                                      src={recipe.image}
-                                      alt={recipe.recipeName}
-                                      className="w-full h-auto"
-                                    />*/}
-                                  <p className="text-sm text-gray-600">
-                                    Förberedelse:{" "}
+                            <div className="lg:pt-12.5">
+                              <h3 className="font-semibold text-gray-700 mb-2">
+                                Alla ingredienser:
+                              </h3>
+                              <ul className="list-disc list-inside text-sm text-gray-600">
+                                {recipe.fullIngredientsList.map(
+                                  (ingredient, i) => (
+                                    <li key={i}>{ingredient}</li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+
+                            <div>
+                              <div className="lg:pt-12.5">
+                                <h3 className="font-semibold text-gray-700 mb-2">
+                                  Instruktioner:
+                                </h3>
+                                <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                                  {recipe.instructions.map((instruction, i) => (
+                                    <li key={i}>{instruction}</li>
+                                  ))}
+                                </ol>
+                              </div>
+
+                              <div className="mt-6">
+                                <h3 className="font-semibold text-gray-700 mb-2">
+                                  Tid🕓:
+                                </h3>
+                                <div className="bg-green-100 rounded-lg p-3">
+                                  <p className="text-sm text-gray-700">
+                                    <span className="font-medium">
+                                      Förberedelse:
+                                    </span>{" "}
                                     {recipe.estimatedTime.preparationTime}
                                     <br />
-                                    Tillagning:{" "}
+                                    <span className="font-medium">
+                                      Tillagning:
+                                    </span>{" "}
                                     {recipe.estimatedTime.cookingTime}
                                   </p>
                                 </div>
                               </div>
                             </div>
-                          </div>
-
-                          <div className="mt-6">
-                            <h3 className="font-semibold text-gray-700 mb-2">
-                              Alla ingredienser:
-                            </h3>
-                            <ul className="list-disc list-inside text-sm text-gray-600">
-                              {recipe.fullIngredientsList.map(
-                                (ingredient, i) => (
-                                  <li key={i}>{ingredient}</li>
-                                )
-                              )}
-                            </ul>
-                          </div>
-
-                          <div className="mt-6">
-                            <h3 className="font-semibold text-gray-700 mb-2">
-                              Instruktioner:
-                            </h3>
-                            <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1">
-                              {recipe.instructions.map((instruction, i) => (
-                                <li key={i}>{instruction}</li>
-                              ))}
-                            </ol>
                           </div>
                         </div>
                       ))}
@@ -292,9 +293,7 @@ export default function HomePage() {
       {/* Footer Section */}
       <footer className="container mx-auto px-4 py-8 text-center">
         <div className="text-gray-500 text-sm">
-          <p>
-            MatMatch - Din personliga kock som hjälper dig använda det du har
-          </p>
+          <p>MatMatch - Din hållbara kock som hjälper dig använda det du har</p>
         </div>
       </footer>
     </main>
