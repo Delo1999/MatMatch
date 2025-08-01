@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   });
 
   try {
-    const response = await ai.models.generateContentStream({
+    const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and practical recipes based on the ingredients a user has available, **prioritizing the use of the provided ingredients and minimizing the need for additional items**. Given the following ingredients: ${ingredients.join(
         ", "
@@ -30,51 +30,67 @@ Please provide all recipe suggestions in the same language as the input ingredie
       config: {
         maxOutputTokens: 100000,
         temperature: 0.5,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              recipeName: {
+                type: Type.STRING,
+              },
+              ingredientsYouHave: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.STRING,
+                },
+              },
+              missingIngredients: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.STRING,
+                },
+              },
+              fullIngredientsList: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.STRING,
+                },
+              },
+              instructions: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.STRING,
+                },
+              },
+              estimatedTime: {
+                type: Type.OBJECT,
+                properties: {
+                  preparationTime: {
+                    type: Type.STRING,
+                  },
+                  cookingTime: {
+                    type: Type.STRING,
+                  },
+                },
+                propertyOrdering: ["preparationTime", "cookingTime"],
+              },
+            },
+            propertyOrdering: [
+              "recipeName",
+              "ingredientsYouHave",
+              "missingIngredients",
+              "fullIngredientsList",
+              "instructions",
+              "estimatedTime",
+            ],
+          },
+        },
       },
     });
 
-    // Create a ReadableStream for Server-Sent Events
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of response) {
-            console.log(chunk);
-            const text = chunk.text;
-            if (text) {
-              // Send each chunk as an SSE event
-              const data = `data: ${JSON.stringify({ text, done: false })}\n\n`;
-              controller.enqueue(new TextEncoder().encode(data));
-            }
-          }
-          // Send completion signal
-          const endData = `data: ${JSON.stringify({
-            text: "",
-            done: true,
-          })}\n\n`;
-          controller.enqueue(new TextEncoder().encode(endData));
-          controller.close();
-        } catch (error) {
-          console.error("Error in stream:", error);
-          const errorData = `data: ${JSON.stringify({
-            error: "Error generating recipe",
-            done: true,
-          })}\n\n`;
-          controller.enqueue(new TextEncoder().encode(errorData));
-          controller.close();
-        }
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
-    });
+    console.log(response.text);
+    return NextResponse.json(JSON.parse(response.text as string));
   } catch (error) {
     console.error("Error generating recipe:", error);
     return NextResponse.json(

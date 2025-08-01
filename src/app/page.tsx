@@ -2,18 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import Markdown from "react-markdown";
+import { ApiRecipe } from "@/types/recipe";
 
 export default function HomePage() {
   const [ingredients, setIngredients] = useState("");
-  const [recipe, setRecipe] = useState("");
+  const [recipes, setRecipes] = useState<ApiRecipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setRecipe("");
+    setRecipes([]);
     setError("");
 
     try {
@@ -26,51 +26,11 @@ export default function HomePage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch recipe");
+        throw new Error("Failed to fetch recipes");
       }
 
-      const reader = response.body?.getReader();
-      if (!reader) {
-        throw new Error("No response body");
-      }
-
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-
-        // Process complete SSE messages
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || ""; // Keep incomplete line in buffer
-
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-
-              if (data.error) {
-                setError(data.error);
-                break;
-              }
-
-              if (data.done) {
-                break;
-              }
-
-              if (data.text) {
-                setRecipe((prev) => prev + data.text);
-              }
-            } catch (e) {
-              console.error("Error parsing SSE data:", e);
-            }
-          }
-        }
-      }
+      const data: ApiRecipe[] = await response.json();
+      setRecipes(data);
     } catch (error) {
       console.error("Error:", error);
       setError("Tyvärr, det uppstod ett fel när receptet genererades.");
@@ -181,7 +141,7 @@ export default function HomePage() {
             )}
 
             {/* Recipe Display */}
-            {recipe && (
+            {recipes.length > 0 && (
               <div className="mt-8">
                 <Card className="bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200">
                   <CardHeader className="pb-4">
@@ -200,8 +160,79 @@ export default function HomePage() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <div className="prose prose-lg max-w-none">
-                      <Markdown>{recipe}</Markdown>
+                    <div className="space-y-6">
+                      {recipes.map((recipe, index) => (
+                        <div
+                          key={index}
+                          className="border-b border-orange-200 pb-6 last:border-b-0"
+                        >
+                          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                            {recipe.recipename}
+                          </h2>
+
+                          <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                              <h3 className="font-semibold text-gray-700 mb-2">
+                                Ingredienser du har:
+                              </h3>
+                              <ul className="list-disc list-inside text-sm text-gray-600">
+                                {recipe.ingredientsYouHave.map(
+                                  (ingredient, i) => (
+                                    <li key={i}>{ingredient}</li>
+                                  )
+                                )}
+                              </ul>
+
+                              <h3 className="font-semibold text-gray-700 mb-2 mt-4">
+                                Saknade ingredienser:
+                              </h3>
+                              <ul className="list-disc list-inside text-sm text-gray-600">
+                                {recipe.missingIngredients.map(
+                                  (ingredient, i) => (
+                                    <li key={i}>{ingredient}</li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+
+                            <div>
+                              <h3 className="font-semibold text-gray-700 mb-2">
+                                Tid:
+                              </h3>
+                              <p className="text-sm text-gray-600">
+                                Förberedelse:{" "}
+                                {recipe.estimatedTime.preparationTime}
+                                <br />
+                                Tillagning: {recipe.estimatedTime.cookingTime}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="mt-4">
+                            <h3 className="font-semibold text-gray-700 mb-2">
+                              Alla ingredienser:
+                            </h3>
+                            <ul className="list-disc list-inside text-sm text-gray-600">
+                              {recipe.fullIngredientsList.map(
+                                (ingredient, i) => (
+                                  <li key={i}>{ingredient}</li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+
+                          <div className="mt-4">
+                            <h3 className="font-semibold text-gray-700 mb-2">
+                              Instruktioner:
+                            </h3>
+                            <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                              {recipe.instructions.map((instruction, i) => (
+                                <li key={i}>{instruction}</li>
+                              ))}
+                            </ol>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
