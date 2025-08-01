@@ -25,11 +25,26 @@ export default function HomePage() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to fetch recipes");
+        // Hantera fel från API:n (t.ex. ogiltiga ingredienser)
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setError("Tyvärr, det uppstod ett fel när receptet genererades.");
+        }
+        return;
       }
 
-      const data: ApiRecipe[] = await response.json();
+      // Kontrollera om vi fick recept eller om arrayen är tom
+      if (!Array.isArray(data) || data.length === 0) {
+        setError(
+          "Tyvärr kunde jag inte hitta några recept för dessa ingredienser. Försök med fler eller mer specifika ingredienser."
+        );
+        return;
+      }
+
       setRecipes(data);
     } catch (error) {
       console.error("Error:", error);
@@ -132,10 +147,32 @@ export default function HomePage() {
 
             {/* Error Display */}
             {error && (
-              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <span className="text-red-500">⚠️</span>
-                  <p className="text-red-700 text-sm">{error}</p>
+              <div className="mt-6 p-6 bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-xl">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <span className="text-2xl">⚠️</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-red-800 mb-2">
+                      Inga recept hittades
+                    </h3>
+                    <p className="text-red-700 text-sm leading-relaxed mb-3">
+                      {error}
+                    </p>
+                    <div className="bg-white/50 rounded-lg p-3">
+                      <p className="text-xs text-gray-600 font-medium mb-1">
+                        💡 Tips för bättre resultat:
+                      </p>
+                      <ul className="text-xs text-gray-600 space-y-1">
+                        <li>
+                          • Använd specifika ingredienser (t.ex. kycklingfilé
+                          istället för kött)
+                        </li>
+                        <li>• Lägg till fler ingredienser för mer variation</li>
+                        <li>• Undvik oanvändbara eller oätliga saker</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -160,55 +197,65 @@ export default function HomePage() {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       {recipes.map((recipe, index) => (
                         <div
                           key={index}
-                          className="border-b border-orange-200 pb-6 last:border-b-0"
+                          className="border-b border-orange-200 pb-8 last:border-b-0"
                         >
-                          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                            {recipe.recipename}
-                          </h2>
+                          <div className="flex flex-col lg:flex-row gap-6 mb-6">
+                            <div className="lg:w-2/3">
+                              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                                {recipe.recipeName}
+                              </h2>
 
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <h3 className="font-semibold text-gray-700 mb-2">
-                                Ingredienser du har:
-                              </h3>
-                              <ul className="list-disc list-inside text-sm text-gray-600">
-                                {recipe.ingredientsYouHave.map(
-                                  (ingredient, i) => (
-                                    <li key={i}>{ingredient}</li>
-                                  )
-                                )}
-                              </ul>
+                              <div className="grid md:grid-cols-2 gap-6">
+                                <div>
+                                  <h3 className="font-semibold text-gray-700 mb-2">
+                                    Ingredienser du har:
+                                  </h3>
+                                  <ul className="list-disc list-inside text-sm text-gray-600">
+                                    {recipe.ingredientsYouHave.map(
+                                      (ingredient, i) => (
+                                        <li key={i}>{ingredient}</li>
+                                      )
+                                    )}
+                                  </ul>
 
-                              <h3 className="font-semibold text-gray-700 mb-2 mt-4">
-                                Saknade ingredienser:
-                              </h3>
-                              <ul className="list-disc list-inside text-sm text-gray-600">
-                                {recipe.missingIngredients.map(
-                                  (ingredient, i) => (
-                                    <li key={i}>{ingredient}</li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
+                                  <h3 className="font-semibold text-gray-700 mb-2 mt-4">
+                                    Saknade ingredienser:
+                                  </h3>
+                                  <ul className="list-disc list-inside text-sm text-gray-600">
+                                    {recipe.missingIngredients.map(
+                                      (ingredient, i) => (
+                                        <li key={i}>{ingredient}</li>
+                                      )
+                                    )}
+                                  </ul>
+                                </div>
 
-                            <div>
-                              <h3 className="font-semibold text-gray-700 mb-2">
-                                Tid:
-                              </h3>
-                              <p className="text-sm text-gray-600">
-                                Förberedelse:{" "}
-                                {recipe.estimatedTime.preparationTime}
-                                <br />
-                                Tillagning: {recipe.estimatedTime.cookingTime}
-                              </p>
+                                <div>
+                                  <h3 className="font-semibold text-gray-700 mb-2">
+                                    Tid:
+                                  </h3>
+                                  {/* <img
+                                      src={recipe.image}
+                                      alt={recipe.recipeName}
+                                      className="w-full h-auto"
+                                    />*/}
+                                  <p className="text-sm text-gray-600">
+                                    Förberedelse:{" "}
+                                    {recipe.estimatedTime.preparationTime}
+                                    <br />
+                                    Tillagning:{" "}
+                                    {recipe.estimatedTime.cookingTime}
+                                  </p>
+                                </div>
+                              </div>
                             </div>
                           </div>
 
-                          <div className="mt-4">
+                          <div className="mt-6">
                             <h3 className="font-semibold text-gray-700 mb-2">
                               Alla ingredienser:
                             </h3>
@@ -221,7 +268,7 @@ export default function HomePage() {
                             </ul>
                           </div>
 
-                          <div className="mt-4">
+                          <div className="mt-6">
                             <h3 className="font-semibold text-gray-700 mb-2">
                               Instruktioner:
                             </h3>

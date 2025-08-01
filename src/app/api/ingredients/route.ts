@@ -9,27 +9,19 @@ export async function POST(req: NextRequest) {
   });
 
   try {
+    // const models = await ai.models.list();
+    // console.log(models);
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and practical recipes based on the ingredients a user has available, **prioritizing the use of the provided ingredients and minimizing the need for additional items**. Given the following ingredients: ${ingredients.join(
-        ", "
-      )} please suggest **3 distinct and suitable recipes**.
-
-For each recipe you suggest:
-
-* **Ingredients You Have:** List the ingredients from the user's input that are incorporated into this specific recipe.
-* **Missing Ingredients:** Clearly list any essential ingredients *not* provided by the user that are required for the recipe. **Aim to keep this list as short as possible, suggesting recipes that require minimal additional items.** If a missing ingredient has a common substitute, you may briefly suggest it (e.g., "milk (or water/broth)").
-* **Full Ingredients List:** Provide a complete list of all ingredients needed for the recipe, including quantities (if you can reasonably infer them, otherwise state "approximate").
-* **Instructions:** Offer clear, concise, step-by-step cooking instructions.
-* **Estimated Time:** Include both preparation and cooking times.
-
-If the provided ingredients are too few, too vague (e.g., just "spices"), or don't lend themselves to a complete meal even with minimal additions, politely state that more details or ingredients are needed to suggest comprehensive recipes.
-
-Please provide all recipe suggestions in the same language as the input ingredients.`,
+      contents: `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and 
+       practical recipes based on the ingredients a user has available, **prioritizing the use of the provided 
+       ingredients and minimizing the need for additional items**. Create 3 quick recipes using: ${ingredients.join(
+         ", "
+       )}. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`,
 
       config: {
-        maxOutputTokens: 100000,
-        temperature: 0.5,
+        maxOutputTokens: 50000,
+        temperature: 0.3,
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.ARRAY,
@@ -90,7 +82,32 @@ Please provide all recipe suggestions in the same language as the input ingredie
     });
 
     console.log(response.text);
-    return NextResponse.json(JSON.parse(response.text as string));
+    const parsedResponse = JSON.parse(response.text as string);
+
+    // Kontrollera om AI:n returnerade en tom array eller ogiltig data
+    if (
+      !parsedResponse ||
+      !Array.isArray(parsedResponse) ||
+      parsedResponse.length === 0
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Tyvärr kunde jag inte hitta några recept för dessa ingredienser. Försök med fler eller mer specifika ingredienser.",
+        },
+        { status: 400 }
+      );
+    }
+    /*
+	await Promise.all(
+      parsedResponse.map(async (recipe, index) => {
+        const image = await imageGeneration(recipe.recipeName, ai);
+        parsedResponse[index].image = image;
+      })
+    );
+	*/
+
+    return NextResponse.json(parsedResponse);
   } catch (error) {
     console.error("Error generating recipe:", error);
     return NextResponse.json(
@@ -99,3 +116,15 @@ Please provide all recipe suggestions in the same language as the input ingredie
     );
   }
 }
+
+// async function imageGeneration(recipeName: string, ai: GoogleGenAI) {
+//   const response = await ai.models.generateImages({
+//     model: "gemini-2.0-flash-lite",
+//     prompt: recipeName,
+//     config: {
+//       numberOfImages: 1,
+//       includeRaiReason: true,
+//     },
+//   });
+//   return response?.generatedImages?.[0]?.image?.imageBytes;
+// }
