@@ -1,7 +1,54 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { ApiRecipe } from "@/types/recipe";
+import { Heart, Trash2 } from "lucide-react";
 
 export default function ReceptPage() {
+  const [savedRecipes, setSavedRecipes] = useState<ApiRecipe[]>([]);
+
+  // Load saved recipes from database on component mount
+  useEffect(() => {
+    fetchSavedRecipes();
+  }, []);
+
+  const fetchSavedRecipes = async () => {
+    try {
+      const response = await fetch("/api/saved-recipes");
+      if (response.ok) {
+        const recipes = await response.json();
+        setSavedRecipes(recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching saved recipes:", error);
+    }
+  };
+
+  // Remove recipe from database
+  const removeRecipe = async (recipeToRemove: ApiRecipe) => {
+    try {
+      const response = await fetch(
+        `/api/saved-recipes/${encodeURIComponent(recipeToRemove.recipeName)}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        const updatedSaved = savedRecipes.filter(
+          (recipe) => recipe.recipeName !== recipeToRemove.recipeName
+        );
+        setSavedRecipes(updatedSaved);
+      } else {
+        const error = await response.json();
+        console.error("Error removing recipe:", error.error);
+      }
+    } catch (error) {
+      console.error("Error removing recipe:", error);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
       {/* Hero Section */}
@@ -49,13 +96,103 @@ export default function ReceptPage() {
             </p>
           </CardHeader>
           <CardContent className="p-8 pt-0">
-            <div className="text-center text-gray-500 py-12">
-              <span className="text-6xl mb-4 block">📚</span>
-              <p className="text-lg mb-2">Inga recept sparade än</p>
-              <p className="text-sm">
-                Börja spara recept från huvudsidan för att se dem här!
-              </p>
-            </div>
+            {savedRecipes.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">
+                <span className="text-6xl mb-4 block">📚</span>
+                <p className="text-lg mb-2">Inga recept sparade än</p>
+                <p className="text-sm">
+                  Börja spara recept från huvudsidan för att se dem här!
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {savedRecipes.map((recipe, index) => (
+                  <div
+                    key={index}
+                    className="border-b border-green-200 pb-6 last:border-b-0"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <h2 className="text-2xl font-bold text-gray-800">
+                            {recipe.recipeName}
+                          </h2>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeRecipe(recipe)}
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </Button>
+                        </div>
+
+                        <div>
+                          <h3 className="font-semibold text-gray-700 mb-2 pt-4">
+                            Ingredienser du har:
+                          </h3>
+                          <ul className="list-disc list-inside text-sm text-green-600 font-medium">
+                            {recipe.ingredientsYouHave.map((ingredient, i) => (
+                              <li key={i}>{ingredient}</li>
+                            ))}
+                          </ul>
+
+                          <h3 className="font-semibold text-gray-700 mb-2 mt-4">
+                            Saknade ingredienser:
+                          </h3>
+                          <ul className="list-disc list-inside text-sm text-red-600 font-medium">
+                            {recipe.missingIngredients.map((ingredient, i) => (
+                              <li key={i}>{ingredient}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="lg:pt-12.5">
+                        <h3 className="font-semibold text-gray-700 mb-2">
+                          Alla ingredienser:
+                        </h3>
+                        <ul className="list-disc list-inside text-sm text-gray-600">
+                          {recipe.fullIngredientsList.map((ingredient, i) => (
+                            <li key={i}>{ingredient}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <div className="lg:pt-12.5">
+                          <h3 className="font-semibold text-gray-700 mb-2">
+                            Instruktioner:
+                          </h3>
+                          <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                            {recipe.instructions.map((instruction, i) => (
+                              <li key={i}>{instruction}</li>
+                            ))}
+                          </ol>
+                        </div>
+
+                        <div className="mt-6">
+                          <h3 className="font-semibold text-gray-700 mb-2">
+                            Tid🕓:
+                          </h3>
+                          <div className="bg-green-100 rounded-lg p-3">
+                            <p className="text-sm text-gray-700">
+                              <span className="font-medium">Förberedelse:</span>{" "}
+                              {recipe.estimatedTime.preparationTime}
+                              <br />
+                              <span className="font-medium">
+                                Tillagning:
+                              </span>{" "}
+                              {recipe.estimatedTime.cookingTime}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </section>

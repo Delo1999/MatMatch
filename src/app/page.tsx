@@ -1,14 +1,84 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ApiRecipe } from "@/types/recipe";
+import { Heart, HeartOff } from "lucide-react";
 
 export default function HomePage() {
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState<ApiRecipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [savedRecipes, setSavedRecipes] = useState<ApiRecipe[]>([]);
+
+  // Load saved recipes from database on component mount
+  useEffect(() => {
+    fetchSavedRecipes();
+  }, []);
+
+  const fetchSavedRecipes = async () => {
+    try {
+      const response = await fetch("/api/saved-recipes");
+      if (response.ok) {
+        const recipes = await response.json();
+        setSavedRecipes(recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching saved recipes:", error);
+    }
+  };
+
+  // Save recipe to database
+  const saveRecipe = async (recipe: ApiRecipe) => {
+    try {
+      const response = await fetch("/api/saved-recipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipe),
+      });
+
+      if (response.ok) {
+        setSavedRecipes([...savedRecipes, recipe]);
+      } else {
+        const error = await response.json();
+        console.error("Error saving recipe:", error.error);
+      }
+    } catch (error) {
+      console.error("Error saving recipe:", error);
+    }
+  };
+
+  // Remove recipe from database
+  const removeRecipe = async (recipeToRemove: ApiRecipe) => {
+    try {
+      const response = await fetch(
+        `/api/saved-recipes/${encodeURIComponent(recipeToRemove.recipeName)}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        const updatedSaved = savedRecipes.filter(
+          (recipe) => recipe.recipeName !== recipeToRemove.recipeName
+        );
+        setSavedRecipes(updatedSaved);
+      } else {
+        const error = await response.json();
+        console.error("Error removing recipe:", error.error);
+      }
+    } catch (error) {
+      console.error("Error removing recipe:", error);
+    }
+  };
+
+  // Check if recipe is saved
+  const isRecipeSaved = (recipe: ApiRecipe) => {
+    return savedRecipes.some(
+      (savedRecipe) => savedRecipe.recipeName === recipe.recipeName
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -205,9 +275,27 @@ export default function HomePage() {
                         >
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-start">
                             <div>
-                              <h2 className="text-2xl font-bold text-gray-800 whitespace-nowrap">
-                                {recipe.recipeName}
-                              </h2>
+                              <div className="flex items-center justify-between mb-2">
+                                <h2 className="text-2xl font-bold text-gray-800">
+                                  {recipe.recipeName}
+                                </h2>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() =>
+                                    isRecipeSaved(recipe)
+                                      ? removeRecipe(recipe)
+                                      : saveRecipe(recipe)
+                                  }
+                                  className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                                >
+                                  {isRecipeSaved(recipe) ? (
+                                    <Heart className="w-5 h-5 fill-current" />
+                                  ) : (
+                                    <Heart className="w-5 h-5" />
+                                  )}
+                                </Button>
+                              </div>
 
                               <div>
                                 <h3 className="font-semibold text-gray-700 mb-2 pt-4">
