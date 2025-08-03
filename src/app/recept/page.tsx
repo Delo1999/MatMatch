@@ -12,11 +12,11 @@ export default function ReceptPage() {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-16 text-center h-full flex flex-col justify-center">
           <div>
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-0 md:mb-4">
-              <span className="text-5xl">📖</span>
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6 md:mb-6">
+              <span className="text-5xl pb-3">📖</span>
             </div>
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 pb-6 drop-shadow-lg leading-tight">
             Mina
             <br />
             <span className="text-emerald-200">recept</span>
