@@ -113,17 +113,17 @@ export default function ReceptPage() {
                   >
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                       <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <h2 className="text-2xl font-bold text-gray-800">
+                        <div className="flex items-center mb-2">
+                          <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
                             {recipe.recipeName}
                           </h2>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => removeRecipe(recipe)}
-                            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
                           >
-                            <Trash2 className="w-5 h-5" />
+                            <Trash2 className="w-6 h-6" />
                           </Button>
                         </div>
 
@@ -148,7 +148,7 @@ export default function ReceptPage() {
                         </div>
                       </div>
 
-                      <div className="lg:pt-12.5">
+                      <div className="lg:mt-16.5">
                         <h3 className="font-semibold text-gray-700 mb-2">
                           Alla ingredienser:
                         </h3>
@@ -160,7 +160,7 @@ export default function ReceptPage() {
                       </div>
 
                       <div>
-                        <div className="lg:pt-12.5">
+                        <div className="lg:mt-16.5">
                           <h3 className="font-semibold text-gray-700 mb-2">
                             Instruktioner:
                           </h3>
