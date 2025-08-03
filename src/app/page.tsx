@@ -63,8 +63,8 @@ export default function HomePage() {
 
         {/* Content */}
         <div className="relative z-10 container mx-auto px-4 py-16 text-center h-full flex flex-col justify-center">
-          <div className="mb-6">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
+          <div>
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-0 md:mb-4">
               <span className="text-5xl">👨‍🍳</span>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function HomePage() {
                                     <br />
                                     <span className="font-medium">
                                       Tillagning:
-                                    </span>{" "}
+                                    </span>
                                     {recipe.estimatedTime.cookingTime}
                                   </p>
                                 </div>
