@@ -287,12 +287,12 @@ export default function HomePage() {
                                       ? removeRecipe(recipe)
                                       : saveRecipe(recipe)
                                   }
-                                  className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                                  className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
                                 >
                                   {isRecipeSaved(recipe) ? (
-                                    <Heart className="w-5 h-5 fill-current" />
+                                    <Heart className="w-6 h-6 fill-current" />
                                   ) : (
-                                    <Heart className="w-5 h-5" />
+                                    <Heart className="w-6 h-6" />
                                   )}
                                 </Button>
                               </div>
@@ -322,7 +322,7 @@ export default function HomePage() {
                               </div>
                             </div>
 
-                            <div className="lg:pt-12.5">
+                            <div className="lg:mt-16.5">
                               <h3 className="font-semibold text-gray-700 mb-2">
                                 Alla ingredienser:
                               </h3>
@@ -336,7 +336,7 @@ export default function HomePage() {
                             </div>
 
                             <div>
-                              <div className="lg:pt-12.5">
+                              <div className="lg:mt-16.5">
                                 <h3 className="font-semibold text-gray-700 mb-2">
                                   Instruktioner:
                                 </h3>
