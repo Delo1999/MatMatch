@@ -1,11 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
+import { config } from "@/config/env";
 
 export async function POST(req: NextRequest) {
   const { ingredients } = await req.json();
 
+  // Use config file for API key
+  const apiKey = config.GEMINI_API_KEY;
+
+  console.log("Using config API key:", apiKey ? "✓ Key available" : "✗ No key");
+
+  if (!apiKey) {
+    console.error("GEMINI_API_KEY is not configured");
+    return NextResponse.json(
+      { error: "API key not configured" },
+      { status: 500 }
+    );
+  }
+
   const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
+    apiKey: apiKey,
   });
 
   try {

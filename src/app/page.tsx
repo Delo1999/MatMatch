@@ -276,7 +276,7 @@ export default function HomePage() {
                           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-start">
                             <div>
                               <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-2xl font-bold text-gray-800">
+                                <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
                                   {recipe.recipeName}
                                 </h2>
                                 <Button
