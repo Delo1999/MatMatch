@@ -28,11 +28,11 @@ export default function ProfilPage() {
             <span>⚙️</span>
             <span>Inställningar</span>
             <span>•</span>
-            <span>🍽️</span>
-            <span>Preferenser</span>
+            <span>🚫</span>
+            <span>Allergier</span>
             <span>•</span>
-            <span>📊</span>
-            <span>Statistik</span>
+            <span>❤️</span>
+            <span>Preferenser</span>
           </div>
         </div>
       </section>
@@ -63,28 +63,10 @@ export default function ProfilPage() {
               <div className="grid gap-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <h4 className="font-medium text-gray-800 mb-2">
-                    Kostpreferenser
+                    Allergier och kostpreferenser
                   </h4>
                   <p className="text-sm text-gray-600">
-                    Ange allergier och dietpreferenser
-                  </p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-2">
-                    Favoritingredienser
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Ingredienser du ofta använder
-                  </p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-2">
-                    Notifikationer
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Hantera dina aviseringar
+                    Ange allergier och kostpreferenser
                   </p>
                 </div>
               </div>
