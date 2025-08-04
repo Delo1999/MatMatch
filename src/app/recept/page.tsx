@@ -152,7 +152,7 @@ export default function ReceptPage() {
       </section>
 
       {/* Content Section */}
-      <section className="container mx-auto px-4 py-16 max-w-4xl">
+      <section className="container mx-auto px-4 py-16 max-w-5xl">
         <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">

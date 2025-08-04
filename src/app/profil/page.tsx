@@ -38,8 +38,8 @@ export default function ProfilPage() {
       </section>
 
       {/* Content Section */}
-      <section className="container mx-auto px-4 py-16 max-w-2xl">
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
+      <section className="container mx-auto px-4 py-16 max-w-5xl">
+        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100 gap-0">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
               Profilinställningar
@@ -51,16 +51,16 @@ export default function ProfilPage() {
           <CardContent className="p-8 pt-0">
             <div className="space-y-6">
               <div className="text-center">
-                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb- flex items-center justify-center">
                   <span className="text-6xl">👨‍🍳</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800">
+                <h3 className="text-xl font-semibold text-gray-800 pt-2">
                   Välkommen!
                 </h3>
                 <p className="text-gray-600">Din personliga matassistent</p>
               </div>
 
-              <div className="grid gap-4">
+              <div className="grid gap-4 justify-center">
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <h4 className="font-medium text-gray-800 mb-2">
                     Allergier och kostpreferenser
