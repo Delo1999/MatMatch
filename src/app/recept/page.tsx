@@ -131,9 +131,9 @@ export default function ReceptPage() {
             </div>
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 pb-6 drop-shadow-lg leading-tight">
-            Mina
+            Min
             <br />
-            <span className="text-emerald-200">recept</span>
+            <span className="text-emerald-200">kokbok</span>
           </h1>
           <h2 className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8 drop-shadow-md leading-relaxed">
             Här hittar du alla dina sparade recept och favoritmaträtter.
@@ -156,10 +156,11 @@ export default function ReceptPage() {
         <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
-              Dina recept
+              Din kokbok
             </CardTitle>
             <p className="text-gray-600 mt-2">
-              Hantera och organisera dina favoritrecept
+              Här är dina sparade recept. Du kan stjärmarkera dem som favoriter
+              eller ta bort dem.
             </p>
           </CardHeader>
           <CardContent className="p-8 pt-0">

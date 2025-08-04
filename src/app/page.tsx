@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { ApiRecipe } from "@/types/recipe";
-import { Bookmark, Star } from "lucide-react";
+import { Bookmark } from "lucide-react";
 
 export default function HomePage() {
   const [ingredients, setIngredients] = useState("");
@@ -11,25 +11,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [savedRecipes, setSavedRecipes] = useState<ApiRecipe[]>([]);
-  const [favoriteRecipes, setFavoriteRecipes] = useState<ApiRecipe[]>([]);
 
   // Load saved recipes from database on component mount
   useEffect(() => {
     fetchSavedRecipes();
-    fetchFavoriteRecipes();
   }, []);
-
-  const fetchFavoriteRecipes = async () => {
-    try {
-      const response = await fetch("/api/favorite-recipes");
-      if (response.ok) {
-        const recipes = await response.json();
-        setFavoriteRecipes(recipes);
-      }
-    } catch (error) {
-      console.error("Error fetching favorite recipes:", error);
-    }
-  };
 
   const fetchSavedRecipes = async () => {
     try {
@@ -87,63 +73,10 @@ export default function HomePage() {
     }
   };
 
-  // Add recipe to favorites
-  const addToFavorites = async (recipe: ApiRecipe) => {
-    try {
-      const response = await fetch("/api/favorite-recipes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(recipe),
-      });
-
-      if (response.ok) {
-        setFavoriteRecipes([...favoriteRecipes, recipe]);
-      } else {
-        const error = await response.json();
-        console.error("Error adding to favorites:", error.error);
-      }
-    } catch (error) {
-      console.error("Error adding to favorites:", error);
-    }
-  };
-
-  // Remove recipe from favorites
-  const removeFromFavorites = async (recipeToRemove: ApiRecipe) => {
-    try {
-      const response = await fetch(
-        `/api/favorite-recipes/${encodeURIComponent(
-          recipeToRemove.recipeName
-        )}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (response.ok) {
-        const updatedFavorites = favoriteRecipes.filter(
-          (recipe) => recipe.recipeName !== recipeToRemove.recipeName
-        );
-        setFavoriteRecipes(updatedFavorites);
-      } else {
-        const error = await response.json();
-        console.error("Error removing from favorites:", error.error);
-      }
-    } catch (error) {
-      console.error("Error removing from favorites:", error);
-    }
-  };
-
   // Check if recipe is saved
   const isRecipeSaved = (recipe: ApiRecipe) => {
     return savedRecipes.some(
       (savedRecipe) => savedRecipe.recipeName === recipe.recipeName
-    );
-  };
-
-  // Check if recipe is favorited
-  const isRecipeFavorited = (recipe: ApiRecipe) => {
-    return favoriteRecipes.some(
-      (favoriteRecipe) => favoriteRecipe.recipeName === recipe.recipeName
     );
   };
 
@@ -229,7 +162,7 @@ export default function HomePage() {
 
       {/* Form Section */}
       <section className="container mx-auto px-4 py-16 max-w-5xl">
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100 w-90%">
+        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
               Vad har du hemma?
@@ -328,7 +261,9 @@ export default function HomePage() {
                           Recept förslag
                         </CardTitle>
                         <p className="text-sm text-gray-600">
-                          Här är dina personliga recept
+                          Här är dina personliga recept, sparmarkera{" "}
+                          <Bookmark className="w-4 h-4 inline" /> de du vill
+                          lägga till i din kokbok
                         </p>
                       </div>
                     </div>
@@ -347,22 +282,6 @@ export default function HomePage() {
                                   {recipe.recipeName}
                                 </h2>
                                 <div className="flex items-center gap-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      isRecipeFavorited(recipe)
-                                        ? removeFromFavorites(recipe)
-                                        : addToFavorites(recipe)
-                                    }
-                                    className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
-                                  >
-                                    {isRecipeFavorited(recipe) ? (
-                                      <Star className="w-6 h-6 fill-current" />
-                                    ) : (
-                                      <Star className="w-6 h-6" />
-                                    )}
-                                  </Button>
                                   <Button
                                     variant="ghost"
                                     size="sm"

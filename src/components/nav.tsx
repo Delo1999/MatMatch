@@ -35,7 +35,7 @@ export function Nav() {
               className="inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
             >
               <ReceiptText className="w-4 h-4 shrink-0" />
-              Mina recept
+              Min kokbok
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
