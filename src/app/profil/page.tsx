@@ -52,7 +52,7 @@ export default function ProfilPage() {
             <div className="space-y-6">
               <div className="text-center">
                 <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-3xl">👨‍🍳</span>
+                  <span className="text-6xl">👨‍🍳</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800">
                   Välkommen!
