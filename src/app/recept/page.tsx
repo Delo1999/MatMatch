@@ -178,85 +178,65 @@ export default function ReceptPage() {
                     key={index}
                     className="border-b border-green-200 pb-6 last:border-b-0"
                   >
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
-                            {recipe.recipeName}
-                          </h2>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                isRecipeFavorited(recipe)
-                                  ? removeFromFavorites(recipe)
-                                  : addToFavorites(recipe)
-                              }
-                              className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
-                            >
-                              {isRecipeFavorited(recipe) ? (
-                                <Star className="w-6 h-6 fill-current" />
-                              ) : (
-                                <Star className="w-6 h-6" />
-                              )}
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeRecipe(recipe)}
-                              className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
-                            >
-                              <Trash2 className="w-6 h-6" />
-                            </Button>
-                          </div>
+                    <div className="space-y-4">
+                      {/* Recipe Name & Actions */}
+                      <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
+                          {recipe.recipeName}
+                        </h2>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              isRecipeFavorited(recipe)
+                                ? removeFromFavorites(recipe)
+                                : addToFavorites(recipe)
+                            }
+                            className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                          >
+                            {isRecipeFavorited(recipe) ? (
+                              <Star className="w-6 h-6 fill-current" />
+                            ) : (
+                              <Star className="w-6 h-6" />
+                            )}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeRecipe(recipe)}
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                          >
+                            <Trash2 className="w-6 h-6" />
+                          </Button>
                         </div>
+                      </div>
 
+                      {/* Content Grid - All Ingredients & Instructions */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* All Ingredients */}
                         <div>
-                          <h3 className="font-semibold text-gray-700 mb-2 pt-4">
-                            Ingredienser du har:
+                          <h3 className="font-semibold text-gray-700 mb-2">
+                            Alla ingredienser:
                           </h3>
-                          <ul className="list-disc list-inside text-sm text-green-600 font-medium">
-                            {recipe.ingredientsYouHave.map((ingredient, i) => (
-                              <li key={i}>{ingredient}</li>
-                            ))}
-                          </ul>
-
-                          <h3 className="font-semibold text-gray-700 mb-2 mt-4">
-                            Saknade ingredienser:
-                          </h3>
-                          <ul className="list-disc list-inside text-sm text-red-600 font-medium">
-                            {recipe.missingIngredients.map((ingredient, i) => (
+                          <ul className="list-disc list-inside text-sm text-gray-600">
+                            {recipe.fullIngredientsList.map((ingredient, i) => (
                               <li key={i}>{ingredient}</li>
                             ))}
                           </ul>
                         </div>
-                      </div>
 
-                      <div className="lg:mt-16.5">
-                        <h3 className="font-semibold text-gray-700 mb-2">
-                          Alla ingredienser:
-                        </h3>
-                        <ul className="list-disc list-inside text-sm text-gray-600">
-                          {recipe.fullIngredientsList.map((ingredient, i) => (
-                            <li key={i}>{ingredient}</li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <div className="lg:mt-16.5">
+                        {/* Instructions & Time */}
+                        <div>
                           <h3 className="font-semibold text-gray-700 mb-2">
                             Instruktioner:
                           </h3>
-                          <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                          <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1 mb-6">
                             {recipe.instructions.map((instruction, i) => (
                               <li key={i}>{instruction}</li>
                             ))}
                           </ol>
-                        </div>
 
-                        <div className="mt-6">
                           <h3 className="font-semibold text-gray-700 mb-2">
                             Tid🕓:
                           </h3>
