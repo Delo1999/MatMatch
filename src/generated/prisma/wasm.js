@@ -131,6 +131,20 @@ exports.Prisma.SavedRecipeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FavoriteRecipeScalarFieldEnum = {
+  id: 'id',
+  recipeName: 'recipeName',
+  ingredientsYouHave: 'ingredientsYouHave',
+  missingIngredients: 'missingIngredients',
+  fullIngredientsList: 'fullIngredientsList',
+  instructions: 'instructions',
+  preparationTime: 'preparationTime',
+  cookingTime: 'cookingTime',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -143,7 +157,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  SavedRecipe: 'SavedRecipe'
+  SavedRecipe: 'SavedRecipe',
+  FavoriteRecipe: 'FavoriteRecipe'
 };
 
 /**

@@ -18,6 +18,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type SavedRecipe = $Result.DefaultSelection<Prisma.$SavedRecipePayload>
+/**
+ * Model FavoriteRecipe
+ * 
+ */
+export type FavoriteRecipe = $Result.DefaultSelection<Prisma.$FavoriteRecipePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -153,6 +158,16 @@ export class PrismaClient<
     * ```
     */
   get savedRecipe(): Prisma.SavedRecipeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.favoriteRecipe`: Exposes CRUD operations for the **FavoriteRecipe** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FavoriteRecipes
+    * const favoriteRecipes = await prisma.favoriteRecipe.findMany()
+    * ```
+    */
+  get favoriteRecipe(): Prisma.FavoriteRecipeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -593,7 +608,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    SavedRecipe: 'SavedRecipe'
+    SavedRecipe: 'SavedRecipe',
+    FavoriteRecipe: 'FavoriteRecipe'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -612,7 +628,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "savedRecipe"
+      modelProps: "savedRecipe" | "favoriteRecipe"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -687,6 +703,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SavedRecipeCountArgs<ExtArgs>
             result: $Utils.Optional<SavedRecipeCountAggregateOutputType> | number
+          }
+        }
+      }
+      FavoriteRecipe: {
+        payload: Prisma.$FavoriteRecipePayload<ExtArgs>
+        fields: Prisma.FavoriteRecipeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FavoriteRecipeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FavoriteRecipeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          findFirst: {
+            args: Prisma.FavoriteRecipeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FavoriteRecipeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          findMany: {
+            args: Prisma.FavoriteRecipeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>[]
+          }
+          create: {
+            args: Prisma.FavoriteRecipeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          createMany: {
+            args: Prisma.FavoriteRecipeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FavoriteRecipeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>[]
+          }
+          delete: {
+            args: Prisma.FavoriteRecipeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          update: {
+            args: Prisma.FavoriteRecipeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          deleteMany: {
+            args: Prisma.FavoriteRecipeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FavoriteRecipeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>[]
+          }
+          upsert: {
+            args: Prisma.FavoriteRecipeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
+          }
+          aggregate: {
+            args: Prisma.FavoriteRecipeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFavoriteRecipe>
+          }
+          groupBy: {
+            args: Prisma.FavoriteRecipeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteRecipeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FavoriteRecipeCountArgs<ExtArgs>
+            result: $Utils.Optional<FavoriteRecipeCountAggregateOutputType> | number
           }
         }
       }
@@ -783,6 +873,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     savedRecipe?: SavedRecipeOmit
+    favoriteRecipe?: FavoriteRecipeOmit
   }
 
   /* Types for Logging */
@@ -1954,6 +2045,1077 @@ export namespace Prisma {
 
 
   /**
+   * Model FavoriteRecipe
+   */
+
+  export type AggregateFavoriteRecipe = {
+    _count: FavoriteRecipeCountAggregateOutputType | null
+    _min: FavoriteRecipeMinAggregateOutputType | null
+    _max: FavoriteRecipeMaxAggregateOutputType | null
+  }
+
+  export type FavoriteRecipeMinAggregateOutputType = {
+    id: string | null
+    recipeName: string | null
+    ingredientsYouHave: string | null
+    missingIngredients: string | null
+    fullIngredientsList: string | null
+    instructions: string | null
+    preparationTime: string | null
+    cookingTime: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FavoriteRecipeMaxAggregateOutputType = {
+    id: string | null
+    recipeName: string | null
+    ingredientsYouHave: string | null
+    missingIngredients: string | null
+    fullIngredientsList: string | null
+    instructions: string | null
+    preparationTime: string | null
+    cookingTime: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FavoriteRecipeCountAggregateOutputType = {
+    id: number
+    recipeName: number
+    ingredientsYouHave: number
+    missingIngredients: number
+    fullIngredientsList: number
+    instructions: number
+    preparationTime: number
+    cookingTime: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FavoriteRecipeMinAggregateInputType = {
+    id?: true
+    recipeName?: true
+    ingredientsYouHave?: true
+    missingIngredients?: true
+    fullIngredientsList?: true
+    instructions?: true
+    preparationTime?: true
+    cookingTime?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FavoriteRecipeMaxAggregateInputType = {
+    id?: true
+    recipeName?: true
+    ingredientsYouHave?: true
+    missingIngredients?: true
+    fullIngredientsList?: true
+    instructions?: true
+    preparationTime?: true
+    cookingTime?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FavoriteRecipeCountAggregateInputType = {
+    id?: true
+    recipeName?: true
+    ingredientsYouHave?: true
+    missingIngredients?: true
+    fullIngredientsList?: true
+    instructions?: true
+    preparationTime?: true
+    cookingTime?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FavoriteRecipeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FavoriteRecipe to aggregate.
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteRecipes to fetch.
+     */
+    orderBy?: FavoriteRecipeOrderByWithRelationInput | FavoriteRecipeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FavoriteRecipeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteRecipes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteRecipes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FavoriteRecipes
+    **/
+    _count?: true | FavoriteRecipeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FavoriteRecipeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FavoriteRecipeMaxAggregateInputType
+  }
+
+  export type GetFavoriteRecipeAggregateType<T extends FavoriteRecipeAggregateArgs> = {
+        [P in keyof T & keyof AggregateFavoriteRecipe]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFavoriteRecipe[P]>
+      : GetScalarType<T[P], AggregateFavoriteRecipe[P]>
+  }
+
+
+
+
+  export type FavoriteRecipeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FavoriteRecipeWhereInput
+    orderBy?: FavoriteRecipeOrderByWithAggregationInput | FavoriteRecipeOrderByWithAggregationInput[]
+    by: FavoriteRecipeScalarFieldEnum[] | FavoriteRecipeScalarFieldEnum
+    having?: FavoriteRecipeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FavoriteRecipeCountAggregateInputType | true
+    _min?: FavoriteRecipeMinAggregateInputType
+    _max?: FavoriteRecipeMaxAggregateInputType
+  }
+
+  export type FavoriteRecipeGroupByOutputType = {
+    id: string
+    recipeName: string
+    ingredientsYouHave: string
+    missingIngredients: string
+    fullIngredientsList: string
+    instructions: string
+    preparationTime: string
+    cookingTime: string
+    userId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FavoriteRecipeCountAggregateOutputType | null
+    _min: FavoriteRecipeMinAggregateOutputType | null
+    _max: FavoriteRecipeMaxAggregateOutputType | null
+  }
+
+  type GetFavoriteRecipeGroupByPayload<T extends FavoriteRecipeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FavoriteRecipeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FavoriteRecipeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FavoriteRecipeGroupByOutputType[P]>
+            : GetScalarType<T[P], FavoriteRecipeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FavoriteRecipeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    recipeName?: boolean
+    ingredientsYouHave?: boolean
+    missingIngredients?: boolean
+    fullIngredientsList?: boolean
+    instructions?: boolean
+    preparationTime?: boolean
+    cookingTime?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["favoriteRecipe"]>
+
+  export type FavoriteRecipeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    recipeName?: boolean
+    ingredientsYouHave?: boolean
+    missingIngredients?: boolean
+    fullIngredientsList?: boolean
+    instructions?: boolean
+    preparationTime?: boolean
+    cookingTime?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["favoriteRecipe"]>
+
+  export type FavoriteRecipeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    recipeName?: boolean
+    ingredientsYouHave?: boolean
+    missingIngredients?: boolean
+    fullIngredientsList?: boolean
+    instructions?: boolean
+    preparationTime?: boolean
+    cookingTime?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["favoriteRecipe"]>
+
+  export type FavoriteRecipeSelectScalar = {
+    id?: boolean
+    recipeName?: boolean
+    ingredientsYouHave?: boolean
+    missingIngredients?: boolean
+    fullIngredientsList?: boolean
+    instructions?: boolean
+    preparationTime?: boolean
+    cookingTime?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FavoriteRecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "recipeName" | "ingredientsYouHave" | "missingIngredients" | "fullIngredientsList" | "instructions" | "preparationTime" | "cookingTime" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["favoriteRecipe"]>
+
+  export type $FavoriteRecipePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FavoriteRecipe"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      recipeName: string
+      ingredientsYouHave: string
+      missingIngredients: string
+      fullIngredientsList: string
+      instructions: string
+      preparationTime: string
+      cookingTime: string
+      userId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["favoriteRecipe"]>
+    composites: {}
+  }
+
+  type FavoriteRecipeGetPayload<S extends boolean | null | undefined | FavoriteRecipeDefaultArgs> = $Result.GetResult<Prisma.$FavoriteRecipePayload, S>
+
+  type FavoriteRecipeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FavoriteRecipeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FavoriteRecipeCountAggregateInputType | true
+    }
+
+  export interface FavoriteRecipeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FavoriteRecipe'], meta: { name: 'FavoriteRecipe' } }
+    /**
+     * Find zero or one FavoriteRecipe that matches the filter.
+     * @param {FavoriteRecipeFindUniqueArgs} args - Arguments to find a FavoriteRecipe
+     * @example
+     * // Get one FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FavoriteRecipeFindUniqueArgs>(args: SelectSubset<T, FavoriteRecipeFindUniqueArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FavoriteRecipe that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FavoriteRecipeFindUniqueOrThrowArgs} args - Arguments to find a FavoriteRecipe
+     * @example
+     * // Get one FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FavoriteRecipeFindUniqueOrThrowArgs>(args: SelectSubset<T, FavoriteRecipeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FavoriteRecipe that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeFindFirstArgs} args - Arguments to find a FavoriteRecipe
+     * @example
+     * // Get one FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FavoriteRecipeFindFirstArgs>(args?: SelectSubset<T, FavoriteRecipeFindFirstArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FavoriteRecipe that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeFindFirstOrThrowArgs} args - Arguments to find a FavoriteRecipe
+     * @example
+     * // Get one FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FavoriteRecipeFindFirstOrThrowArgs>(args?: SelectSubset<T, FavoriteRecipeFindFirstOrThrowArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FavoriteRecipes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FavoriteRecipes
+     * const favoriteRecipes = await prisma.favoriteRecipe.findMany()
+     * 
+     * // Get first 10 FavoriteRecipes
+     * const favoriteRecipes = await prisma.favoriteRecipe.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const favoriteRecipeWithIdOnly = await prisma.favoriteRecipe.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FavoriteRecipeFindManyArgs>(args?: SelectSubset<T, FavoriteRecipeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FavoriteRecipe.
+     * @param {FavoriteRecipeCreateArgs} args - Arguments to create a FavoriteRecipe.
+     * @example
+     * // Create one FavoriteRecipe
+     * const FavoriteRecipe = await prisma.favoriteRecipe.create({
+     *   data: {
+     *     // ... data to create a FavoriteRecipe
+     *   }
+     * })
+     * 
+     */
+    create<T extends FavoriteRecipeCreateArgs>(args: SelectSubset<T, FavoriteRecipeCreateArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FavoriteRecipes.
+     * @param {FavoriteRecipeCreateManyArgs} args - Arguments to create many FavoriteRecipes.
+     * @example
+     * // Create many FavoriteRecipes
+     * const favoriteRecipe = await prisma.favoriteRecipe.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FavoriteRecipeCreateManyArgs>(args?: SelectSubset<T, FavoriteRecipeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FavoriteRecipes and returns the data saved in the database.
+     * @param {FavoriteRecipeCreateManyAndReturnArgs} args - Arguments to create many FavoriteRecipes.
+     * @example
+     * // Create many FavoriteRecipes
+     * const favoriteRecipe = await prisma.favoriteRecipe.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FavoriteRecipes and only return the `id`
+     * const favoriteRecipeWithIdOnly = await prisma.favoriteRecipe.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FavoriteRecipeCreateManyAndReturnArgs>(args?: SelectSubset<T, FavoriteRecipeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FavoriteRecipe.
+     * @param {FavoriteRecipeDeleteArgs} args - Arguments to delete one FavoriteRecipe.
+     * @example
+     * // Delete one FavoriteRecipe
+     * const FavoriteRecipe = await prisma.favoriteRecipe.delete({
+     *   where: {
+     *     // ... filter to delete one FavoriteRecipe
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FavoriteRecipeDeleteArgs>(args: SelectSubset<T, FavoriteRecipeDeleteArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FavoriteRecipe.
+     * @param {FavoriteRecipeUpdateArgs} args - Arguments to update one FavoriteRecipe.
+     * @example
+     * // Update one FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FavoriteRecipeUpdateArgs>(args: SelectSubset<T, FavoriteRecipeUpdateArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FavoriteRecipes.
+     * @param {FavoriteRecipeDeleteManyArgs} args - Arguments to filter FavoriteRecipes to delete.
+     * @example
+     * // Delete a few FavoriteRecipes
+     * const { count } = await prisma.favoriteRecipe.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FavoriteRecipeDeleteManyArgs>(args?: SelectSubset<T, FavoriteRecipeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FavoriteRecipes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FavoriteRecipes
+     * const favoriteRecipe = await prisma.favoriteRecipe.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FavoriteRecipeUpdateManyArgs>(args: SelectSubset<T, FavoriteRecipeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FavoriteRecipes and returns the data updated in the database.
+     * @param {FavoriteRecipeUpdateManyAndReturnArgs} args - Arguments to update many FavoriteRecipes.
+     * @example
+     * // Update many FavoriteRecipes
+     * const favoriteRecipe = await prisma.favoriteRecipe.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FavoriteRecipes and only return the `id`
+     * const favoriteRecipeWithIdOnly = await prisma.favoriteRecipe.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FavoriteRecipeUpdateManyAndReturnArgs>(args: SelectSubset<T, FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FavoriteRecipe.
+     * @param {FavoriteRecipeUpsertArgs} args - Arguments to update or create a FavoriteRecipe.
+     * @example
+     * // Update or create a FavoriteRecipe
+     * const favoriteRecipe = await prisma.favoriteRecipe.upsert({
+     *   create: {
+     *     // ... data to create a FavoriteRecipe
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FavoriteRecipe we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FavoriteRecipeUpsertArgs>(args: SelectSubset<T, FavoriteRecipeUpsertArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FavoriteRecipes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeCountArgs} args - Arguments to filter FavoriteRecipes to count.
+     * @example
+     * // Count the number of FavoriteRecipes
+     * const count = await prisma.favoriteRecipe.count({
+     *   where: {
+     *     // ... the filter for the FavoriteRecipes we want to count
+     *   }
+     * })
+    **/
+    count<T extends FavoriteRecipeCountArgs>(
+      args?: Subset<T, FavoriteRecipeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FavoriteRecipeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FavoriteRecipe.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FavoriteRecipeAggregateArgs>(args: Subset<T, FavoriteRecipeAggregateArgs>): Prisma.PrismaPromise<GetFavoriteRecipeAggregateType<T>>
+
+    /**
+     * Group by FavoriteRecipe.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FavoriteRecipeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FavoriteRecipeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FavoriteRecipeGroupByArgs['orderBy'] }
+        : { orderBy?: FavoriteRecipeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FavoriteRecipeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFavoriteRecipeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FavoriteRecipe model
+   */
+  readonly fields: FavoriteRecipeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FavoriteRecipe.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FavoriteRecipeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FavoriteRecipe model
+   */
+  interface FavoriteRecipeFieldRefs {
+    readonly id: FieldRef<"FavoriteRecipe", 'String'>
+    readonly recipeName: FieldRef<"FavoriteRecipe", 'String'>
+    readonly ingredientsYouHave: FieldRef<"FavoriteRecipe", 'String'>
+    readonly missingIngredients: FieldRef<"FavoriteRecipe", 'String'>
+    readonly fullIngredientsList: FieldRef<"FavoriteRecipe", 'String'>
+    readonly instructions: FieldRef<"FavoriteRecipe", 'String'>
+    readonly preparationTime: FieldRef<"FavoriteRecipe", 'String'>
+    readonly cookingTime: FieldRef<"FavoriteRecipe", 'String'>
+    readonly userId: FieldRef<"FavoriteRecipe", 'String'>
+    readonly createdAt: FieldRef<"FavoriteRecipe", 'DateTime'>
+    readonly updatedAt: FieldRef<"FavoriteRecipe", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FavoriteRecipe findUnique
+   */
+  export type FavoriteRecipeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter, which FavoriteRecipe to fetch.
+     */
+    where: FavoriteRecipeWhereUniqueInput
+  }
+
+  /**
+   * FavoriteRecipe findUniqueOrThrow
+   */
+  export type FavoriteRecipeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter, which FavoriteRecipe to fetch.
+     */
+    where: FavoriteRecipeWhereUniqueInput
+  }
+
+  /**
+   * FavoriteRecipe findFirst
+   */
+  export type FavoriteRecipeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter, which FavoriteRecipe to fetch.
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteRecipes to fetch.
+     */
+    orderBy?: FavoriteRecipeOrderByWithRelationInput | FavoriteRecipeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FavoriteRecipes.
+     */
+    cursor?: FavoriteRecipeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteRecipes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteRecipes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FavoriteRecipes.
+     */
+    distinct?: FavoriteRecipeScalarFieldEnum | FavoriteRecipeScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteRecipe findFirstOrThrow
+   */
+  export type FavoriteRecipeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter, which FavoriteRecipe to fetch.
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteRecipes to fetch.
+     */
+    orderBy?: FavoriteRecipeOrderByWithRelationInput | FavoriteRecipeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FavoriteRecipes.
+     */
+    cursor?: FavoriteRecipeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteRecipes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteRecipes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FavoriteRecipes.
+     */
+    distinct?: FavoriteRecipeScalarFieldEnum | FavoriteRecipeScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteRecipe findMany
+   */
+  export type FavoriteRecipeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter, which FavoriteRecipes to fetch.
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FavoriteRecipes to fetch.
+     */
+    orderBy?: FavoriteRecipeOrderByWithRelationInput | FavoriteRecipeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FavoriteRecipes.
+     */
+    cursor?: FavoriteRecipeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FavoriteRecipes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FavoriteRecipes.
+     */
+    skip?: number
+    distinct?: FavoriteRecipeScalarFieldEnum | FavoriteRecipeScalarFieldEnum[]
+  }
+
+  /**
+   * FavoriteRecipe create
+   */
+  export type FavoriteRecipeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * The data needed to create a FavoriteRecipe.
+     */
+    data: XOR<FavoriteRecipeCreateInput, FavoriteRecipeUncheckedCreateInput>
+  }
+
+  /**
+   * FavoriteRecipe createMany
+   */
+  export type FavoriteRecipeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FavoriteRecipes.
+     */
+    data: FavoriteRecipeCreateManyInput | FavoriteRecipeCreateManyInput[]
+  }
+
+  /**
+   * FavoriteRecipe createManyAndReturn
+   */
+  export type FavoriteRecipeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * The data used to create many FavoriteRecipes.
+     */
+    data: FavoriteRecipeCreateManyInput | FavoriteRecipeCreateManyInput[]
+  }
+
+  /**
+   * FavoriteRecipe update
+   */
+  export type FavoriteRecipeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * The data needed to update a FavoriteRecipe.
+     */
+    data: XOR<FavoriteRecipeUpdateInput, FavoriteRecipeUncheckedUpdateInput>
+    /**
+     * Choose, which FavoriteRecipe to update.
+     */
+    where: FavoriteRecipeWhereUniqueInput
+  }
+
+  /**
+   * FavoriteRecipe updateMany
+   */
+  export type FavoriteRecipeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FavoriteRecipes.
+     */
+    data: XOR<FavoriteRecipeUpdateManyMutationInput, FavoriteRecipeUncheckedUpdateManyInput>
+    /**
+     * Filter which FavoriteRecipes to update
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * Limit how many FavoriteRecipes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FavoriteRecipe updateManyAndReturn
+   */
+  export type FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * The data used to update FavoriteRecipes.
+     */
+    data: XOR<FavoriteRecipeUpdateManyMutationInput, FavoriteRecipeUncheckedUpdateManyInput>
+    /**
+     * Filter which FavoriteRecipes to update
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * Limit how many FavoriteRecipes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FavoriteRecipe upsert
+   */
+  export type FavoriteRecipeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * The filter to search for the FavoriteRecipe to update in case it exists.
+     */
+    where: FavoriteRecipeWhereUniqueInput
+    /**
+     * In case the FavoriteRecipe found by the `where` argument doesn't exist, create a new FavoriteRecipe with this data.
+     */
+    create: XOR<FavoriteRecipeCreateInput, FavoriteRecipeUncheckedCreateInput>
+    /**
+     * In case the FavoriteRecipe was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FavoriteRecipeUpdateInput, FavoriteRecipeUncheckedUpdateInput>
+  }
+
+  /**
+   * FavoriteRecipe delete
+   */
+  export type FavoriteRecipeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+    /**
+     * Filter which FavoriteRecipe to delete.
+     */
+    where: FavoriteRecipeWhereUniqueInput
+  }
+
+  /**
+   * FavoriteRecipe deleteMany
+   */
+  export type FavoriteRecipeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FavoriteRecipes to delete
+     */
+    where?: FavoriteRecipeWhereInput
+    /**
+     * Limit how many FavoriteRecipes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FavoriteRecipe without action
+   */
+  export type FavoriteRecipeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FavoriteRecipe
+     */
+    select?: FavoriteRecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FavoriteRecipe
+     */
+    omit?: FavoriteRecipeOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -1979,6 +3141,23 @@ export namespace Prisma {
   };
 
   export type SavedRecipeScalarFieldEnum = (typeof SavedRecipeScalarFieldEnum)[keyof typeof SavedRecipeScalarFieldEnum]
+
+
+  export const FavoriteRecipeScalarFieldEnum: {
+    id: 'id',
+    recipeName: 'recipeName',
+    ingredientsYouHave: 'ingredientsYouHave',
+    missingIngredients: 'missingIngredients',
+    fullIngredientsList: 'fullIngredientsList',
+    instructions: 'instructions',
+    preparationTime: 'preparationTime',
+    cookingTime: 'cookingTime',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FavoriteRecipeScalarFieldEnum = (typeof FavoriteRecipeScalarFieldEnum)[keyof typeof FavoriteRecipeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2109,6 +3288,89 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"SavedRecipe"> | Date | string
   }
 
+  export type FavoriteRecipeWhereInput = {
+    AND?: FavoriteRecipeWhereInput | FavoriteRecipeWhereInput[]
+    OR?: FavoriteRecipeWhereInput[]
+    NOT?: FavoriteRecipeWhereInput | FavoriteRecipeWhereInput[]
+    id?: StringFilter<"FavoriteRecipe"> | string
+    recipeName?: StringFilter<"FavoriteRecipe"> | string
+    ingredientsYouHave?: StringFilter<"FavoriteRecipe"> | string
+    missingIngredients?: StringFilter<"FavoriteRecipe"> | string
+    fullIngredientsList?: StringFilter<"FavoriteRecipe"> | string
+    instructions?: StringFilter<"FavoriteRecipe"> | string
+    preparationTime?: StringFilter<"FavoriteRecipe"> | string
+    cookingTime?: StringFilter<"FavoriteRecipe"> | string
+    userId?: StringNullableFilter<"FavoriteRecipe"> | string | null
+    createdAt?: DateTimeFilter<"FavoriteRecipe"> | Date | string
+    updatedAt?: DateTimeFilter<"FavoriteRecipe"> | Date | string
+  }
+
+  export type FavoriteRecipeOrderByWithRelationInput = {
+    id?: SortOrder
+    recipeName?: SortOrder
+    ingredientsYouHave?: SortOrder
+    missingIngredients?: SortOrder
+    fullIngredientsList?: SortOrder
+    instructions?: SortOrder
+    preparationTime?: SortOrder
+    cookingTime?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FavoriteRecipeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    recipeName_userId?: FavoriteRecipeRecipeNameUserIdCompoundUniqueInput
+    AND?: FavoriteRecipeWhereInput | FavoriteRecipeWhereInput[]
+    OR?: FavoriteRecipeWhereInput[]
+    NOT?: FavoriteRecipeWhereInput | FavoriteRecipeWhereInput[]
+    recipeName?: StringFilter<"FavoriteRecipe"> | string
+    ingredientsYouHave?: StringFilter<"FavoriteRecipe"> | string
+    missingIngredients?: StringFilter<"FavoriteRecipe"> | string
+    fullIngredientsList?: StringFilter<"FavoriteRecipe"> | string
+    instructions?: StringFilter<"FavoriteRecipe"> | string
+    preparationTime?: StringFilter<"FavoriteRecipe"> | string
+    cookingTime?: StringFilter<"FavoriteRecipe"> | string
+    userId?: StringNullableFilter<"FavoriteRecipe"> | string | null
+    createdAt?: DateTimeFilter<"FavoriteRecipe"> | Date | string
+    updatedAt?: DateTimeFilter<"FavoriteRecipe"> | Date | string
+  }, "id" | "recipeName_userId">
+
+  export type FavoriteRecipeOrderByWithAggregationInput = {
+    id?: SortOrder
+    recipeName?: SortOrder
+    ingredientsYouHave?: SortOrder
+    missingIngredients?: SortOrder
+    fullIngredientsList?: SortOrder
+    instructions?: SortOrder
+    preparationTime?: SortOrder
+    cookingTime?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FavoriteRecipeCountOrderByAggregateInput
+    _max?: FavoriteRecipeMaxOrderByAggregateInput
+    _min?: FavoriteRecipeMinOrderByAggregateInput
+  }
+
+  export type FavoriteRecipeScalarWhereWithAggregatesInput = {
+    AND?: FavoriteRecipeScalarWhereWithAggregatesInput | FavoriteRecipeScalarWhereWithAggregatesInput[]
+    OR?: FavoriteRecipeScalarWhereWithAggregatesInput[]
+    NOT?: FavoriteRecipeScalarWhereWithAggregatesInput | FavoriteRecipeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    recipeName?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    ingredientsYouHave?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    missingIngredients?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    fullIngredientsList?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    instructions?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    preparationTime?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    cookingTime?: StringWithAggregatesFilter<"FavoriteRecipe"> | string
+    userId?: StringNullableWithAggregatesFilter<"FavoriteRecipe"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FavoriteRecipe"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FavoriteRecipe"> | Date | string
+  }
+
   export type SavedRecipeCreateInput = {
     id?: string
     recipeName: string
@@ -2194,6 +3456,104 @@ export namespace Prisma {
   }
 
   export type SavedRecipeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipeName?: StringFieldUpdateOperationsInput | string
+    ingredientsYouHave?: StringFieldUpdateOperationsInput | string
+    missingIngredients?: StringFieldUpdateOperationsInput | string
+    fullIngredientsList?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    preparationTime?: StringFieldUpdateOperationsInput | string
+    cookingTime?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteRecipeCreateInput = {
+    id?: string
+    recipeName: string
+    ingredientsYouHave: string
+    missingIngredients: string
+    fullIngredientsList: string
+    instructions: string
+    preparationTime: string
+    cookingTime: string
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FavoriteRecipeUncheckedCreateInput = {
+    id?: string
+    recipeName: string
+    ingredientsYouHave: string
+    missingIngredients: string
+    fullIngredientsList: string
+    instructions: string
+    preparationTime: string
+    cookingTime: string
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FavoriteRecipeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipeName?: StringFieldUpdateOperationsInput | string
+    ingredientsYouHave?: StringFieldUpdateOperationsInput | string
+    missingIngredients?: StringFieldUpdateOperationsInput | string
+    fullIngredientsList?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    preparationTime?: StringFieldUpdateOperationsInput | string
+    cookingTime?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteRecipeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipeName?: StringFieldUpdateOperationsInput | string
+    ingredientsYouHave?: StringFieldUpdateOperationsInput | string
+    missingIngredients?: StringFieldUpdateOperationsInput | string
+    fullIngredientsList?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    preparationTime?: StringFieldUpdateOperationsInput | string
+    cookingTime?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteRecipeCreateManyInput = {
+    id?: string
+    recipeName: string
+    ingredientsYouHave: string
+    missingIngredients: string
+    fullIngredientsList: string
+    instructions: string
+    preparationTime: string
+    cookingTime: string
+    userId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FavoriteRecipeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    recipeName?: StringFieldUpdateOperationsInput | string
+    ingredientsYouHave?: StringFieldUpdateOperationsInput | string
+    missingIngredients?: StringFieldUpdateOperationsInput | string
+    fullIngredientsList?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    preparationTime?: StringFieldUpdateOperationsInput | string
+    cookingTime?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FavoriteRecipeUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
@@ -2344,6 +3704,53 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type FavoriteRecipeRecipeNameUserIdCompoundUniqueInput = {
+    recipeName: string
+    userId: string
+  }
+
+  export type FavoriteRecipeCountOrderByAggregateInput = {
+    id?: SortOrder
+    recipeName?: SortOrder
+    ingredientsYouHave?: SortOrder
+    missingIngredients?: SortOrder
+    fullIngredientsList?: SortOrder
+    instructions?: SortOrder
+    preparationTime?: SortOrder
+    cookingTime?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FavoriteRecipeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    recipeName?: SortOrder
+    ingredientsYouHave?: SortOrder
+    missingIngredients?: SortOrder
+    fullIngredientsList?: SortOrder
+    instructions?: SortOrder
+    preparationTime?: SortOrder
+    cookingTime?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FavoriteRecipeMinOrderByAggregateInput = {
+    id?: SortOrder
+    recipeName?: SortOrder
+    ingredientsYouHave?: SortOrder
+    missingIngredients?: SortOrder
+    fullIngredientsList?: SortOrder
+    instructions?: SortOrder
+    preparationTime?: SortOrder
+    cookingTime?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {

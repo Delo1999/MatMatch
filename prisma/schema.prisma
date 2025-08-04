@@ -29,3 +29,19 @@ model SavedRecipe {
 
   @@unique([recipeName, userId])
 }
+
+model FavoriteRecipe {
+  id                     String   @id @default(cuid())
+  recipeName             String
+  ingredientsYouHave     String   // JSON string
+  missingIngredients     String   // JSON string
+  fullIngredientsList    String   // JSON string
+  instructions           String   // JSON string
+  preparationTime        String
+  cookingTime            String
+  userId                 String?  // Optional for now, can be used later with authentication
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@unique([recipeName, userId])
+}

@@ -3,14 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { ApiRecipe } from "@/types/recipe";
-import { Heart, Trash2 } from "lucide-react";
+import { Bookmark, Trash2, Star } from "lucide-react";
 
 export default function ReceptPage() {
   const [savedRecipes, setSavedRecipes] = useState<ApiRecipe[]>([]);
+  const [favoriteRecipes, setFavoriteRecipes] = useState<ApiRecipe[]>([]);
 
   // Load saved recipes from database on component mount
   useEffect(() => {
     fetchSavedRecipes();
+    fetchFavoriteRecipes();
   }, []);
 
   const fetchSavedRecipes = async () => {
@@ -23,6 +25,71 @@ export default function ReceptPage() {
     } catch (error) {
       console.error("Error fetching saved recipes:", error);
     }
+  };
+
+  const fetchFavoriteRecipes = async () => {
+    try {
+      const response = await fetch("/api/favorite-recipes");
+      if (response.ok) {
+        const recipes = await response.json();
+        setFavoriteRecipes(recipes);
+      }
+    } catch (error) {
+      console.error("Error fetching favorite recipes:", error);
+    }
+  };
+
+  // Add recipe to favorites
+  const addToFavorites = async (recipe: ApiRecipe) => {
+    try {
+      const response = await fetch("/api/favorite-recipes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(recipe),
+      });
+
+      if (response.ok) {
+        setFavoriteRecipes([...favoriteRecipes, recipe]);
+      } else {
+        const error = await response.json();
+        console.error("Error adding to favorites:", error.error);
+      }
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+    }
+  };
+
+  // Remove recipe from favorites
+  const removeFromFavorites = async (recipeToRemove: ApiRecipe) => {
+    try {
+      const response = await fetch(
+        `/api/favorite-recipes/${encodeURIComponent(
+          recipeToRemove.recipeName
+        )}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        const updatedFavorites = favoriteRecipes.filter(
+          (recipe) => recipe.recipeName !== recipeToRemove.recipeName
+        );
+        setFavoriteRecipes(updatedFavorites);
+      } else {
+        const error = await response.json();
+        console.error("Error removing from favorites:", error.error);
+      }
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+    }
+  };
+
+  // Check if recipe is favorited
+  const isRecipeFavorited = (recipe: ApiRecipe) => {
+    return favoriteRecipes.some(
+      (favoriteRecipe) => favoriteRecipe.recipeName === recipe.recipeName
+    );
   };
 
   // Remove recipe from database
@@ -113,18 +180,36 @@ export default function ReceptPage() {
                   >
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                       <div>
-                        <div className="flex items-center mb-2">
+                        <div className="flex items-center justify-between mb-2">
                           <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
                             {recipe.recipeName}
                           </h2>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => removeRecipe(recipe)}
-                            className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
-                          >
-                            <Trash2 className="w-6 h-6" />
-                          </Button>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() =>
+                                isRecipeFavorited(recipe)
+                                  ? removeFromFavorites(recipe)
+                                  : addToFavorites(recipe)
+                              }
+                              className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                            >
+                              {isRecipeFavorited(recipe) ? (
+                                <Star className="w-6 h-6 fill-current" />
+                              ) : (
+                                <Star className="w-6 h-6" />
+                              )}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeRecipe(recipe)}
+                              className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+                            >
+                              <Trash2 className="w-6 h-6" />
+                            </Button>
+                          </div>
                         </div>
 
                         <div>
