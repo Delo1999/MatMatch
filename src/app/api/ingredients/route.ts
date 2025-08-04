@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
        practical recipes based on the ingredients a user has available, **prioritizing the use of the provided 
        ingredients and minimizing the need for additional items**. Create 3 quick recipes using: ${ingredients.join(
          ", "
-       )}. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`,
+       )}.Be specific about the required quantities for each ingredient in every recipe. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`,
 
       config: {
         maxOutputTokens: 50000,
