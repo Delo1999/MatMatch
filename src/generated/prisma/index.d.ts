@@ -81,53 +81,6 @@ export class PrismaClient<
   $use(cb: Prisma.Middleware): void
 
 /**
-   * Executes a prepared raw query and returns the number of affected rows.
-   * @example
-   * ```
-   * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-   */
-  $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
-
-  /**
-   * Executes a raw query and returns the number of affected rows.
-   * Susceptible to SQL injections, see documentation.
-   * @example
-   * ```
-   * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-   */
-  $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
-
-  /**
-   * Performs a prepared raw query and returns the `SELECT` data.
-   * @example
-   * ```
-   * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-   */
-  $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
-
-  /**
-   * Performs a raw query and returns the `SELECT` data.
-   * Susceptible to SQL injections, see documentation.
-   * @example
-   * ```
-   * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-   */
-  $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
-
-
-  /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
    * @example
    * ```
@@ -140,10 +93,24 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P]): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
-  $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
+  $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number }): $Utils.JsPromise<R>
 
+  /**
+   * Executes a raw MongoDB command and returns the result of it.
+   * @example
+   * ```
+   * const user = await prisma.$runCommandRaw({
+   *   aggregate: 'User',
+   *   pipeline: [{ $match: { name: 'Bob' } }, { $project: { email: true, _id: false } }],
+   *   explain: false,
+   * })
+   * ```
+   * 
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   */
+  $runCommandRaw(command: Prisma.InputJsonObject): Prisma.PrismaPromise<Prisma.JsonObject>
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
@@ -629,7 +596,7 @@ export namespace Prisma {
     }
     meta: {
       modelProps: "savedRecipe" | "favoriteRecipe"
-      txIsolationLevel: Prisma.TransactionIsolationLevel
+      txIsolationLevel: never
     }
     model: {
       SavedRecipe: {
@@ -664,10 +631,6 @@ export namespace Prisma {
             args: Prisma.SavedRecipeCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          createManyAndReturn: {
-            args: Prisma.SavedRecipeCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SavedRecipePayload>[]
-          }
           delete: {
             args: Prisma.SavedRecipeDeleteArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$SavedRecipePayload>
@@ -684,10 +647,6 @@ export namespace Prisma {
             args: Prisma.SavedRecipeUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          updateManyAndReturn: {
-            args: Prisma.SavedRecipeUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$SavedRecipePayload>[]
-          }
           upsert: {
             args: Prisma.SavedRecipeUpsertArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$SavedRecipePayload>
@@ -699,6 +658,14 @@ export namespace Prisma {
           groupBy: {
             args: Prisma.SavedRecipeGroupByArgs<ExtArgs>
             result: $Utils.Optional<SavedRecipeGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.SavedRecipeFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.SavedRecipeAggregateRawArgs<ExtArgs>
+            result: JsonObject
           }
           count: {
             args: Prisma.SavedRecipeCountArgs<ExtArgs>
@@ -738,10 +705,6 @@ export namespace Prisma {
             args: Prisma.FavoriteRecipeCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          createManyAndReturn: {
-            args: Prisma.FavoriteRecipeCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>[]
-          }
           delete: {
             args: Prisma.FavoriteRecipeDeleteArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
@@ -758,10 +721,6 @@ export namespace Prisma {
             args: Prisma.FavoriteRecipeUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
-          updateManyAndReturn: {
-            args: Prisma.FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>[]
-          }
           upsert: {
             args: Prisma.FavoriteRecipeUpsertArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$FavoriteRecipePayload>
@@ -774,6 +733,14 @@ export namespace Prisma {
             args: Prisma.FavoriteRecipeGroupByArgs<ExtArgs>
             result: $Utils.Optional<FavoriteRecipeGroupByOutputType>[]
           }
+          findRaw: {
+            args: Prisma.FavoriteRecipeFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.FavoriteRecipeAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
           count: {
             args: Prisma.FavoriteRecipeCountArgs<ExtArgs>
             result: $Utils.Optional<FavoriteRecipeCountAggregateOutputType> | number
@@ -785,21 +752,9 @@ export namespace Prisma {
     other: {
       payload: any
       operations: {
-        $executeRaw: {
-          args: [query: TemplateStringsArray | Prisma.Sql, ...values: any[]],
-          result: any
-        }
-        $executeRawUnsafe: {
-          args: [query: string, ...values: any[]],
-          result: any
-        }
-        $queryRaw: {
-          args: [query: TemplateStringsArray | Prisma.Sql, ...values: any[]],
-          result: any
-        }
-        $queryRawUnsafe: {
-          args: [query: string, ...values: any[]],
-          result: any
+        $runCommandRaw: {
+          args: Prisma.InputJsonObject,
+          result: Prisma.JsonObject
         }
       }
     }
@@ -853,7 +808,6 @@ export namespace Prisma {
     transactionOptions?: {
       maxWait?: number
       timeout?: number
-      isolationLevel?: Prisma.TransactionIsolationLevel
     }
     /**
      * Global configuration for omitting model fields by default.
@@ -1187,33 +1141,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }, ExtArgs["result"]["savedRecipe"]>
 
-  export type SavedRecipeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    recipeName?: boolean
-    ingredientsYouHave?: boolean
-    missingIngredients?: boolean
-    fullIngredientsList?: boolean
-    instructions?: boolean
-    preparationTime?: boolean
-    cookingTime?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["savedRecipe"]>
 
-  export type SavedRecipeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    recipeName?: boolean
-    ingredientsYouHave?: boolean
-    missingIngredients?: boolean
-    fullIngredientsList?: boolean
-    instructions?: boolean
-    preparationTime?: boolean
-    cookingTime?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["savedRecipe"]>
 
   export type SavedRecipeSelectScalar = {
     id?: boolean
@@ -1364,30 +1292,6 @@ export namespace Prisma {
     createMany<T extends SavedRecipeCreateManyArgs>(args?: SelectSubset<T, SavedRecipeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many SavedRecipes and returns the data saved in the database.
-     * @param {SavedRecipeCreateManyAndReturnArgs} args - Arguments to create many SavedRecipes.
-     * @example
-     * // Create many SavedRecipes
-     * const savedRecipe = await prisma.savedRecipe.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many SavedRecipes and only return the `id`
-     * const savedRecipeWithIdOnly = await prisma.savedRecipe.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends SavedRecipeCreateManyAndReturnArgs>(args?: SelectSubset<T, SavedRecipeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedRecipePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Delete a SavedRecipe.
      * @param {SavedRecipeDeleteArgs} args - Arguments to delete one SavedRecipe.
      * @example
@@ -1452,36 +1356,6 @@ export namespace Prisma {
     updateMany<T extends SavedRecipeUpdateManyArgs>(args: SelectSubset<T, SavedRecipeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more SavedRecipes and returns the data updated in the database.
-     * @param {SavedRecipeUpdateManyAndReturnArgs} args - Arguments to update many SavedRecipes.
-     * @example
-     * // Update many SavedRecipes
-     * const savedRecipe = await prisma.savedRecipe.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more SavedRecipes and only return the `id`
-     * const savedRecipeWithIdOnly = await prisma.savedRecipe.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends SavedRecipeUpdateManyAndReturnArgs>(args: SelectSubset<T, SavedRecipeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SavedRecipePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one SavedRecipe.
      * @param {SavedRecipeUpsertArgs} args - Arguments to update or create a SavedRecipe.
      * @example
@@ -1499,6 +1373,29 @@ export namespace Prisma {
      * })
      */
     upsert<T extends SavedRecipeUpsertArgs>(args: SelectSubset<T, SavedRecipeUpsertArgs<ExtArgs>>): Prisma__SavedRecipeClient<$Result.GetResult<Prisma.$SavedRecipePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SavedRecipes that matches the filter.
+     * @param {SavedRecipeFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const savedRecipe = await prisma.savedRecipe.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: SavedRecipeFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a SavedRecipe.
+     * @param {SavedRecipeAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const savedRecipe = await prisma.savedRecipe.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: SavedRecipeAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
 
 
     /**
@@ -1888,24 +1785,6 @@ export namespace Prisma {
   }
 
   /**
-   * SavedRecipe createManyAndReturn
-   */
-  export type SavedRecipeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SavedRecipe
-     */
-    select?: SavedRecipeSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the SavedRecipe
-     */
-    omit?: SavedRecipeOmit<ExtArgs> | null
-    /**
-     * The data used to create many SavedRecipes.
-     */
-    data: SavedRecipeCreateManyInput | SavedRecipeCreateManyInput[]
-  }
-
-  /**
    * SavedRecipe update
    */
   export type SavedRecipeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1931,32 +1810,6 @@ export namespace Prisma {
    * SavedRecipe updateMany
    */
   export type SavedRecipeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update SavedRecipes.
-     */
-    data: XOR<SavedRecipeUpdateManyMutationInput, SavedRecipeUncheckedUpdateManyInput>
-    /**
-     * Filter which SavedRecipes to update
-     */
-    where?: SavedRecipeWhereInput
-    /**
-     * Limit how many SavedRecipes to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * SavedRecipe updateManyAndReturn
-   */
-  export type SavedRecipeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SavedRecipe
-     */
-    select?: SavedRecipeSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the SavedRecipe
-     */
-    omit?: SavedRecipeOmit<ExtArgs> | null
     /**
      * The data used to update SavedRecipes.
      */
@@ -2027,6 +1880,34 @@ export namespace Prisma {
      * Limit how many SavedRecipes to delete.
      */
     limit?: number
+  }
+
+  /**
+   * SavedRecipe findRaw
+   */
+  export type SavedRecipeFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SavedRecipe aggregateRaw
+   */
+  export type SavedRecipeAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
   }
 
   /**
@@ -2258,33 +2139,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }, ExtArgs["result"]["favoriteRecipe"]>
 
-  export type FavoriteRecipeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    recipeName?: boolean
-    ingredientsYouHave?: boolean
-    missingIngredients?: boolean
-    fullIngredientsList?: boolean
-    instructions?: boolean
-    preparationTime?: boolean
-    cookingTime?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["favoriteRecipe"]>
 
-  export type FavoriteRecipeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    recipeName?: boolean
-    ingredientsYouHave?: boolean
-    missingIngredients?: boolean
-    fullIngredientsList?: boolean
-    instructions?: boolean
-    preparationTime?: boolean
-    cookingTime?: boolean
-    userId?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["favoriteRecipe"]>
 
   export type FavoriteRecipeSelectScalar = {
     id?: boolean
@@ -2435,30 +2290,6 @@ export namespace Prisma {
     createMany<T extends FavoriteRecipeCreateManyArgs>(args?: SelectSubset<T, FavoriteRecipeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many FavoriteRecipes and returns the data saved in the database.
-     * @param {FavoriteRecipeCreateManyAndReturnArgs} args - Arguments to create many FavoriteRecipes.
-     * @example
-     * // Create many FavoriteRecipes
-     * const favoriteRecipe = await prisma.favoriteRecipe.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many FavoriteRecipes and only return the `id`
-     * const favoriteRecipeWithIdOnly = await prisma.favoriteRecipe.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends FavoriteRecipeCreateManyAndReturnArgs>(args?: SelectSubset<T, FavoriteRecipeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Delete a FavoriteRecipe.
      * @param {FavoriteRecipeDeleteArgs} args - Arguments to delete one FavoriteRecipe.
      * @example
@@ -2523,36 +2354,6 @@ export namespace Prisma {
     updateMany<T extends FavoriteRecipeUpdateManyArgs>(args: SelectSubset<T, FavoriteRecipeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more FavoriteRecipes and returns the data updated in the database.
-     * @param {FavoriteRecipeUpdateManyAndReturnArgs} args - Arguments to update many FavoriteRecipes.
-     * @example
-     * // Update many FavoriteRecipes
-     * const favoriteRecipe = await prisma.favoriteRecipe.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more FavoriteRecipes and only return the `id`
-     * const favoriteRecipeWithIdOnly = await prisma.favoriteRecipe.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends FavoriteRecipeUpdateManyAndReturnArgs>(args: SelectSubset<T, FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
      * Create or update one FavoriteRecipe.
      * @param {FavoriteRecipeUpsertArgs} args - Arguments to update or create a FavoriteRecipe.
      * @example
@@ -2570,6 +2371,29 @@ export namespace Prisma {
      * })
      */
     upsert<T extends FavoriteRecipeUpsertArgs>(args: SelectSubset<T, FavoriteRecipeUpsertArgs<ExtArgs>>): Prisma__FavoriteRecipeClient<$Result.GetResult<Prisma.$FavoriteRecipePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FavoriteRecipes that matches the filter.
+     * @param {FavoriteRecipeFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const favoriteRecipe = await prisma.favoriteRecipe.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: FavoriteRecipeFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a FavoriteRecipe.
+     * @param {FavoriteRecipeAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const favoriteRecipe = await prisma.favoriteRecipe.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: FavoriteRecipeAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
 
 
     /**
@@ -2959,24 +2783,6 @@ export namespace Prisma {
   }
 
   /**
-   * FavoriteRecipe createManyAndReturn
-   */
-  export type FavoriteRecipeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FavoriteRecipe
-     */
-    select?: FavoriteRecipeSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the FavoriteRecipe
-     */
-    omit?: FavoriteRecipeOmit<ExtArgs> | null
-    /**
-     * The data used to create many FavoriteRecipes.
-     */
-    data: FavoriteRecipeCreateManyInput | FavoriteRecipeCreateManyInput[]
-  }
-
-  /**
    * FavoriteRecipe update
    */
   export type FavoriteRecipeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3002,32 +2808,6 @@ export namespace Prisma {
    * FavoriteRecipe updateMany
    */
   export type FavoriteRecipeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update FavoriteRecipes.
-     */
-    data: XOR<FavoriteRecipeUpdateManyMutationInput, FavoriteRecipeUncheckedUpdateManyInput>
-    /**
-     * Filter which FavoriteRecipes to update
-     */
-    where?: FavoriteRecipeWhereInput
-    /**
-     * Limit how many FavoriteRecipes to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * FavoriteRecipe updateManyAndReturn
-   */
-  export type FavoriteRecipeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FavoriteRecipe
-     */
-    select?: FavoriteRecipeSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the FavoriteRecipe
-     */
-    omit?: FavoriteRecipeOmit<ExtArgs> | null
     /**
      * The data used to update FavoriteRecipes.
      */
@@ -3101,6 +2881,34 @@ export namespace Prisma {
   }
 
   /**
+   * FavoriteRecipe findRaw
+   */
+  export type FavoriteRecipeFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * FavoriteRecipe aggregateRaw
+   */
+  export type FavoriteRecipeAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
    * FavoriteRecipe without action
    */
   export type FavoriteRecipeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3118,13 +2926,6 @@ export namespace Prisma {
   /**
    * Enums
    */
-
-  export const TransactionIsolationLevel: {
-    Serializable: 'Serializable'
-  };
-
-  export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
-
 
   export const SavedRecipeScalarFieldEnum: {
     id: 'id',
@@ -3168,12 +2969,12 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
   };
 
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
   /**
@@ -3189,6 +2990,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'String[]'
+   */
+  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3196,9 +3004,23 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
   /**
    * Deep Input Types
@@ -3231,7 +3053,7 @@ export namespace Prisma {
     instructions?: SortOrder
     preparationTime?: SortOrder
     cookingTime?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3263,7 +3085,7 @@ export namespace Prisma {
     instructions?: SortOrder
     preparationTime?: SortOrder
     cookingTime?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SavedRecipeCountOrderByAggregateInput
@@ -3314,7 +3136,7 @@ export namespace Prisma {
     instructions?: SortOrder
     preparationTime?: SortOrder
     cookingTime?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3346,7 +3168,7 @@ export namespace Prisma {
     instructions?: SortOrder
     preparationTime?: SortOrder
     cookingTime?: SortOrder
-    userId?: SortOrderInput | SortOrder
+    userId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: FavoriteRecipeCountOrderByAggregateInput
@@ -3400,7 +3222,6 @@ export namespace Prisma {
   }
 
   export type SavedRecipeUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3414,7 +3235,6 @@ export namespace Prisma {
   }
 
   export type SavedRecipeUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3442,7 +3262,6 @@ export namespace Prisma {
   }
 
   export type SavedRecipeUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3456,7 +3275,6 @@ export namespace Prisma {
   }
 
   export type SavedRecipeUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3498,7 +3316,6 @@ export namespace Prisma {
   }
 
   export type FavoriteRecipeUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3512,7 +3329,6 @@ export namespace Prisma {
   }
 
   export type FavoriteRecipeUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3540,7 +3356,6 @@ export namespace Prisma {
   }
 
   export type FavoriteRecipeUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3554,7 +3369,6 @@ export namespace Prisma {
   }
 
   export type FavoriteRecipeUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
     recipeName?: StringFieldUpdateOperationsInput | string
     ingredientsYouHave?: StringFieldUpdateOperationsInput | string
     missingIngredients?: StringFieldUpdateOperationsInput | string
@@ -3569,8 +3383,8 @@ export namespace Prisma {
 
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3578,13 +3392,14 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3592,23 +3407,20 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type SavedRecipeRecipeNameUserIdCompoundUniqueInput = {
@@ -3660,8 +3472,8 @@ export namespace Prisma {
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3669,6 +3481,7 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -3677,8 +3490,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3686,16 +3499,18 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -3759,6 +3574,7 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+    unset?: boolean
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3767,8 +3583,8 @@ export namespace Prisma {
 
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3781,8 +3597,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3791,12 +3607,13 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -3806,8 +3623,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3823,8 +3640,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -3834,8 +3651,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -3847,23 +3664,25 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    isSet?: boolean
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[]
-    notIn?: Date[] | string[]
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>

@@ -113,10 +113,6 @@ Prisma.NullTypes = {
  * Enums
  */
 
-exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  Serializable: 'Serializable'
-});
-
 exports.Prisma.SavedRecipeScalarFieldEnum = {
   id: 'id',
   recipeName: 'recipeName',
@@ -150,9 +146,9 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 

@@ -10,12 +10,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mongodb"
+  url      = "mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/MatMatch?retryWrites=true&w=majority"
 }
 
 model SavedRecipe {
-  id                  String   @id @default(cuid())
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   recipeName          String
   ingredientsYouHave  String // JSON string
   missingIngredients  String // JSON string
@@ -31,7 +31,7 @@ model SavedRecipe {
 }
 
 model FavoriteRecipe {
-  id                  String   @id @default(cuid())
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   recipeName          String
   ingredientsYouHave  String // JSON string
   missingIngredients  String // JSON string
