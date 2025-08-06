@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+import jwt, { SignOptions } from "jsonwebtoken";
+import { authConfig, isValidEmail } from "@/config/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,6 +12,13 @@ export async function POST(request: NextRequest) {
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
+
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: "Invalid email format" },
         { status: 400 }
       );
     }
@@ -45,11 +51,14 @@ export async function POST(request: NextRequest) {
         userId: user.id,
         email: user.email,
       },
-      JWT_SECRET,
-      { expiresIn: "7d" }
+      authConfig.jwt.secret,
+      {
+        expiresIn: authConfig.jwt.expiresIn,
+      } as SignOptions
     );
 
     // Return user data (without password) and token
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     const response = NextResponse.json({
@@ -58,11 +67,12 @@ export async function POST(request: NextRequest) {
     });
 
     // Set HTTP-only cookie with the token
-    response.cookies.set("auth-token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+    response.cookies.set(authConfig.cookies.name, token, {
+      httpOnly: authConfig.cookies.httpOnly,
+      secure: authConfig.cookies.secure,
+      sameSite: authConfig.cookies.sameSite,
+      maxAge: authConfig.cookies.maxAge,
+      path: authConfig.cookies.path,
     });
 
     return response;

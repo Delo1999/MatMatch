@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+import { authConfig } from "@/config/auth";
 
 export async function GET(request: NextRequest) {
   try {
     // Get token from cookie
-    const token = request.cookies.get("auth-token")?.value;
+    const token = request.cookies.get(authConfig.cookies.name)?.value;
 
     if (!token) {
       return NextResponse.json(
@@ -17,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET) as {
+    const decoded = jwt.verify(token, authConfig.jwt.secret) as {
       userId: string;
       email: string;
     };

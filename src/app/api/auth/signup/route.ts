@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { authConfig, isValidPassword, isValidEmail } from "@/config/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,9 +15,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password.length < 6) {
+    if (!isValidEmail(email)) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters long" },
+        { error: "Invalid email format" },
+        { status: 400 }
+      );
+    }
+
+    if (!isValidPassword(password)) {
+      return NextResponse.json(
+        {
+          error: `Password must be at least ${authConfig.password.minLength} characters long`,
+        },
         { status: 400 }
       );
     }
@@ -34,7 +44,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(
+      password,
+      authConfig.security.bcryptRounds
+    );
 
     // Create user
     const user = await prisma.user.create({
@@ -46,6 +59,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Return user data (without password)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json({

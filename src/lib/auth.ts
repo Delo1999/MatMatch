@@ -1,8 +1,7 @@
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+import { authConfig } from "@/config/auth";
 
 export interface AuthUser {
   id: string;
@@ -15,14 +14,14 @@ export async function getCurrentUser(
 ): Promise<AuthUser | null> {
   try {
     // Get token from cookie
-    const token = request.cookies.get("auth-token")?.value;
+    const token = request.cookies.get(authConfig.cookies.name)?.value;
 
     if (!token) {
       return null;
     }
 
     // Verify token
-    const decoded = jwt.verify(token, JWT_SECRET) as {
+    const decoded = jwt.verify(token, authConfig.jwt.secret) as {
       userId: string;
       email: string;
     };
