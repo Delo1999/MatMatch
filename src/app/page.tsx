@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { ApiRecipe } from "@/types/recipe";
 import { Bookmark } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function HomePage() {
+  const { user } = useAuth();
   const [ingredients, setIngredients] = useState("");
   const [recipes, setRecipes] = useState<ApiRecipe[]>([]);
   const [loading, setLoading] = useState(false);
@@ -260,11 +262,20 @@ export default function HomePage() {
                         <CardTitle className="text-xl text-gray-800">
                           Recept förslag
                         </CardTitle>
-                        <p className="text-sm text-gray-600">
-                          Här är dina personliga recept, sparmarkera{" "}
-                          <Bookmark className="w-4 h-4 inline" /> de du vill
-                          lägga till i din kokbok
-                        </p>
+                        {user ? (
+                          <p className="text-sm text-gray-600">
+                            Här är dina personliga recept, sparmarkera{" "}
+                            <Bookmark className="w-4 h-4 inline" /> de du vill
+                            lägga till i din kokbok
+                          </p>
+                        ) : (
+                          <p className="text-sm text-gray-600">
+                            Här är dina personliga recept, logga in för att
+                            kunna sparmarkera{" "}
+                            <Bookmark className="w-4 h-4 inline" /> de du vill
+                            lägga till i din kokbok
+                          </p>
+                        )}
                       </div>
                     </div>
                   </CardHeader>
