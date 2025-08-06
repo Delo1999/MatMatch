@@ -1,9 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { config } from "@/config/env";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   const { ingredients } = await req.json();
+
+  // Hämta användare för att få allergier och kostpreferenser
+  const user = await getCurrentUser(req);
+  let userAllergies: string[] = [];
+  let userDietaryPrefs: string[] = [];
+
+  if (user) {
+    try {
+      const { prisma } = await import("@/lib/prisma");
+      const userData = await prisma.user.findUnique({
+        where: { id: user.id },
+        select: { allergies: true, dietaryPrefs: true },
+      });
+
+      if (userData) {
+        userAllergies = userData.allergies
+          ? JSON.parse(userData.allergies)
+          : [];
+        userDietaryPrefs = userData.dietaryPrefs
+          ? JSON.parse(userData.dietaryPrefs)
+          : [];
+      }
+    } catch (error) {
+      console.error("Error fetching user preferences:", error);
+    }
+  }
 
   // Use config file for API key
   const apiKey = config.GEMINI_API_KEY;
@@ -23,15 +50,34 @@ export async function POST(req: NextRequest) {
   });
 
   try {
-    // const models = await ai.models.list();
-    // console.log(models);
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and 
+    // Bygg AI-prompt baserat på användarens preferenser
+    let promptContent = `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and 
        practical recipes based on the ingredients a user has available, **prioritizing the use of the provided 
        ingredients and minimizing the need for additional items**. Create 3 quick recipes using: ${ingredients.join(
          ", "
-       )}.Be specific about the required quantities for each ingredient in every recipe. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`,
+       )}.`;
+
+    // Lägg till allergirestriktioner
+    if (userAllergies.length > 0) {
+      promptContent += ` **IMPORTANT: The user is allergic to: ${userAllergies.join(
+        ", "
+      )}. NEVER include these ingredients or any dishes that commonly contain them. Avoid cross-contamination risks.**`;
+    }
+
+    // Lägg till kostpreferenser
+    if (userDietaryPrefs.length > 0) {
+      promptContent += ` **DIETARY PREFERENCES: The user prefers: ${userDietaryPrefs.join(
+        ", "
+      )}. Please prioritize recipes that align with these preferences.**`;
+    }
+
+    promptContent += ` Be specific about the required quantities for each ingredient in every recipe. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`;
+
+    console.log("AI Prompt with user preferences:", promptContent);
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: promptContent,
 
       config: {
         maxOutputTokens: 50000,

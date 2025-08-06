@@ -1072,6 +1072,8 @@ export namespace Prisma {
     email: string | null
     name: string | null
     password: string | null
+    allergies: string | null
+    dietaryPrefs: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1081,6 +1083,8 @@ export namespace Prisma {
     email: string | null
     name: string | null
     password: string | null
+    allergies: string | null
+    dietaryPrefs: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1090,6 +1094,8 @@ export namespace Prisma {
     email: number
     name: number
     password: number
+    allergies: number
+    dietaryPrefs: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1101,6 +1107,8 @@ export namespace Prisma {
     email?: true
     name?: true
     password?: true
+    allergies?: true
+    dietaryPrefs?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1110,6 +1118,8 @@ export namespace Prisma {
     email?: true
     name?: true
     password?: true
+    allergies?: true
+    dietaryPrefs?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1119,6 +1129,8 @@ export namespace Prisma {
     email?: true
     name?: true
     password?: true
+    allergies?: true
+    dietaryPrefs?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1201,6 +1213,8 @@ export namespace Prisma {
     email: string
     name: string | null
     password: string
+    allergies: string | null
+    dietaryPrefs: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1227,6 +1241,8 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     password?: boolean
+    allergies?: boolean
+    dietaryPrefs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     savedRecipes?: boolean | User$savedRecipesArgs<ExtArgs>
@@ -1241,11 +1257,13 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     password?: boolean
+    allergies?: boolean
+    dietaryPrefs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "password" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "password" | "allergies" | "dietaryPrefs" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     savedRecipes?: boolean | User$savedRecipesArgs<ExtArgs>
     favoriteRecipes?: boolean | User$favoriteRecipesArgs<ExtArgs>
@@ -1263,6 +1281,8 @@ export namespace Prisma {
       email: string
       name: string | null
       password: string
+      allergies: string | null
+      dietaryPrefs: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1663,6 +1683,8 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly allergies: FieldRef<"User", 'String'>
+    readonly dietaryPrefs: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -4200,6 +4222,8 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     password: 'password',
+    allergies: 'allergies',
+    dietaryPrefs: 'dietaryPrefs',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -4315,6 +4339,8 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
+    allergies?: StringNullableFilter<"User"> | string | null
+    dietaryPrefs?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     savedRecipes?: SavedRecipeListRelationFilter
@@ -4326,6 +4352,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     password?: SortOrder
+    allergies?: SortOrder
+    dietaryPrefs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     savedRecipes?: SavedRecipeOrderByRelationAggregateInput
@@ -4340,6 +4368,8 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
+    allergies?: StringNullableFilter<"User"> | string | null
+    dietaryPrefs?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     savedRecipes?: SavedRecipeListRelationFilter
@@ -4351,6 +4381,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     password?: SortOrder
+    allergies?: SortOrder
+    dietaryPrefs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -4366,6 +4398,8 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringWithAggregatesFilter<"User"> | string
+    allergies?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dietaryPrefs?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -4547,6 +4581,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     savedRecipes?: SavedRecipeCreateNestedManyWithoutUserInput
@@ -4558,6 +4594,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     savedRecipes?: SavedRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -4568,6 +4606,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedRecipes?: SavedRecipeUpdateManyWithoutUserNestedInput
@@ -4578,6 +4618,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedRecipes?: SavedRecipeUncheckedUpdateManyWithoutUserNestedInput
@@ -4589,6 +4631,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -4597,6 +4641,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4605,6 +4651,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4862,6 +4910,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     password?: SortOrder
+    allergies?: SortOrder
+    dietaryPrefs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4871,6 +4921,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     password?: SortOrder
+    allergies?: SortOrder
+    dietaryPrefs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4880,6 +4932,8 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrder
     password?: SortOrder
+    allergies?: SortOrder
+    dietaryPrefs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -5412,6 +5466,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     favoriteRecipes?: FavoriteRecipeCreateNestedManyWithoutUserInput
@@ -5422,6 +5478,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     favoriteRecipes?: FavoriteRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -5447,6 +5505,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     favoriteRecipes?: FavoriteRecipeUpdateManyWithoutUserNestedInput
@@ -5456,6 +5516,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     favoriteRecipes?: FavoriteRecipeUncheckedUpdateManyWithoutUserNestedInput
@@ -5466,6 +5528,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     savedRecipes?: SavedRecipeCreateNestedManyWithoutUserInput
@@ -5476,6 +5540,8 @@ export namespace Prisma {
     email: string
     name?: string | null
     password: string
+    allergies?: string | null
+    dietaryPrefs?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     savedRecipes?: SavedRecipeUncheckedCreateNestedManyWithoutUserInput
@@ -5501,6 +5567,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedRecipes?: SavedRecipeUpdateManyWithoutUserNestedInput
@@ -5510,6 +5578,8 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
+    allergies?: NullableStringFieldUpdateOperationsInput | string | null
+    dietaryPrefs?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     savedRecipes?: SavedRecipeUncheckedUpdateManyWithoutUserNestedInput

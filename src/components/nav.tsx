@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import Link from "next/link";
-import { Home, Smile, ReceiptText, User, LogOut, LogIn } from "lucide-react";
+import { Home, ReceiptText, User, LogOut, LogIn } from "lucide-react";
 import { useState } from "react";
 
 import {

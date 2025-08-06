@@ -169,9 +169,22 @@ export default function HomePage() {
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
               Vad har du hemma?
             </CardTitle>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 mt-2 mb-4">
               Skriv dina ingredienser så hjälper vi dig hitta perfekta recept
             </p>
+            {!user && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 mt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="font-medium text-green-800 ">
+                    Få ännu personligare receptförslag!
+                  </h4>
+                </div>
+                <p className="text-sm text-green-700 text-start">
+                  Logga in för att ange allergier och kostpreferenser - då kan
+                  vi skapa recept som är perfekt anpassade för just dig.
+                </p>
+              </div>
+            )}
           </CardHeader>
           <CardContent className="p-8 pt-0">
             <form onSubmit={handleSubmit} className="space-y-6">

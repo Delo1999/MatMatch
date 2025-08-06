@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { SignInForm } from "./SignInForm";
 import { SignUpForm } from "./SignUpForm";
 
@@ -25,6 +25,9 @@ export function AuthModal({
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md p-0 bg-transparent border-none shadow-none">
+        <DialogTitle className="sr-only">
+          {mode === "signin" ? "Logga in" : "Registrera dig"}
+        </DialogTitle>
         <div className="flex items-center justify-center">
           {mode === "signin" ? (
             <SignInForm
