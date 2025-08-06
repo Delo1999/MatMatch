@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { ApiRecipe } from "@/types/recipe";
+import { getCurrentUser } from "@/lib/auth";
 
-// GET - Retrieve all favorite recipes
-export async function GET() {
+// GET - Retrieve all favorite recipes for the authenticated user
+export async function GET(request: NextRequest) {
   try {
+    const user = await getCurrentUser(request);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const favoriteRecipes = await prisma.favoriteRecipe.findMany({
+      where: { userId: user.id },
       orderBy: { createdAt: "desc" },
     });
 
@@ -35,14 +46,23 @@ export async function GET() {
 // POST - Add a recipe to favorites
 export async function POST(request: NextRequest) {
   try {
+    const user = await getCurrentUser(request);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const recipe: ApiRecipe = await request.json();
     console.log("Attempting to favorite recipe:", recipe.recipeName);
 
-    // Check if recipe already exists in favorites
+    // Check if recipe already exists in favorites for this user
     const existingFavorite = await prisma.favoriteRecipe.findFirst({
       where: {
         recipeName: recipe.recipeName,
-        userId: null, // For now, we're not using user authentication
+        userId: user.id,
       },
     });
 
@@ -64,7 +84,7 @@ export async function POST(request: NextRequest) {
         instructions: JSON.stringify(recipe.instructions),
         preparationTime: recipe.estimatedTime.preparationTime,
         cookingTime: recipe.estimatedTime.cookingTime,
-        userId: null, // For now, we're not using user authentication
+        userId: user.id,
       },
     });
 

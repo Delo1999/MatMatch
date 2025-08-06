@@ -113,6 +113,15 @@ Prisma.NullTypes = {
  * Enums
  */
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SavedRecipeScalarFieldEnum = {
   id: 'id',
   recipeName: 'recipeName',
@@ -153,6 +162,7 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
+  User: 'User',
   SavedRecipe: 'SavedRecipe',
   FavoriteRecipe: 'FavoriteRecipe'
 };

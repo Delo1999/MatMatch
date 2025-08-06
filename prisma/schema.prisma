@@ -14,6 +14,19 @@ datasource db {
   url      = "mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/MatMatch?retryWrites=true&w=majority"
 }
 
+model User {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  email         String   @unique
+  name          String?
+  password      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  savedRecipes    SavedRecipe[]
+  favoriteRecipes FavoriteRecipe[]
+}
+
 model SavedRecipe {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   recipeName             String
@@ -23,7 +36,8 @@ model SavedRecipe {
   instructions           String   // JSON string
   preparationTime        String
   cookingTime            String
-  userId                 String?  // Optional for now, can be used later with authentication
+  userId                 String   @db.ObjectId
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -39,7 +53,8 @@ model FavoriteRecipe {
   instructions           String   // JSON string
   preparationTime        String
   cookingTime            String
-  userId                 String?  // Optional for now, can be used later with authentication
+  userId                 String   @db.ObjectId
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 
 // DELETE - Remove a favorite recipe by name
 export async function DELETE(
@@ -7,13 +8,22 @@ export async function DELETE(
   { params }: { params: { recipeName: string } }
 ) {
   try {
+    const user = await getCurrentUser(request);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const recipeName = decodeURIComponent(params.recipeName);
 
-    // Find and delete the favorite recipe
+    // Find and delete the favorite recipe for this user
     const deletedFavorite = await prisma.favoriteRecipe.deleteMany({
       where: {
         recipeName: recipeName,
-        userId: null, // For now, we're not using user authentication
+        userId: user.id,
       },
     });
 
