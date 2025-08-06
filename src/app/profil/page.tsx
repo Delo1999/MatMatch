@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { X, Plus, Save } from "lucide-react";
+import { X, Plus, Save, Lock, Eye, EyeOff } from "lucide-react";
 
 export default function ProfilPage() {
   const { user } = useAuth();
@@ -17,6 +17,17 @@ export default function ProfilPage() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+
+  // Lösenordsbyte state
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
 
   // Ladda profil när komponenten mountas
   useEffect(() => {
@@ -98,6 +109,52 @@ export default function ProfilPage() {
       setMessage("Kunde inte spara profilen");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const changePassword = async () => {
+    try {
+      setChangingPassword(true);
+      setPasswordMessage("");
+
+      // Validera att lösenorden matchar
+      if (newPassword !== confirmPassword) {
+        setPasswordMessage("Lösenorden matchar inte");
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        setPasswordMessage("Nytt lösenord måste vara minst 6 tecken långt");
+        return;
+      }
+
+      const response = await fetch("/api/profile/change-password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      });
+
+      if (response.ok) {
+        setPasswordMessage("Lösenordet har ändrats framgångsrikt!");
+        // Rensa formuläret
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setShowPasswordSection(false);
+        setTimeout(() => setPasswordMessage(""), 5000);
+      } else {
+        const error = await response.json();
+        setPasswordMessage(`Fel: ${error.error}`);
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      setPasswordMessage("Kunde inte ändra lösenordet");
+    } finally {
+      setChangingPassword(false);
     }
   };
 
@@ -291,6 +348,147 @@ export default function ProfilPage() {
                       </Badge>
                     ))}
                   </div>
+                </div>
+
+                {/* Lösenordsbyte sektion */}
+                <div className="border-t pt-8">
+                  <div className="flex items-center justify-between mb-4">
+                    <h4 className="text-lg font-medium text-gray-800">
+                      🔒 Säkerhet
+                    </h4>
+                    <Button
+                      onClick={() => {
+                        setShowPasswordSection(!showPasswordSection);
+                        setPasswordMessage("");
+                        setCurrentPassword("");
+                        setNewPassword("");
+                        setConfirmPassword("");
+                      }}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Lock className="w-4 h-4 mr-2" />
+                      {showPasswordSection ? "Avbryt" : "Byt lösenord"}
+                    </Button>
+                  </div>
+
+                  {showPasswordSection && (
+                    <div className="space-y-4 bg-gray-50 p-4 rounded-lg">
+                      {passwordMessage && (
+                        <div
+                          className={`p-3 rounded-lg text-sm ${
+                            passwordMessage.includes("Fel")
+                              ? "bg-red-50 text-red-700"
+                              : "bg-green-50 text-green-700"
+                          }`}
+                        >
+                          {passwordMessage}
+                        </div>
+                      )}
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Nuvarande lösenord
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showCurrentPassword ? "text" : "password"}
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            placeholder="Ange ditt nuvarande lösenord"
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowCurrentPassword(!showCurrentPassword)
+                            }
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          >
+                            {showCurrentPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Nytt lösenord
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showNewPassword ? "text" : "password"}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            placeholder="Ange nytt lösenord (minst 6 tecken)"
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          >
+                            {showNewPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Bekräfta nytt lösenord
+                        </label>
+                        <div className="relative">
+                          <Input
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            placeholder="Bekräfta ditt nya lösenord"
+                            className="pr-10"
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="w-4 h-4" />
+                            ) : (
+                              <Eye className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <Button
+                        onClick={changePassword}
+                        disabled={
+                          changingPassword ||
+                          !currentPassword ||
+                          !newPassword ||
+                          !confirmPassword
+                        }
+                        className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                      >
+                        {changingPassword ? (
+                          "Ändrar lösenord..."
+                        ) : (
+                          <>
+                            <Lock className="w-4 h-4 mr-2" />
+                            Ändra lösenord
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Spara knapp */}
