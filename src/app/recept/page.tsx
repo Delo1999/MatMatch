@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { ApiRecipe } from "@/types/recipe";
-import { Bookmark, Trash2, Star } from "lucide-react";
+import { Trash2, Star } from "lucide-react";
 
 export default function ReceptPage() {
   const [savedRecipes, setSavedRecipes] = useState<ApiRecipe[]>([]);
