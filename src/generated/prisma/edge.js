@@ -169,8 +169,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.13.0",
@@ -179,16 +178,17 @@ const config = {
     "db"
   ],
   "activeProvider": "mongodb",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/MatMatch?retryWrites=true&w=majority"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = \"mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/MatMatch?retryWrites=true&w=majority\"\n}\n\nmodel User {\n  id           String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email        String   @unique\n  name         String?\n  password     String\n  allergies    String? // JSON string med allergier\n  dietaryPrefs String? // JSON string med kostpreferenser\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  // Relations\n  savedRecipes    SavedRecipe[]\n  favoriteRecipes FavoriteRecipe[]\n}\n\nmodel SavedRecipe {\n  id                  String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  recipeName          String\n  ingredientsYouHave  String // JSON string\n  missingIngredients  String // JSON string\n  fullIngredientsList String // JSON string\n  instructions        String // JSON string\n  preparationTime     String\n  cookingTime         String\n  userId              String   @db.ObjectId\n  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt           DateTime @default(now())\n  updatedAt           DateTime @updatedAt\n\n  @@unique([recipeName, userId])\n}\n\nmodel FavoriteRecipe {\n  id                  String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  recipeName          String\n  ingredientsYouHave  String // JSON string\n  missingIngredients  String // JSON string\n  fullIngredientsList String // JSON string\n  instructions        String // JSON string\n  preparationTime     String\n  cookingTime         String\n  userId              String   @db.ObjectId\n  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt           DateTime @default(now())\n  updatedAt           DateTime @updatedAt\n\n  @@unique([recipeName, userId])\n}\n",
-  "inlineSchemaHash": "82a98b267a65a1d52290b495608ef1a8441be5ab62bf50d00992e730b9554099",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"mongodb\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  email        String   @unique\n  name         String?\n  password     String\n  allergies    String? // JSON string med allergier\n  dietaryPrefs String? // JSON string med kostpreferenser\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  // Relations\n  savedRecipes    SavedRecipe[]\n  favoriteRecipes FavoriteRecipe[]\n}\n\nmodel SavedRecipe {\n  id                  String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  recipeName          String\n  ingredientsYouHave  String // JSON string\n  missingIngredients  String // JSON string\n  fullIngredientsList String // JSON string\n  instructions        String // JSON string\n  preparationTime     String\n  cookingTime         String\n  userId              String   @db.ObjectId\n  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt           DateTime @default(now())\n  updatedAt           DateTime @updatedAt\n\n  @@unique([recipeName, userId])\n}\n\nmodel FavoriteRecipe {\n  id                  String   @id @default(auto()) @map(\"_id\") @db.ObjectId\n  recipeName          String\n  ingredientsYouHave  String // JSON string\n  missingIngredients  String // JSON string\n  fullIngredientsList String // JSON string\n  instructions        String // JSON string\n  preparationTime     String\n  cookingTime         String\n  userId              String   @db.ObjectId\n  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n  createdAt           DateTime @default(now())\n  updatedAt           DateTime @updatedAt\n\n  @@unique([recipeName, userId])\n}\n",
+  "inlineSchemaHash": "98a848a0e2c487f9f1db4f8a44d69f3df44b37e3fa642a7dfbc99619f58efce9",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -199,7 +199,9 @@ config.engineWasm = undefined
 config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
