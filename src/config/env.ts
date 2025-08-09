@@ -1,12 +1,19 @@
-// Temporary config file for API keys
+// Environment configuration
 export const config = {
-  GEMINI_API_KEY:
-    process.env.GEMINI_API_KEY || "AIzaSyCtMilwENwU2YhgZE8NCOhJWWIGspCBx9E",
-  DATABASE_URL:
-    process.env.DATABASE_URL ||
-    "mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/MatMatch?retryWrites=true&w=majority&appName=MatMatch",
-  JWT_SECRET:
-    process.env.JWT_SECRET ||
-    "9b6964d627422f715f52d646b3f0fc970ab7b849458fce100960e48e15111be37e92fb59b4b1b15dd23d3278f3738b753caf50256329fcce751cb0ccf7ea12bb",
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  DATABASE_URL: process.env.DATABASE_URL,
+  JWT_SECRET: process.env.JWT_SECRET,
 };
-//mongodb+srv://dilovanhassan:dhtest123@matmatch.jn0kyz6.mongodb.net/
+
+// Validation to ensure required environment variables are set
+if (!config.GEMINI_API_KEY) {
+  throw new Error("GEMINI_API_KEY environment variable is required");
+}
+
+if (!config.DATABASE_URL) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
+
+if (!config.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}

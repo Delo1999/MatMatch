@@ -230,7 +230,10 @@ export default function ProfilPage() {
                     <span className="text-6xl">👨‍🍳</span>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800">
-                    Hej, {user?.name || user?.email}!
+                    Hej,{" "}
+                    {(user.name || user.email)?.charAt(0).toUpperCase() +
+                      (user.name || user.email)?.slice(1)}
+                    !
                   </h3>
                   <p className="text-gray-600">Din personliga matassistent</p>
                 </div>
