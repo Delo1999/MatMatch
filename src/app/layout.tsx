@@ -34,7 +34,7 @@ export default function RootLayout({
           <div className="fixed top-0 left-0 w-full z-50">
             <Nav />
           </div>
-          {children}
+          <div className="pt-16 md:pt-14">{children}</div>
         </AuthProvider>
       </body>
     </html>

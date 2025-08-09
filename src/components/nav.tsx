@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import Link from "next/link";
-import { Home, ReceiptText, User, LogOut, LogIn } from "lucide-react";
+import { Home, ReceiptText, User, LogOut, LogIn, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -17,22 +17,24 @@ import { AuthModal } from "@/components/auth/AuthModal";
 export function Nav() {
   const { user, signOut, loading } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
       await signOut();
+      setMobileMenuOpen(false);
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
     <>
-      <NavigationMenu
-        className="bg-background w-full max-w-none"
-        viewport={false}
-      >
-        <NavigationMenuList className="flex justify-between w-full">
+      {/* Desktop Navigation */}
+      <NavigationMenu className="hidden md:flex bg-background w-full max-w-none border-b">
+        <NavigationMenuList className="flex justify-between w-full px-4">
           <div className="flex">
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
@@ -110,6 +112,112 @@ export function Nav() {
           </div>
         </NavigationMenuList>
       </NavigationMenu>
+
+      {/* Mobile Navigation */}
+      <nav className="md:hidden bg-background border-b">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Logo/Home Link */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-semibold text-lg"
+          >
+            <Home className="w-5 h-5" />
+            MatMatch
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </Button>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="border-t bg-background">
+            <div className="px-4 py-2 space-y-2">
+              <Link
+                href="/"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
+              >
+                <Home className="w-4 h-4" />
+                Hem
+              </Link>
+
+              {user && (
+                <>
+                  <Link
+                    href="/recept"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
+                  >
+                    <ReceiptText className="w-4 h-4" />
+                    Min kokbok
+                  </Link>
+
+                  <Link
+                    href="/profil"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
+                  >
+                    <User className="w-4 h-4" />
+                    Min profil
+                  </Link>
+                </>
+              )}
+
+              <div className="border-t pt-2 mt-2">
+                {loading ? (
+                  <div className="px-3 py-2 text-sm text-gray-500">
+                    Laddar...
+                  </div>
+                ) : user ? (
+                  <div className="space-y-2">
+                    <div className="px-3 py-1 text-sm text-gray-700 font-medium">
+                      Hej,{" "}
+                      {(user.name || user.email)?.charAt(0).toUpperCase() +
+                        (user.name || user.email)?.slice(1)}
+                      !
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleSignOut}
+                      className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logga ut
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setAuthModalOpen(true);
+                      closeMobileMenu();
+                    }}
+                    className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    Logga in
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
 
       <AuthModal
         isOpen={authModalOpen}
