@@ -5,7 +5,7 @@ import { getCurrentUser } from "@/lib/auth";
 // DELETE - Remove a favorite recipe by name
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { recipeName: string } }
+  { params }: { params: Promise<{ recipeName: string }> }
 ) {
   try {
     const user = await getCurrentUser(request);
@@ -17,7 +17,8 @@ export async function DELETE(
       );
     }
 
-    const recipeName = decodeURIComponent(params.recipeName);
+    const resolvedParams = await params;
+    const recipeName = decodeURIComponent(resolvedParams.recipeName);
 
     // Find and delete the favorite recipe for this user
     const deletedFavorite = await prisma.favoriteRecipe.deleteMany({
