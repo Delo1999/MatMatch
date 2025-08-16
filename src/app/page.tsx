@@ -165,7 +165,7 @@ export default function HomePage() {
       {/* Form Section */}
       <section className="container mx-auto px-4 py-16 max-w-5xl">
         <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
-          <CardHeader className="text-center pb-8">
+          <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
               Vad har du hemma?
             </CardTitle>
@@ -175,11 +175,11 @@ export default function HomePage() {
             {!user && (
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 mt-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <h4 className="font-medium text-lg text-green-800 ">
+                  <h4 className="font-medium text-md md:text-lg text-green-800 ">
                     Din personliga kokbok väntar!
                   </h4>
                 </div>
-                <p className="text-md text-green-700 text-start">
+                <p className="text-sm md:text-md text-green-700 text-start">
                   Logga in för att få skräddarsydda recept baserat på dina
                   allergier och kostpreferenser – och sparmarkera alla dina
                   favoriter till din egna personliga kokbok!
