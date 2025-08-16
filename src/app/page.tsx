@@ -175,13 +175,14 @@ export default function HomePage() {
             {!user && (
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4 mt-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <h4 className="font-medium text-green-800 ">
-                    Få ännu personligare receptförslag!
+                  <h4 className="font-medium text-lg text-green-800 ">
+                    Din personliga kokbok väntar!
                   </h4>
                 </div>
-                <p className="text-sm text-green-700 text-start">
-                  Logga in för att ange allergier och kostpreferenser - då kan
-                  vi skapa recept som är perfekt anpassade för just dig.
+                <p className="text-md text-green-700 text-start">
+                  Logga in för att få skräddarsydda recept baserat på dina
+                  allergier och kostpreferenser – och sparmarkera alla dina
+                  favoriter till din kokbok!
                 </p>
               </div>
             )}
