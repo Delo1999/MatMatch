@@ -182,7 +182,7 @@ export default function HomePage() {
                 <p className="text-md text-green-700 text-start">
                   Logga in för att få skräddarsydda recept baserat på dina
                   allergier och kostpreferenser – och sparmarkera alla dina
-                  favoriter till din kokbok!
+                  favoriter till din egna personliga kokbok!
                 </p>
               </div>
             )}
