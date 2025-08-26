@@ -46,6 +46,8 @@ model SavedRecipe {
   @@unique([recipeName, userId])
 }
 
+
+// Change this so that it only stores a foreign key to the recipe and not the entire recipe
 model FavoriteRecipe {
   id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   recipeName             String

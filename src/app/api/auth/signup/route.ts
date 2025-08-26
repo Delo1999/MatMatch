@@ -3,9 +3,13 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { authConfig, isValidPassword, isValidEmail } from "@/config/auth";
 
+
+
 export async function POST(request: NextRequest) {
   try {
     const { email, password, name } = await request.json();
+
+    // use a library for input validation like Zod
 
     // Validate input
     if (!email || !password) {
@@ -30,6 +34,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -74,3 +79,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

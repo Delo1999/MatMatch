@@ -46,3 +46,6 @@ export async function getCurrentUser(
 export function requireAuth(request: NextRequest) {
   return getCurrentUser(request);
 }
+
+
+

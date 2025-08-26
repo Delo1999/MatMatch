@@ -6,6 +6,9 @@ import { ApiRecipe } from "@/types/recipe";
 import { Bookmark } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
+  // TODO: Replace with React Query
+  // TODO: Seperate into custom hooks
+
 export default function HomePage() {
   const { user } = useAuth();
   const [ingredients, setIngredients] = useState("");
@@ -416,3 +419,8 @@ export default function HomePage() {
     </main>
   );
 }
+
+
+
+
+

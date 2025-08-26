@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 import { config } from "@/config/env";
 import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const { ingredients } = await req.json();
@@ -11,9 +12,11 @@ export async function POST(req: NextRequest) {
   let userAllergies: string[] = [];
   let userDietaryPrefs: string[] = [];
 
+
+  // use early return for the user here instead. 
+
   if (user) {
     try {
-      const { prisma } = await import("@/lib/prisma");
       const userData = await prisma.user.findUnique({
         where: { id: user.id },
         select: { allergies: true, dietaryPrefs: true },
