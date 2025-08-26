@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   title: "MatMatch",
   description:
     "Skriv in vad du har hemma och få receptförslag direkt. MatMatch hjälper dig laga goda huvudrätter med ingredienserna du redan har - smart, snabbt och matsmart.",
+  keywords: [
+    "matmatch",
+    "matmatch.se",
+    "matmatch.com",
+    "matmatch.io, matmatch.org, ingredienser till recept, matmatch.net",
+  ],
 };
 
 export default function RootLayout({

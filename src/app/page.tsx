@@ -389,7 +389,7 @@ export default function HomePage() {
                                     <br />
                                     <span className="font-medium">
                                       Tillagning:
-                                    </span>
+                                    </span>{" "}
                                     {recipe.estimatedTime.cookingTime}
                                   </p>
                                 </div>
