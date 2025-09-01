@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  name         String?
+  password     String
+  allergies    String?
+  dietaryPrefs String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  savedRecipes    SavedRecipe[]
+  favoriteRecipes FavoriteRecipe[]
+}
+
+model SavedRecipe {
+  id                  String           @id @default(auto()) @map("_id") @db.ObjectId
+  recipeName          String
+  ingredientsYouHave  String
+  missingIngredients  String
+  fullIngredientsList String
+  instructions        String
+  preparationTime     String
+  cookingTime         String
+  userId              String           @db.ObjectId
+  user                User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  favorites           FavoriteRecipe[]
+
+  @@unique([recipeName, userId])
+}
+
+model FavoriteRecipe {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  savedRecipeId String @db.ObjectId // Reference to SavedRecipe
+  userId        String @db.ObjectId // Reference to User
+
+  // Relations
+  savedRecipe SavedRecipe @relation(fields: [savedRecipeId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([savedRecipeId, userId])
+}
