@@ -1,6 +1,5 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { HeroSectionProfileComponent } from "./_components/hero-section-profile-component";
 import { UserInfo } from "./_components/user-info";
@@ -9,179 +8,23 @@ import { AllergiesSection } from "./_components/allergies-section";
 import { DietaryPrefsSection } from "./_components/dietary-prefs-section";
 import { PasswordSection } from "./_components/password-section";
 import { SaveButton } from "./_components/save-button";
-import {
-  useProfile,
-  useSaveProfile,
-  useChangePassword,
-} from "./_hooks/use-profile";
-import { useQueryClient } from "@tanstack/react-query";
-
-type ProfileData = {
-  name: string;
-  allergies: string[];
-  dietaryPrefs: string[];
-};
+import { useProfile } from "./_hooks/use-profile";
+import { useAllergies } from "./_hooks/use-allergies";
+import { useDietaryPrefs } from "./_hooks/use-dietary-prefs";
+import { useProfileActions } from "./_hooks/use-profile-actions";
+import { usePasswordChange } from "./_hooks/use-password-change";
 
 export default function ProfilPage() {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
-  const [message, setMessage] = useState("");
-
-  const [newAllergy, setNewAllergy] = useState("");
-  const [newDietaryPref, setNewDietaryPref] = useState("");
-
-  const [passwordState, setPasswordState] = useState({
-    showSection: false,
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-    showCurrentPassword: false,
-    showNewPassword: false,
-    showConfirmPassword: false,
-    message: "",
-  });
-
   const profileQuery = useProfile();
-  const saveProfileMutation = useSaveProfile();
-  const changePasswordMutation = useChangePassword();
 
   const allergies = profileQuery.data?.allergies || [];
   const dietaryPrefs = profileQuery.data?.dietaryPrefs || [];
 
-  const updatePassword = (
-    field: keyof typeof passwordState,
-    value: string | boolean
-  ) => {
-    setPasswordState((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const addAllergy = () => {
-    if (newAllergy.trim() && !allergies.includes(newAllergy.trim())) {
-      const newAllergies = [...allergies, newAllergy.trim()];
-
-      queryClient.setQueryData(
-        ["profile"],
-        (old: ProfileData | undefined) =>
-          ({
-            ...old,
-            allergies: newAllergies,
-          } as ProfileData)
-      );
-
-      setNewAllergy("");
-    }
-  };
-
-  const removeAllergy = (allergyToRemove: string) => {
-    const updatedAllergies = allergies.filter(
-      (allergy: string) => allergy !== allergyToRemove
-    );
-
-    queryClient.setQueryData(
-      ["profile"],
-      (old: ProfileData | undefined) =>
-        ({
-          ...old,
-          allergies: updatedAllergies,
-        } as ProfileData)
-    );
-  };
-
-  const addDietaryPref = () => {
-    if (
-      newDietaryPref.trim() &&
-      !dietaryPrefs.includes(newDietaryPref.trim())
-    ) {
-      const newDietaryPrefs = [...dietaryPrefs, newDietaryPref.trim()];
-
-      queryClient.setQueryData(
-        ["profile"],
-        (old: ProfileData | undefined) =>
-          ({
-            ...old,
-            dietaryPrefs: newDietaryPrefs,
-          } as ProfileData)
-      );
-
-      setNewDietaryPref("");
-    }
-  };
-
-  const removeDietaryPref = (prefToRemove: string) => {
-    const updatedDietaryPrefs = dietaryPrefs.filter(
-      (pref: string) => pref !== prefToRemove
-    );
-
-    queryClient.setQueryData(
-      ["profile"],
-      (old: ProfileData | undefined) =>
-        ({
-          ...old,
-          dietaryPrefs: updatedDietaryPrefs,
-        } as ProfileData)
-    );
-  };
-
-  const saveProfile = async () => {
-    try {
-      setMessage("");
-
-      await saveProfileMutation.mutateAsync({
-        name: profileQuery.data?.name ?? "",
-        allergies,
-        dietaryPrefs,
-      });
-
-      setMessage("Profil sparad framgångsrikt!");
-      setTimeout(() => setMessage(""), 3000);
-    } catch (error) {
-      console.error("Error saving profile:", error);
-      setMessage(
-        `Fel: ${
-          error instanceof Error ? error.message : "Kunde inte spara profilen"
-        }`
-      );
-    }
-  };
-
-  const changePassword = async () => {
-    try {
-      updatePassword("message", "");
-
-      if (passwordState.newPassword !== passwordState.confirmPassword) {
-        updatePassword("message", "Lösenorden matchar inte");
-        return;
-      }
-
-      if (passwordState.newPassword.length < 6) {
-        updatePassword(
-          "message",
-          "Nytt lösenord måste vara minst 6 tecken långt"
-        );
-        return;
-      }
-
-      await changePasswordMutation.mutateAsync({
-        currentPassword: passwordState.currentPassword,
-        newPassword: passwordState.newPassword,
-      });
-
-      updatePassword("message", "Lösenordet har ändrats framgångsrikt!");
-      setTimeout(() => updatePassword("message", ""), 5000);
-
-      updatePassword("currentPassword", "");
-      updatePassword("newPassword", "");
-      updatePassword("confirmPassword", "");
-    } catch (error) {
-      console.error("Error changing password:", error);
-      updatePassword(
-        "message",
-        `Fel: ${
-          error instanceof Error ? error.message : "Kunde inte ändra lösenordet"
-        }`
-      );
-    }
-  };
+  const allergiesHook = useAllergies(allergies);
+  const dietaryPrefsHook = useDietaryPrefs(dietaryPrefs);
+  const profileActions = useProfileActions(profileQuery.data);
+  const passwordChange = usePasswordChange();
 
   if (!user) {
     return (
@@ -217,61 +60,67 @@ export default function ProfilPage() {
             ) : (
               <div className="space-y-8">
                 <UserInfo user={user} />
-                <MessageDisplay message={message} />
+                <MessageDisplay message={profileActions.message} />
 
                 <AllergiesSection
                   allergies={allergies}
-                  newAllergy={newAllergy}
-                  setNewAllergy={setNewAllergy}
-                  addAllergy={addAllergy}
-                  removeAllergy={removeAllergy}
+                  newAllergy={allergiesHook.newAllergy}
+                  setNewAllergy={allergiesHook.setNewAllergy}
+                  addAllergy={allergiesHook.addAllergy}
+                  removeAllergy={allergiesHook.removeAllergy}
                 />
 
                 <DietaryPrefsSection
                   dietaryPrefs={dietaryPrefs}
-                  newDietaryPref={newDietaryPref}
-                  setNewDietaryPref={setNewDietaryPref}
-                  addDietaryPref={addDietaryPref}
-                  removeDietaryPref={removeDietaryPref}
+                  newDietaryPref={dietaryPrefsHook.newDietaryPref}
+                  setNewDietaryPref={dietaryPrefsHook.setNewDietaryPref}
+                  addDietaryPref={dietaryPrefsHook.addDietaryPref}
+                  removeDietaryPref={dietaryPrefsHook.removeDietaryPref}
                 />
 
                 <PasswordSection
-                  showPasswordSection={passwordState.showSection}
+                  showPasswordSection={passwordChange.passwordState.showSection}
                   setShowPasswordSection={(value) =>
-                    updatePassword("showSection", value)
+                    passwordChange.updatePassword("showSection", value)
                   }
-                  currentPassword={passwordState.currentPassword}
+                  currentPassword={passwordChange.passwordState.currentPassword}
                   setCurrentPassword={(value) =>
-                    updatePassword("currentPassword", value)
+                    passwordChange.updatePassword("currentPassword", value)
                   }
-                  newPassword={passwordState.newPassword}
+                  newPassword={passwordChange.passwordState.newPassword}
                   setNewPassword={(value) =>
-                    updatePassword("newPassword", value)
+                    passwordChange.updatePassword("newPassword", value)
                   }
-                  confirmPassword={passwordState.confirmPassword}
+                  confirmPassword={passwordChange.passwordState.confirmPassword}
                   setConfirmPassword={(value) =>
-                    updatePassword("confirmPassword", value)
+                    passwordChange.updatePassword("confirmPassword", value)
                   }
-                  showCurrentPassword={passwordState.showCurrentPassword}
+                  showCurrentPassword={
+                    passwordChange.passwordState.showCurrentPassword
+                  }
                   setShowCurrentPassword={(value) =>
-                    updatePassword("showCurrentPassword", value)
+                    passwordChange.updatePassword("showCurrentPassword", value)
                   }
-                  showNewPassword={passwordState.showNewPassword}
+                  showNewPassword={passwordChange.passwordState.showNewPassword}
                   setShowNewPassword={(value) =>
-                    updatePassword("showNewPassword", value)
+                    passwordChange.updatePassword("showNewPassword", value)
                   }
-                  showConfirmPassword={passwordState.showConfirmPassword}
+                  showConfirmPassword={
+                    passwordChange.passwordState.showConfirmPassword
+                  }
                   setShowConfirmPassword={(value) =>
-                    updatePassword("showConfirmPassword", value)
+                    passwordChange.updatePassword("showConfirmPassword", value)
                   }
-                  passwordMessage={passwordState.message}
-                  changingPassword={changePasswordMutation.isPending}
-                  changePassword={changePassword}
+                  passwordMessage={passwordChange.passwordState.message}
+                  changingPassword={
+                    profileActions.changePasswordMutation.isPending
+                  }
+                  changePassword={profileActions.changePassword}
                 />
 
                 <SaveButton
-                  saving={saveProfileMutation.isPending}
-                  saveProfile={saveProfile}
+                  saving={profileActions.saveProfileMutation.isPending}
+                  saveProfile={profileActions.saveProfile}
                 />
               </div>
             )}

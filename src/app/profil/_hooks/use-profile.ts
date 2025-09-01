@@ -8,10 +8,6 @@ export const useProfile = () => {
         credentials: "include",
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch profile");
-      }
-
       const data = await response.json();
       return {
         name: data.profile.name || "",
@@ -31,7 +27,7 @@ export const useSaveProfile = () => {
       allergies: string[];
       dietaryPrefs: string[];
     }) => {
-      const response = await fetch("/api/profile", {
+      return await fetch("/api/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -41,13 +37,6 @@ export const useSaveProfile = () => {
           dietaryPrefs: profileData.dietaryPrefs,
         }),
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to save profile");
-      }
-
-      return response.json();
     },
     onSuccess: (_, profileData) => {
       queryClient.setQueryData(["profile"], {
@@ -71,13 +60,8 @@ export const useChangePassword = () => {
         credentials: "include",
         body: JSON.stringify(passwordData),
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to change password");
-      }
-
-      return response.json();
+      const data = await response.json();
+      return data;
     },
   });
 };

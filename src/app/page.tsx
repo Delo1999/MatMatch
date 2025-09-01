@@ -25,7 +25,7 @@ export default function HomePage() {
   const saveRecipe = async (recipe: ApiRecipe) => {
     try {
       const result = await saveRecipeMutation.mutateAsync(recipe);
-      return result.id; // ID for potential favoriting
+      return result.id; // ID för att kunna lägga till i favoriter
     } catch (error) {
       console.error("Error saving recipe:", error);
     }
