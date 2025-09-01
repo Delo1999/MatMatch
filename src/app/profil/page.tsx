@@ -1,21 +1,19 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import {
-  HeroSectionProfileComponent,
-  UserInfo,
-  MessageDisplay,
-  AllergiesSection,
-  DietaryPrefsSection,
-  PasswordSection,
-  SaveButton,
-} from "@/components/_profile/index";
+import { useAuth } from "@/contexts/auth-context";
+import { HeroSectionProfileComponent } from "./_components/hero-section-profile-component";
+import { UserInfo } from "./_components/user-info";
+import { MessageDisplay } from "./_components/message-display";
+import { AllergiesSection } from "./_components/allergies-section";
+import { DietaryPrefsSection } from "./_components/dietary-prefs-section";
+import { PasswordSection } from "./_components/password-section";
+import { SaveButton } from "./_components/save-button";
 import {
   useProfile,
   useSaveProfile,
   useChangePassword,
-} from "@/hooks/useProfile";
+} from "./_hooks/use-profile";
 import { useQueryClient } from "@tanstack/react-query";
 
 type ProfileData = {

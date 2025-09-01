@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Star } from "lucide-react";
 import { ApiRecipe } from "@/types/recipe";
 
-interface RecipeCardReceptComponentProps {
+type RecipeCardReceptComponentProps = {
   recipe: ApiRecipe & { savedRecipeId: string };
   isFavorited: boolean;
   onToggleFavorite: (savedRecipeId: string) => void;
   onDelete: (recipe: ApiRecipe) => void;
-}
+};
 
 export function RecipeCardReceptComponent({
   recipe,

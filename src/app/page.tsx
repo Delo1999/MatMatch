@@ -1,19 +1,17 @@
 "use client";
 import { useState } from "react";
 import { ApiRecipe } from "@/types/recipe";
-import {
-  HeroSectionHomeComponent,
-  IngredientsForm,
-  ErrorDisplay,
-  RecipeListHomeComponent,
-  Footer,
-} from "@/components/_homeComponents/index";
+import { ErrorDisplay } from "./_components/error-display";
+import { HeroSectionHomeComponent } from "./_components/hero-section-home-component";
+import { IngredientsForm } from "./_components/ingredients-form";
+import { RecipeListHomeComponent } from "./_components/recipe-list-home-component";
+import { Footer } from "./_components/footer";
 import {
   useSavedRecipes,
   useSaveRecipe,
   useRemoveRecipe,
-} from "@/hooks/useRecipes";
-import { useIngredientsSearch } from "@/hooks/useIngredientsSearch";
+} from "./_hooks/use-recipes";
+import { useIngredientsSearch } from "@/app/_hooks/use-ingredients-search";
 
 export default function HomePage() {
   const [ingredients, setIngredients] = useState("");

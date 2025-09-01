@@ -1,16 +1,14 @@
 "use client";
 import { ApiRecipe } from "@/types/recipe";
-import {
-  HeroSectionReceptComponent,
-  RecipeListReceptComponent,
-} from "@/components/_recept/index";
+import { HeroSectionReceptComponent } from "./_components/hero-section-recept-component";
+import { RecipeListReceptComponent } from "./_components/recipe-list-recept-component";
 import {
   useSavedRecipesForRecept,
   useFavoriteRecipes,
   useAddToFavorites,
   useRemoveFromFavorites,
   useRemoveRecipeForRecept,
-} from "@/hooks/useFavorites";
+} from "@/app/recept/_hooks/use-favorites";
 
 export default function ReceptPage() {
   const { data: savedRecipes = [] } = useSavedRecipesForRecept();

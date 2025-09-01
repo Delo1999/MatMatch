@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 
-interface DietaryPrefsSectionProps {
+type DietaryPrefsSectionProps = {
   dietaryPrefs: string[];
   newDietaryPref: string;
   setNewDietaryPref: (pref: string) => void;
   addDietaryPref: () => void;
   removeDietaryPref: (pref: string) => void;
-}
+};
 
 export function DietaryPrefsSection({
   dietaryPrefs,

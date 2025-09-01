@@ -1,6 +1,6 @@
-interface MessageDisplayProps {
+type MessageDisplayProps = {
   message: string;
-}
+};
 
 export function MessageDisplay({ message }: MessageDisplayProps) {
   if (!message) return null;

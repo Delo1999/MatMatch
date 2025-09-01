@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { SignInForm } from "./signInForm";
-import { SignUpForm } from "./signUpForm";
+import { SignInForm } from "./sign-in-form";
+import { SignUpForm } from "./sign-up-form";
 
-interface AuthModalProps {
+type AuthModalProps = {
   isOpen: boolean;
   onClose: () => void;
   defaultMode?: "signin" | "signup";
-}
+};
 
 export function AuthModal({
   isOpen,

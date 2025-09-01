@@ -2,12 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import { ApiRecipe } from "@/types/recipe";
 
-interface RecipeCardHomeComponentProps {
+type RecipeCardHomeComponentProps = {
   recipe: ApiRecipe;
   isSaved: boolean;
   onSave: (recipe: ApiRecipe) => void;
   onRemove: (recipe: ApiRecipe) => void;
-}
+};
 
 export function RecipeCardHomeComponent({
   recipe,

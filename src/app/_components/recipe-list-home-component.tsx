@@ -1,15 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark } from "lucide-react";
 import { ApiRecipe } from "@/types/recipe";
-import { RecipeCardHomeComponent } from ".";
-import { useAuth } from "@/contexts/AuthContext";
+import { RecipeCardHomeComponent } from "./recipe-card-home-component";
+import { useAuth } from "@/contexts/auth-context";
 
-interface RecipeListHomeComponentProps {
+type RecipeListHomeComponentProps = {
   recipes: ApiRecipe[];
   savedRecipes: (ApiRecipe & { savedRecipeId: string })[];
   onSave: (recipe: ApiRecipe) => void;
   onRemove: (recipe: ApiRecipe) => void;
-}
+};
 
 export function RecipeListHomeComponent({
   recipes,

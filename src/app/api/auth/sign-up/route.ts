@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { authConfig } from "@/config/auth";
 import { validateRequest } from "@/lib/validation";
-import { signUpSchema } from "@/app/schemas/auth";
+import { signUpSchema } from "@/app/_schemas/auth";
 
 export async function POST(request: NextRequest) {
   try {

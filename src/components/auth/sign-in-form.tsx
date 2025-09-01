@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/contexts/AuthContext";
-import { signInSchema, SignInInput } from "@/app/schemas/auth";
+import { useAuth } from "@/contexts/auth-context";
+import { signInSchema, SignInInput } from "@/app/_schemas/auth";
 
-interface SignInFormProps {
+type SignInFormProps = {
   onSwitchToSignUp: () => void;
   onClose?: () => void;
-}
+};
 
 export function SignInForm({ onSwitchToSignUp, onClose }: SignInFormProps) {
   const [formData, setFormData] = useState<SignInInput>({

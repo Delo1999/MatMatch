@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/auth-context";
 
-interface IngredientsFormProps {
+type IngredientsFormProps = {
   ingredients: string;
   setIngredients: (value: string) => void;
   loading: boolean;
   onSubmit: (e: React.FormEvent) => void;
-}
+};
 
 export function IngredientsForm({
   ingredients,

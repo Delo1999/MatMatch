@@ -1,9 +1,9 @@
-interface UserInfoProps {
+type UserInfoProps = {
   user: {
     name: string | null;
     email: string;
   };
-}
+};
 
 export function UserInfo({ user }: UserInfoProps) {
   const displayName =

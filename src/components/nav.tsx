@@ -12,8 +12,8 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
-import { AuthModal } from "@/components/_auth/authModal";
+import { useAuth } from "@/contexts/auth-context";
+import { AuthModal } from "@/components/auth/auth-modal";
 
 export function Nav() {
   const { user, signOut, loading } = useAuth();

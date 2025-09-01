@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth } from "@/contexts/AuthContext";
-import { signUpSchema, type SignUpInput } from "@/app/schemas/auth";
+import { useAuth } from "@/contexts/auth-context";
+import { signUpSchema, type SignUpInput } from "@/app/_schemas/auth";
 import { validateRequest } from "@/lib/validation";
 
-interface SignUpFormProps {
+type SignUpFormProps = {
   onSwitchToSignIn: () => void;
   onClose?: () => void;
-}
+};
 
 export function SignUpForm({ onSwitchToSignIn, onClose }: SignUpFormProps) {
   const [formData, setFormData] = useState<SignUpInput>({

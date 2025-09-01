@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
 
-interface SaveButtonProps {
+type SaveButtonProps = {
   saving: boolean;
   saveProfile: () => void;
-}
+};
 
 export function SaveButton({ saving, saveProfile }: SaveButtonProps) {
   return (

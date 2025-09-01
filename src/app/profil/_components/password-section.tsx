@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Eye, EyeOff } from "lucide-react";
 
-interface PasswordSectionProps {
+type PasswordSectionProps = {
   showPasswordSection: boolean;
   setShowPasswordSection: (show: boolean) => void;
   currentPassword: string;
@@ -20,7 +20,7 @@ interface PasswordSectionProps {
   passwordMessage: string;
   changingPassword: boolean;
   changePassword: () => void;
-}
+};
 
 export function PasswordSection({
   showPasswordSection,

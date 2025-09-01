@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ApiRecipe } from "@/types/recipe";
-import { RecipeCardReceptComponent } from ".";
-import { EmptyState } from "./emptyState";
+import { RecipeCardReceptComponent } from "./recipe-card-recept-component";
+import { EmptyState } from "./empty-state";
 
-interface RecipeListReceptComponentProps {
+type RecipeListReceptComponentProps = {
   savedRecipes: (ApiRecipe & { savedRecipeId: string })[];
   favoriteRecipes: { savedRecipeId: string }[];
   onToggleFavorite: (savedRecipeId: string) => void;
   onDelete: (recipe: ApiRecipe) => void;
-}
+};
 
 export function RecipeListReceptComponent({
   savedRecipes,

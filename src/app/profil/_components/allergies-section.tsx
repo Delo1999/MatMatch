@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X } from "lucide-react";
 
-interface AllergiesSectionProps {
+type AllergiesSectionProps = {
   allergies: string[];
   newAllergy: string;
   setNewAllergy: (allergy: string) => void;
   addAllergy: () => void;
   removeAllergy: (allergy: string) => void;
-}
+};
 
 export function AllergiesSection({
   allergies,
