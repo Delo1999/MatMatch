@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function HeroSectionProfileComponent() {
   return (
-    <section className="relative h-110 md:h-[500px] bg-gradient-to-br from-green-600 via-emerald-700 to-green-800">
+    <section className="relative h-110 md:h-[500px] bg-gradient-to-br from-green-600 via-emerald-700 to-green-800 border-b-2 border-green-300">
       {useIsMobile() ? (
         <div></div>
       ) : (
