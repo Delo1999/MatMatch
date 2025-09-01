@@ -33,8 +33,6 @@ export async function POST(req: NextRequest) {
 
   const apiKey = config.GEMINI_API_KEY;
 
-  console.log("Using config API key:", apiKey ? "✓ Key available" : "✗ No key");
-
   if (!apiKey) {
     console.error("GEMINI_API_KEY is not configured");
     return NextResponse.json(
@@ -67,8 +65,6 @@ export async function POST(req: NextRequest) {
     }
 
     promptContent += ` Be specific about the required quantities for each ingredient in every recipe. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`;
-
-    console.log("AI Prompt with user preferences:", promptContent);
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",

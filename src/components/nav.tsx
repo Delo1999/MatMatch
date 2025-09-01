@@ -37,7 +37,7 @@ export function Nav() {
   return (
     <>
       {/* Desktop Navigation */}
-      <NavigationMenu className="hidden md:flex bg-background w-full max-w-none border-b">
+      <NavigationMenu className="hidden md:flex bg-background w-full max-w-none border-b-2 border-green-300 bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
         <NavigationMenuList className="flex justify-between w-full px-4">
           <div className="flex">
             <NavigationMenuItem>
@@ -85,23 +85,15 @@ export function Nav() {
             {loading ? (
               <div className="px-4 py-2 text-sm text-gray-500">Laddar...</div>
             ) : user ? (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-700">
-                  Hej,{" "}
-                  {(user.name || user.email)?.charAt(0).toUpperCase() +
-                    (user.name || user.email)?.slice(1)}
-                  !
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSignOut}
-                  className="inline-flex items-center gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logga ut
-                </Button>
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSignOut}
+                className="inline-flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Logga ut
+              </Button>
             ) : (
               <Button
                 variant="ghost"
@@ -118,7 +110,7 @@ export function Nav() {
       </NavigationMenu>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden bg-background border-b">
+      <nav className="md:hidden bg-background border-b-2 border-green-300 bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
         <div className="flex items-center justify-between px-4 py-3">
           <Link
             href="/"
@@ -161,7 +153,7 @@ export function Nav() {
 
         {/* Mobile Menu Dropdown - Show for logged in users OR non-homepage */}
         {!showSimplifiedMobile && mobileMenuOpen && (
-          <div className="border-t bg-background">
+          <div className="border-t bg-background bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
             <div className="px-4 py-2 space-y-2">
               <Link
                 href="/"
@@ -200,23 +192,15 @@ export function Nav() {
                     Laddar...
                   </div>
                 ) : user ? (
-                  <div className="space-y-2">
-                    <div className="px-3 py-1 text-sm text-gray-700 font-medium">
-                      Hej,{" "}
-                      {(user.name || user.email)?.charAt(0).toUpperCase() +
-                        (user.name || user.email)?.slice(1)}
-                      !
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleSignOut}
-                      className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logga ut
-                    </Button>
-                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSignOut}
+                    className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logga ut
+                  </Button>
                 ) : (
                   <Button
                     variant="ghost"

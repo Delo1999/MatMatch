@@ -23,14 +23,14 @@ export function RecipeCardHomeComponent({
         </h2>
         <Button
           variant="ghost"
-          size="sm"
+          size="icon"
           onClick={() => (isSaved ? onRemove(recipe) : onSave(recipe))}
           className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center flex-shrink-0"
         >
           {isSaved ? (
-            <Bookmark className="w-5 h-5 md:w-6 md:h-6 fill-current" />
+            <Bookmark className="w-6 h-6 md:w-8 md:h-8 fill-current" />
           ) : (
-            <Bookmark className="w-5 h-5 md:w-6 md:h-6" />
+            <Bookmark className="w-6 h-6 md:w-8 md:h-8" />
           )}
         </Button>
       </div>
@@ -81,7 +81,7 @@ export function RecipeCardHomeComponent({
 
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-700 text-base md:text-lg">
-              Tid🕓:
+              Tid:
             </h3>
             <div className="bg-green-100 rounded-lg p-3">
               <p className="text-sm md:text-base text-gray-700">

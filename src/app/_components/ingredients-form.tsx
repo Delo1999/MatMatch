@@ -18,7 +18,7 @@ export function IngredientsForm({
   const { user } = useAuth();
 
   return (
-    <section className="container mx-auto px-4 py-10 max-w-5xl">
+    <section className="container mx-auto px-4 py-10 md:mt-5 max-w-5xl">
       <Card className="shadow-2xl">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
