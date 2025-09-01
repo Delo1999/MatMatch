@@ -3,12 +3,12 @@ import Image from "next/image";
 export function HeroSectionHomeComponent() {
   return (
     <section className="relative h-110 md:h-[500px] border-b-2 border-green-300">
-      <div className="absolute inset-0 opacity-100">
+      <div className="absolute inset-0">
         <Image
           src="/image-1.jpeg"
           alt="Food background"
           fill
-          className="object-cover"
+          objectFit="cover"
           priority
         />
       </div>
