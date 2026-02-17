@@ -126,7 +126,7 @@ export function RecipeCardHomeComponent({
                 textShadow: "0 2px 12px rgba(255,255,255,0.6)",
               }}
             >
-              VISA RECEPT
+              {expanded ? "DÖLJ RECEPT" : "VISA RECEPT"}
             </h3>
             <div 
               style={{
@@ -138,7 +138,7 @@ export function RecipeCardHomeComponent({
                 textShadow: "0 1px 4px rgba(0,0,0,0.3)",
               }}
             >
-              Klicka för detaljer
+              {expanded ? "Klicka för att stänga" : "Klicka för att öppna"}
             </div>
           </div>
         </div>
