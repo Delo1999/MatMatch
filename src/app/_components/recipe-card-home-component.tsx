@@ -45,43 +45,19 @@ export function RecipeCardHomeComponent({
             <ChefHat className="w-7 h-7" style={{ color: "rgba(1,71,46,0.5)" }} />
           </div>
 
-          {/* Center: recipe name + save button */}
-          <div className="flex-1 flex items-center justify-between gap-3">
+          {/* Center: recipe name */}
+          <div className="flex-1 flex items-center justify-center">
             <h3
-              className="leading-[0.9] tracking-[-0.03em]"
+              className="leading-[0.9] tracking-[-0.03em] text-center"
               style={{
                 fontFamily: "var(--font-anton), sans-serif",
                 fontSize: "clamp(1.3rem, 2.5vw, 2.2rem)",
                 fontWeight: "400",
                 color: "#01472e",
-                flex: "1 1 auto",
-                minWidth: 0,
-                maxWidth: "calc(100% - 80px)",
               }}
             >
               {recipe.recipeName.toUpperCase()}
             </h3>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                isSaved ? onRemove(recipe) : onSave(recipe);
-              }}
-              className="flex-shrink-0 flex flex-col items-center gap-1.5 transition-transform hover:scale-110"
-              style={{
-                transition: "transform 0.2s ease",
-              }}
-            >
-              <span 
-                className="uppercase font-bold text-[11px] tracking-[0.25em]"
-                style={{ color: "#01472e" }}
-              >
-                {isSaved ? "SPARAD" : "SPARA"}
-              </span>
-              <Bookmark 
-                className={`w-7 h-7 ${isSaved ? "fill-current" : ""}`}
-                style={{ color: "#01472e" }}
-              />
-            </button>
           </div>
 
           {/* Bottom: time + ingredient count */}
@@ -155,6 +131,34 @@ export function RecipeCardHomeComponent({
             animation: "reveal-up 0.6s cubic-bezier(0.16,1,0.3,1) forwards",
           }}
         >
+          {/* Save button */}
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                isSaved ? onRemove(recipe) : onSave(recipe);
+              }}
+              className="flex items-center gap-3 px-6 py-3 transition-all hover:scale-105"
+              style={{
+                borderRadius: "1.25rem",
+                background: isSaved ? "rgba(1,71,46,0.15)" : "rgba(204,213,174,0.6)",
+                border: `2px solid ${isSaved ? "rgba(1,71,46,0.3)" : "rgba(1,71,46,0.2)"}`,
+                transition: "all 0.3s ease",
+              }}
+            >
+              <Bookmark 
+                className={`w-6 h-6 ${isSaved ? "fill-current" : ""}`}
+                style={{ color: "#01472e" }}
+              />
+              <span 
+                className="uppercase font-bold text-sm tracking-[0.2em]"
+                style={{ color: "#01472e" }}
+              >
+                {isSaved ? "SPARAD" : "SPARA RECEPT"}
+              </span>
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Ingredients columns */}
             <div className="space-y-5">
@@ -232,27 +236,6 @@ export function RecipeCardHomeComponent({
                     </li>
                   ))}
                 </ol>
-              </div>
-
-              <div
-                className="p-4"
-                style={{
-                  borderRadius: "1.25rem",
-                  background: "rgba(204,213,174,0.4)",
-                }}
-              >
-                <p
-                  className="uppercase font-bold text-xs tracking-[0.2em] mb-2"
-                  style={{ color: "rgba(1,71,46,0.7)" }}
-                >
-                  TID
-                </p>
-                <p className="text-sm font-medium" style={{ color: "rgba(1,71,46,0.85)" }}>
-                  <span className="font-bold">Förb:</span> {recipe.estimatedTime.preparationTime}
-                </p>
-                <p className="text-sm font-medium" style={{ color: "rgba(1,71,46,0.85)" }}>
-                  <span className="font-bold">Tillg:</span> {recipe.estimatedTime.cookingTime}
-                </p>
               </div>
             </div>
           </div>
