@@ -12,13 +12,30 @@ export function UserInfo({ user }: UserInfoProps) {
 
   return (
     <div className="text-center">
-      <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-        <span className="text-6xl">👨‍🍳</span>
+      <div
+        className="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center"
+        style={{ background: "#01472e" }}
+      >
+        <span
+          className="uppercase font-bold text-xl"
+          style={{ color: "#ccd5ae" }}
+        >
+          {(user.name || user.email)?.charAt(0).toUpperCase()}
+        </span>
       </div>
-      <h3 className="text-xl font-semibold text-gray-800">
-        Hej, {displayName}!
+      <h3
+        className="leading-[0.85] tracking-[-0.03em]"
+        style={{
+          fontFamily: "var(--font-anton), sans-serif",
+          fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+          color: "#01472e",
+        }}
+      >
+        HEJ, {displayName?.toUpperCase()}
       </h3>
-      <p className="text-gray-600">Din personliga matassistent</p>
+      <p className="text-sm mt-2" style={{ color: "rgba(1,71,46,0.5)" }}>
+        Din personliga matassistent
+      </p>
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 import { Bookmark } from "lucide-react";
 import { ApiRecipe } from "@/types/recipe";
 import { RecipeCardHomeComponent } from "./recipe-card-home-component";
 import { useAuth } from "@/contexts/auth-context";
+import { useEffect, useRef, useState } from "react";
 
 type RecipeListHomeComponentProps = {
   recipes: ApiRecipe[];
@@ -18,58 +19,70 @@ export function RecipeListHomeComponent({
   onRemove,
 }: RecipeListHomeComponentProps) {
   const { user } = useAuth();
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.05 }
+    );
+    if (gridRef.current) observer.observe(gridRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   if (recipes.length === 0) return null;
 
   return (
-    <section className="container mx-auto px-4 max-w-5xl">
-      <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-2xl border-2">
-        <CardHeader className="pb-4 px-4 md:px-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-green-600 to-emerald-700 rounded-full flex items-center justify-center">
-              <span className="text-white text-xl md:text-3xl">👨‍🍳</span>
-            </div>
-            <div>
-              <CardTitle className="text-xl md:text-2xl text-gray-800">
-                Recept förslag
-              </CardTitle>
-              {user ? (
-                <p className="text-base md:text-lg text-gray-600">
-                  Här är dina personliga recept, sparmarkera{" "}
-                  <Bookmark className="w-3 h-3 md:w-4 md:h-4 inline" /> de du
-                  vill lägga till i din kokbok
-                </p>
-              ) : (
-                <p className="text-base md:text-lg text-gray-600">
-                  Här är dina personliga recept, logga in för att kunna
-                  sparmarkera{" "}
-                  <Bookmark className="w-3 h-3 md:w-4 md:h-4 inline" /> de du
-                  vill lägga till i din kokbok
-                </p>
-              )}
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-0 px-4 md:px-6 pb-6">
-          <div className="space-y-6 md:space-y-8">
-            {recipes.map((recipe, index) => {
-              const isSaved = savedRecipes.some(
-                (savedRecipe) => savedRecipe.recipeName === recipe.recipeName
-              );
+    <div ref={gridRef} className="max-w-7xl mx-auto px-6 md:px-12 pb-24">
+      {/* Section subtitle */}
+      <div
+        className={`flex items-center gap-3 mb-10 ${
+          isVisible ? "animate-reveal" : "opacity-0"
+        }`}
+      >
+        <div className="w-2 h-2 rounded-full" style={{ background: "#01472e" }} />
+        {user ? (
+          <p className="text-sm" style={{ color: "rgba(1,71,46,0.5)" }}>
+            Dina recept — sparmarkera{" "}
+            <Bookmark className="w-3 h-3 inline" style={{ color: "#01472e" }} />{" "}
+            för kokboken
+          </p>
+        ) : (
+          <p className="text-sm" style={{ color: "rgba(1,71,46,0.5)" }}>
+            Dina recept — logga in för att spara{" "}
+            <Bookmark className="w-3 h-3 inline" style={{ color: "#01472e" }} />
+          </p>
+        )}
+      </div>
 
-              return (
-                <RecipeCardHomeComponent
-                  key={index}
-                  recipe={recipe}
-                  isSaved={isSaved}
-                  onSave={onSave}
-                  onRemove={onRemove}
-                />
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-    </section>
+      {/* 3-column grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {recipes.map((recipe, index) => {
+          const isSaved = savedRecipes.some(
+            (sr) => sr.recipeName === recipe.recipeName
+          );
+
+          return (
+            <div
+              key={index}
+              className={isVisible ? "animate-reveal" : "opacity-0"}
+              style={{
+                animationDelay: isVisible ? `${0.1 * (index + 1)}s` : undefined,
+              }}
+            >
+              <RecipeCardHomeComponent
+                recipe={recipe}
+                isSaved={isSaved}
+                onSave={onSave}
+                onRemove={onRemove}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

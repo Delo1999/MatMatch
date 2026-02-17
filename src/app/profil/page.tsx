@@ -1,5 +1,4 @@
 "use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
 import { HeroSectionProfileComponent } from "./_components/hero-section-profile-component";
 import { UserInfo } from "./_components/user-info";
@@ -13,6 +12,7 @@ import { useAllergies } from "./_hooks/use-allergies";
 import { useDietaryPrefs } from "./_hooks/use-dietary-prefs";
 import { useProfileActions } from "./_hooks/use-profile-actions";
 import { usePasswordChange } from "./_hooks/use-password-change";
+import { Footer } from "@/app/_components/footer";
 
 export default function ProfilPage() {
   const { user } = useAuth();
@@ -28,10 +28,23 @@ export default function ProfilPage() {
 
   if (!user) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <p className="text-gray-600">
-            Du måste logga in för att se din profil
+      <main>
+        <div
+          className="h-screen flex flex-col items-center justify-center"
+          style={{ background: "#01472e" }}
+        >
+          <h1
+            className="leading-[0.75] tracking-[-0.05em] mb-6"
+            style={{
+              fontFamily: "var(--font-anton), sans-serif",
+              fontSize: "min(15vw, 180px)",
+              color: "#ccd5ae",
+            }}
+          >
+            LOGGA IN
+          </h1>
+          <p className="text-sm" style={{ color: "rgba(204,213,174,0.5)" }}>
+            Du måste logga in för att se din profil.
           </p>
         </div>
       </main>
@@ -39,26 +52,53 @@ export default function ProfilPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
+    <main>
       <HeroSectionProfileComponent />
 
-      <section className="container mx-auto px-4 py-16 max-w-5xl">
-        <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100 gap-0">
-          <CardHeader className="text-center pb-8">
-            <CardTitle className="text-2xl font-bold text-gray-800 pt-5">
-              Profilinställningar
-            </CardTitle>
-            <p className="text-gray-600 mt-2">
-              Anpassa din MatMatch-upplevelse
-            </p>
-          </CardHeader>
-          <CardContent className="p-8 pt-0">
+      {/* Settings section — olive bg, 5rem rounded top */}
+      <section
+        style={{
+          background: "#e9edc9",
+          borderTopLeftRadius: "5rem",
+          borderTopRightRadius: "5rem",
+        }}
+        className="relative -mt-16 pt-24 md:pt-32 pb-24 px-6 md:px-12"
+      >
+        <div className="max-w-4xl mx-auto">
+          {/* Heading row */}
+          <div className="flex flex-col md:flex-row items-center md:items-center justify-center gap-8 mb-16 animate-reveal">
+            <h2
+              className="leading-[0.9] tracking-[-0.03em] text-center"
+              style={{
+                fontFamily: "var(--font-anton), sans-serif",
+                fontSize: "clamp(2.5rem, 8vw, 6rem)",
+                color: "#01472e",
+                whiteSpace: "nowrap",
+              }}
+            >
+              INSTÄLLNINGAR
+            </h2>
+          </div>
+
+          {/* Settings card */}
+          <div
+            className="animate-reveal-delay-1 p-8 md:p-12"
+            style={{
+              borderRadius: "2.5rem",
+              background: "rgba(254,250,224,0.8)",
+              border: "1px solid rgba(163,177,138,0.3)",
+              boxShadow: "0 25px 50px -12px rgba(1,71,46,0.2)",
+            }}
+          >
             {profileQuery.isLoading ? (
-              <div className="text-center py-8">
-                <p className="text-gray-600">Laddar profil...</p>
+              <div className="text-center py-16">
+                <div className="w-6 h-6 border-2 border-forest border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-sm" style={{ color: "rgba(1,71,46,0.4)" }}>
+                  Laddar profil...
+                </p>
               </div>
             ) : (
-              <div className="space-y-8">
+              <div className="space-y-10">
                 <UserInfo user={user} />
                 <MessageDisplay message={profileActions.message} />
 
@@ -124,9 +164,11 @@ export default function ProfilPage() {
                 />
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </section>
+
+      <Footer />
     </main>
   );
 }

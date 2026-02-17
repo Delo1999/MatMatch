@@ -26,7 +26,10 @@ export const useSaveRecipe = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save recipe");
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || `Failed to save recipe (${response.status})`;
+        const errorDetails = errorData.details ? ` - ${errorData.details}` : '';
+        throw new Error(errorMessage + errorDetails);
       }
 
       return response.json();

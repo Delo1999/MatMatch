@@ -1,5 +1,5 @@
 export interface ApiRecipe {
-  savedRecipeId: string;
+  savedRecipeId?: string;
   recipeName: string;
   ingredientsYouHave: string[];
   missingIngredients: string[];

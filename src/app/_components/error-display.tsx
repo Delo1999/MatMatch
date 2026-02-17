@@ -4,35 +4,58 @@ type ErrorDisplayProps = {
 
 export function ErrorDisplay({ error }: ErrorDisplayProps) {
   return (
-    <section className="container mx-auto px-4 py-16 max-w-5xl">
-      <div className="p-6 bg-gradient-to-br from-red-50 to-green-50 border-2 border-red-200 rounded-xl shadow-2xl bg-white/90 backdrop-blur-sm">
+    <div className="max-w-7xl mx-auto pb-8">
+      <div
+        className="p-6 md:p-8"
+        style={{
+          borderRadius: "2.5rem",
+          background: "rgba(254,242,242,0.8)",
+          border: "1px solid rgba(185,28,28,0.15)",
+          boxShadow: "0 25px 50px -12px rgba(1,71,46,0.2)",
+        }}
+      >
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-            <span className="text-2xl">⚠️</span>
+          <div
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+            style={{ background: "rgba(185,28,28,0.1)" }}
+          >
+            <span className="text-base" style={{ color: "rgba(185,28,28,0.6)" }}>!</span>
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-red-800 mb-2 text-lg">
-              Inga recept hittades
-            </h3>
-            <p className="text-red-700 text-base leading-relaxed mb-3">
+            <p
+              className="uppercase font-bold text-[10px] tracking-[0.2em] mb-2"
+              style={{ color: "rgba(185,28,28,0.6)" }}
+            >
+              INGA RECEPT HITTADES
+            </p>
+            <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(185,28,28,0.7)" }}>
               {error}
             </p>
-            <div className="bg-white/50 rounded-lg p-3">
-              <p className="text-sm text-gray-600 font-medium mb-1">
-                💡 Tips för bättre resultat:
+            <div className="p-4" style={{ borderRadius: "1.25rem", background: "rgba(254,250,224,0.6)" }}>
+              <p
+                className="uppercase font-bold text-[9px] tracking-[0.2em] mb-2"
+                style={{ color: "rgba(1,71,46,0.4)" }}
+              >
+                TIPS FÖR BÄTTRE RESULTAT
               </p>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>
-                  • Använd specifika ingredienser (t.ex. kycklingfilé istället
-                  för kött)
+              <ul className="text-sm space-y-1.5" style={{ color: "rgba(1,71,46,0.5)" }}>
+                <li className="flex items-center gap-2">
+                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "rgba(1,71,46,0.3)" }} />
+                  Använd specifika ingredienser (t.ex. kycklingfilé istället för kött)
                 </li>
-                <li>• Lägg till fler ingredienser för mer variation</li>
-                <li>• Undvik oanvändbara eller oätliga saker</li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "rgba(1,71,46,0.3)" }} />
+                  Lägg till fler ingredienser för mer variation
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "rgba(1,71,46,0.3)" }} />
+                  Undvik oanvändbara eller oätliga saker
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

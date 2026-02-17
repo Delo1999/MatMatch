@@ -1,35 +1,109 @@
-import Image from "next/image";
-import { BookmarkIcon } from "@/components/icons";
-import { useIsMobile } from "@/hooks/use-mobile";
+"use client";
+import { useEffect, useState } from "react";
+
+function StaggeredText({ text, baseDelay = 0 }: { text: string; baseDelay?: number }) {
+  return (
+    <span className="inline-block overflow-hidden">
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          className="inline-block"
+          style={{
+            animation: `letter-reveal 0.8s cubic-bezier(0.16,1,0.3,1) ${baseDelay + i * 0.05}s forwards`,
+            opacity: 0,
+          }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export function HeroSectionReceptComponent() {
-  return (
-    <section className="relative h-110 md:h-[500px] bg-gradient-to-br from-green-600 via-emerald-700 to-green-800 border-b-2 border-green-300">
-      {useIsMobile() ? (
-        <div></div>
-      ) : (
-        <div className="absolute inset-0 flex justify-center items-center opacity-10 mt-20">
-          <Image src="/food.svg" alt="Food icon" width={1500} height={750} />
-        </div>
-      )}
+  const [scrollY, setScrollY] = useState(0);
 
-      <div className="relative z-10 container mx-auto px-4 py-16 text-center h-full flex flex-col justify-center">
-        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 pb-6 drop-shadow-lg leading-tight">
-          Min
-          <br />
-          <span className="text-emerald-200">kokbok</span>
-        </h1>
-        <h2 className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8 drop-shadow-md leading-relaxed">
-          Här hittar du alla dina sparade recept och favoritmaträtter.
-        </h2>
-        <div className="flex items-center justify-center gap-2 text-white/70 text-sm">
-          <span className="flex items-center justify-center">
-            <BookmarkIcon className="text-blue-500" size={15} />
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <section
+      className="relative h-screen overflow-hidden flex flex-col justify-center items-center"
+      style={{ background: "#01472e" }}
+    >
+      {/* Floating organic shapes */}
+      <div
+        className="absolute top-[14%] right-[8%] w-[120px] h-[150px] md:w-[200px] md:h-[260px] overflow-hidden"
+        style={{
+          borderRadius: "3rem",
+          transform: `translateY(${scrollY * 0.05}px)`,
+          animation: "float 6s ease-in-out infinite",
+          background: "rgba(204,213,174,0.08)",
+          boxShadow: "0 25px 50px -12px rgba(1,71,46,0.3)",
+        }}
+      />
+      <div
+        className="absolute bottom-[18%] left-[5%] w-[100px] h-[130px] md:w-[160px] md:h-[200px] overflow-hidden"
+        style={{
+          borderRadius: "3rem",
+          transform: `translateY(${scrollY * -0.03}px)`,
+          animation: "float 6s ease-in-out infinite",
+          animationDelay: "2s",
+          background: "rgba(163,177,138,0.08)",
+          boxShadow: "0 25px 50px -12px rgba(1,71,46,0.3)",
+        }}
+      />
+
+      {/* Hero text */}
+      <div className="relative z-10 text-center">
+        <h1
+          className="leading-[0.85] tracking-[-0.04em]"
+          style={{
+            fontFamily: "var(--font-anton), sans-serif",
+            fontSize: "clamp(4rem, 14vw, 12rem)",
+            color: "#ccd5ae",
+          }}
+        >
+          <span className="block">
+            <StaggeredText text="MIN" baseDelay={0.2} />
           </span>
-          <span>Sparade recept</span>
-          <span>•</span>
-          <span>⭐</span>
-          <span>Favoriter</span>
+          <span className="block">
+            <StaggeredText text="KOKBOK" baseDelay={0.45} />
+          </span>
+        </h1>
+      </div>
+
+      {/* Bottom dual-column */}
+      <div className="absolute bottom-12 left-0 right-0 px-8 md:px-16">
+        <div
+          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 max-w-5xl mx-auto"
+          style={{
+            animation: "reveal-up 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s forwards",
+            opacity: 0,
+          }}
+        >
+          <p className="text-sm md:text-base leading-relaxed max-w-md" style={{ color: "rgba(204,213,174,0.5)" }}>
+            Alla dina sparade recept och favoritmaträtter samlade på ett ställe.
+          </p>
+          <div className="flex items-center gap-6">
+            <span
+              className="uppercase font-bold text-[9px] tracking-[0.2em] flex items-center gap-2"
+              style={{ color: "rgba(204,213,174,0.3)" }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ background: "rgba(204,213,174,0.3)" }} />
+              SPARADE
+            </span>
+            <span
+              className="uppercase font-bold text-[9px] tracking-[0.2em] flex items-center gap-2"
+              style={{ color: "rgba(204,213,174,0.3)" }}
+            >
+              <span className="w-2 h-2 rounded-full" style={{ background: "rgba(204,213,174,0.3)" }} />
+              FAVORITER
+            </span>
+          </div>
         </div>
       </div>
     </section>

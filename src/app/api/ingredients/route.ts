@@ -3,8 +3,93 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { config } from "@/config/env";
 import { getCurrentUser } from "@/lib/auth";
 
+// Set to true to use mock data for testing
+const USE_MOCK_DATA = true;
+
 export async function POST(req: NextRequest) {
   const { ingredients } = await req.json();
+
+  // Return mock data for testing
+  if (USE_MOCK_DATA) {
+    const mockRecipes = [
+      {
+        recipeName: "Quick Pasta Carbonara",
+        ingredientsYouHave: ingredients.slice(0, Math.min(3, ingredients.length)),
+        missingIngredients: ["Eggs", "Parmesan cheese", "Black pepper"],
+        fullIngredientsList: [
+          "200g pasta",
+          "100g bacon or pancetta",
+          "2 eggs",
+          "50g parmesan cheese",
+          "Black pepper to taste",
+          "Salt to taste",
+        ],
+        instructions: [
+          "Cook pasta according to package instructions until al dente",
+          "While pasta cooks, fry bacon in a pan until crispy",
+          "Beat eggs with grated parmesan in a bowl",
+          "Drain pasta, reserving 1 cup of pasta water",
+          "Mix hot pasta with bacon, remove from heat",
+          "Add egg mixture, tossing quickly to create creamy sauce",
+          "Add pasta water if needed to achieve desired consistency",
+          "Season with black pepper and serve immediately",
+        ],
+        estimatedTime: {
+          preparationTime: "5 minutes",
+          cookingTime: "15 minutes",
+        },
+      },
+      {
+        recipeName: "Simple Veggie Stir-Fry",
+        ingredientsYouHave: ingredients.slice(0, Math.min(2, ingredients.length)),
+        missingIngredients: ["Soy sauce", "Garlic", "Ginger"],
+        fullIngredientsList: [
+          "2 cups mixed vegetables",
+          "2 tablespoons vegetable oil",
+          "2 cloves garlic, minced",
+          "1 teaspoon grated ginger",
+          "2 tablespoons soy sauce",
+          "1 teaspoon sesame oil",
+          "Cooked rice for serving",
+        ],
+        instructions: [
+          "Heat oil in a large wok or pan over high heat",
+          "Add garlic and ginger, stir-fry for 30 seconds",
+          "Add vegetables and stir-fry for 5-7 minutes until tender-crisp",
+          "Add soy sauce and sesame oil, toss to combine",
+          "Serve hot over steamed rice",
+        ],
+        estimatedTime: {
+          preparationTime: "10 minutes",
+          cookingTime: "10 minutes",
+        },
+      },
+      {
+        recipeName: "Classic Grilled Cheese Sandwich",
+        ingredientsYouHave: ingredients.slice(0, Math.min(2, ingredients.length)),
+        missingIngredients: ["Bread", "Cheese", "Butter"],
+        fullIngredientsList: [
+          "2 slices bread",
+          "2 slices cheddar cheese",
+          "2 tablespoons butter",
+        ],
+        instructions: [
+          "Butter one side of each bread slice",
+          "Place cheese between bread slices, buttered sides facing out",
+          "Heat a pan over medium heat",
+          "Cook sandwich for 3-4 minutes per side until golden and cheese melts",
+          "Cut in half and serve hot",
+        ],
+        estimatedTime: {
+          preparationTime: "2 minutes",
+          cookingTime: "8 minutes",
+        },
+      },
+    ];
+
+    console.log("Returning mock recipes for ingredients:", ingredients);
+    return NextResponse.json(mockRecipes);
+  }
 
   const user = await getCurrentUser(req);
   let userAllergies: string[] = [];
@@ -67,7 +152,7 @@ export async function POST(req: NextRequest) {
     promptContent += ` Be specific about the required quantities for each ingredient in every recipe. Keep instructions brief. Return empty array if ingredients are unsuitable. Provide all recipe suggestions in the same language as the input ingredients.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents: promptContent,
 
       config: {

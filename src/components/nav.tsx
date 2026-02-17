@@ -1,17 +1,8 @@
 "use client";
-import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, ReceiptText, User, LogOut, LogIn, Menu, X } from "lucide-react";
+import { LogOut, LogIn, Menu, X } from "lucide-react";
 import { useState } from "react";
-
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
 import { AuthModal } from "@/components/auth/auth-modal";
 
@@ -20,8 +11,6 @@ export function Nav() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const isHomePage = pathname === "/";
-  const showSimplifiedMobile = isHomePage && !loading && !user;
 
   const handleSignOut = async () => {
     try {
@@ -36,186 +25,168 @@ export function Nav() {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <NavigationMenu className="hidden md:flex bg-background w-full max-w-none border-b-2 border-green-300 bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
-        <NavigationMenuList className="flex justify-between w-full px-4">
-          <div className="flex">
-            <NavigationMenuItem>
-              <NavigationMenuLink asChild>
-                <Link
-                  href="/"
-                  className="inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-                >
-                  <Home className="w-4 h-4 shrink-0" />
-                  <span>Hem</span>
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
+      {/* Desktop Navigation — Fixed top bar */}
+      <nav className="hidden md:flex items-center justify-between w-full px-8 py-5">
+        {/* Left: Empty space for balance */}
+        <div className="w-[120px]"></div>
 
-            {user && (
-              <>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/recept"
-                      className="inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-                    >
-                      <ReceiptText className="w-4 h-4 shrink-0" />
-                      Min kokbok
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/profil"
-                      className="inline-flex flex-row items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-                    >
-                      <User className="w-4 h-4 shrink-0" />
-                      Min profil
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            {loading ? (
-              <div className="px-4 py-2 text-sm text-gray-500">Laddar...</div>
-            ) : user ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleSignOut}
-                className="inline-flex items-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Logga ut
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setAuthModalOpen(true)}
-                className="inline-flex items-center gap-2"
-              >
-                <LogIn className="w-4 h-4" />
-                Logga in
-              </Button>
-            )}
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu>
-
-      {/* Mobile Navigation */}
-      <nav className="md:hidden bg-background border-b-2 border-green-300 bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
-        <div className="flex items-center justify-between px-4 py-3">
+        {/* Center: Pill-shaped navigation */}
+        <div
+          className="rounded-full px-2 py-2 flex items-center gap-1"
+          style={{
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            background: "rgba(255,255,255,0.2)",
+          }}
+        >
           <Link
             href="/"
-            className="flex items-center gap-2 font-semibold text-lg"
+            className={`uppercase font-bold text-[12px] tracking-[0.2em] px-7 py-3 rounded-full transition-all duration-500 ${
+              pathname === "/"
+                ? "bg-forest text-cream"
+                : "text-forest hover:text-forest hover:bg-white/20"
+            }`}
+            style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
           >
-            <Home className="w-5 h-5" />
-            MatMatch
+            HEM
           </Link>
-
-          {/* Simplified Mobile Layout - Only for non-logged in users on homepage */}
-          {showSimplifiedMobile && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setAuthModalOpen(true)}
-              className="inline-flex items-center gap-2"
-            >
-              <LogIn className="w-4 h-4" />
-              Logga in
-            </Button>
-          )}
-
-          {/* Regular Mobile Menu Button - For logged in users OR non-homepage */}
-          {!showSimplifiedMobile && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
-            </Button>
+          {user && (
+            <>
+              <Link
+                href="/recept"
+                className={`uppercase font-bold text-[12px] tracking-[0.2em] px-7 py-3 rounded-full transition-all duration-500 ${
+                  pathname === "/recept"
+                    ? "bg-forest text-cream"
+                    : "text-forest hover:text-forest hover:bg-white/20"
+                }`}
+                style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
+              >
+                MIN KOKBOK
+              </Link>
+              <Link
+                href="/profil"
+                className={`uppercase font-bold text-[12px] tracking-[0.2em] px-7 py-3 rounded-full transition-all duration-500 ${
+                  pathname === "/profil"
+                    ? "bg-forest text-cream"
+                    : "text-forest hover:text-forest hover:bg-white/20"
+                }`}
+                style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
+              >
+                PROFIL
+              </Link>
+            </>
           )}
         </div>
 
-        {/* Mobile Menu Dropdown - Show for logged in users OR non-homepage */}
-        {!showSimplifiedMobile && mobileMenuOpen && (
-          <div className="border-t bg-background bg-gradient-to-br from-green-50 via-emerald-50 to-green-100">
-            <div className="px-4 py-2 space-y-2">
-              <Link
-                href="/"
-                onClick={closeMobileMenu}
-                className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-              >
-                <Home className="w-4 h-4" />
-                Hem
-              </Link>
+        {/* Right: Auth button */}
+        <div className="flex items-center gap-4">
+          {loading ? (
+            <span className="uppercase font-bold text-[12px] tracking-[0.2em] text-forest/40">
+              ...
+            </span>
+          ) : user ? (
+            <button
+              onClick={handleSignOut}
+              className="uppercase font-bold text-[12px] tracking-[0.2em] bg-white text-forest rounded-full px-7 py-3 shadow-forest hover:bg-forest hover:text-cream transition-all duration-500 flex items-center gap-2"
+              style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
+            >
+              <LogOut className="w-4 h-4" />
+              LOGGA UT
+            </button>
+          ) : (
+            <button
+              onClick={() => setAuthModalOpen(true)}
+              className="uppercase font-bold text-[12px] tracking-[0.2em] bg-white text-forest rounded-full px-7 py-3 shadow-forest hover:bg-forest hover:text-cream transition-all duration-500"
+              style={{ transitionTimingFunction: "cubic-bezier(0.16,1,0.3,1)" }}
+            >
+              LOGGA IN
+            </button>
+          )}
+        </div>
+      </nav>
 
-              {user && (
-                <>
-                  <Link
-                    href="/recept"
-                    onClick={closeMobileMenu}
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-                  >
-                    <ReceiptText className="w-4 h-4" />
-                    Min kokbok
-                  </Link>
+      {/* Mobile Navigation */}
+      <nav className="md:hidden">
+        <div className="flex items-center justify-between px-5 py-4">
+          <div className="w-8"></div>
 
-                  <Link
-                    href="/profil"
-                    onClick={closeMobileMenu}
-                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground rounded-md"
-                  >
-                    <User className="w-4 h-4" />
-                    Min profil
-                  </Link>
-                </>
+          <button
+            onClick={() =>
+              user || !loading
+                ? setMobileMenuOpen(!mobileMenuOpen)
+                : setAuthModalOpen(true)
+            }
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-forest/5 transition-all duration-300"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5 text-forest" />
+            ) : (
+              <Menu className="w-5 h-5 text-forest" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile dropdown */}
+        {mobileMenuOpen && (
+          <div
+            className="border-t border-moss/20 px-5 py-4 space-y-1"
+            style={{
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              background: "rgba(254,250,224,0.95)",
+            }}
+          >
+            <Link
+              href="/"
+              onClick={closeMobileMenu}
+              className="block uppercase font-bold text-[12px] tracking-[0.2em] text-forest px-5 py-4 rounded-2xl hover:bg-forest/10 transition-all duration-300"
+            >
+              HEM
+            </Link>
+            {user && (
+              <>
+                <Link
+                  href="/recept"
+                  onClick={closeMobileMenu}
+                  className="block uppercase font-bold text-[12px] tracking-[0.2em] text-forest px-5 py-4 rounded-2xl hover:bg-forest/10 transition-all duration-300"
+                >
+                  MIN KOKBOK
+                </Link>
+                <Link
+                  href="/profil"
+                  onClick={closeMobileMenu}
+                  className="block uppercase font-bold text-[12px] tracking-[0.2em] text-forest px-5 py-4 rounded-2xl hover:bg-forest/10 transition-all duration-300"
+                >
+                  PROFIL
+                </Link>
+              </>
+            )}
+            <div className="border-t border-moss/20 pt-3 mt-3">
+              {loading ? (
+                <span className="block uppercase font-bold text-[12px] tracking-[0.2em] text-forest/40 px-5 py-4">
+                  LADDAR...
+                </span>
+              ) : user ? (
+                <button
+                  onClick={handleSignOut}
+                  className="w-full text-left uppercase font-bold text-[12px] tracking-[0.2em] text-forest px-5 py-4 rounded-2xl hover:bg-forest/10 transition-all duration-300 flex items-center gap-3"
+                >
+                  <LogOut className="w-4 h-4" />
+                  LOGGA UT
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthModalOpen(true);
+                    closeMobileMenu();
+                  }}
+                  className="w-full text-left uppercase font-bold text-[12px] tracking-[0.2em] text-forest px-5 py-4 rounded-2xl hover:bg-forest/10 transition-all duration-300 flex items-center gap-3"
+                >
+                  <LogIn className="w-4 h-4" />
+                  LOGGA IN
+                </button>
               )}
-
-              <div className="border-t pt-2 mt-2">
-                {loading ? (
-                  <div className="px-3 py-2 text-sm text-gray-500">
-                    Laddar...
-                  </div>
-                ) : user ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSignOut}
-                    className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logga ut
-                  </Button>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setAuthModalOpen(true);
-                      closeMobileMenu();
-                    }}
-                    className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    Logga in
-                  </Button>
-                )}
-              </div>
             </div>
           </div>
         )}

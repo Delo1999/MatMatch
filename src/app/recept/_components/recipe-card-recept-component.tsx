@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Trash2, Star } from "lucide-react";
+"use client";
+import { useState } from "react";
+import { Trash2, Star, Clock, ChefHat } from "lucide-react";
 import { ApiRecipe } from "@/types/recipe";
 
 type RecipeCardReceptComponentProps = {
@@ -15,70 +16,188 @@ export function RecipeCardReceptComponent({
   onToggleFavorite,
   onDelete,
 }: RecipeCardReceptComponentProps) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div className="border-b border-green-200 pb-6 last:border-b-0">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-800 whitespace-normal md:whitespace-nowrap">
-            {recipe.recipeName}
-          </h2>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onToggleFavorite(recipe.savedRecipeId)}
-              className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+    <div className="group relative">
+      {/* Card with aspect-ratio 4/5 */}
+      <div
+        className="relative overflow-hidden cursor-pointer"
+        style={{
+          aspectRatio: "4/5",
+          borderRadius: "2.5rem",
+        }}
+        onClick={() => setExpanded(!expanded)}
+      >
+        {/* Card background */}
+        <div
+          className="absolute inset-0 flex flex-col justify-between p-6 md:p-8"
+          style={{ background: "#ccd5ae" }}
+        >
+          <div className="flex items-start justify-between">
+            <p
+              className="uppercase font-bold text-[9px] tracking-[0.2em]"
+              style={{ color: "rgba(1,71,46,0.4)" }}
             >
-              {isFavorited ? (
-                <Star className="w-6 h-6 fill-current" />
-              ) : (
-                <Star className="w-6 h-6" />
-              )}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onDelete(recipe)}
-              className="text-red-500 hover:text-red-600 hover:bg-red-50 p-2 min-w-[40px] min-h-[40px] flex items-center justify-center"
+              RECEPT
+            </p>
+            <ChefHat className="w-5 h-5" style={{ color: "rgba(1,71,46,0.2)" }} />
+          </div>
+
+          <div className="flex-1 flex items-center">
+            <h3
+              className="leading-[0.85] tracking-[-0.03em]"
+              style={{
+                fontFamily: "var(--font-anton), sans-serif",
+                fontSize: "clamp(1.5rem, 3vw, 2.5rem)",
+                color: "#01472e",
+              }}
             >
-              <Trash2 className="w-6 h-6" />
-            </Button>
+              {recipe.recipeName.toUpperCase()}
+            </h3>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-3 h-3" style={{ color: "rgba(1,71,46,0.4)" }} />
+              <span
+                className="uppercase font-bold text-[9px] tracking-[0.15em]"
+                style={{ color: "rgba(1,71,46,0.5)" }}
+              >
+                {recipe.estimatedTime.cookingTime}
+              </span>
+            </div>
+            <span
+              className="uppercase font-bold text-[9px] tracking-[0.15em]"
+              style={{ color: "rgba(1,71,46,0.4)" }}
+            >
+              {recipe.fullIngredientsList.length} INGREDIENSER
+            </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <h3 className="font-semibold text-gray-700 mb-2">
-              Alla ingredienser:
-            </h3>
-            <ul className="list-disc list-inside text-sm text-gray-600">
-              {recipe.fullIngredientsList.map((ingredient, i) => (
-                <li key={i}>{ingredient}</li>
-              ))}
-            </ul>
-          </div>
+        {/* Hover overlay with actions */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100"
+          style={{
+            background: "rgba(1,71,46,0.3)",
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
+            transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1)",
+            borderRadius: "2.5rem",
+          }}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite(recipe.savedRecipeId);
+            }}
+            className="flex items-center gap-2 group-hover:translate-y-0 translate-y-8"
+            style={{
+              background: isFavorited ? "#f59e0b" : "#ffffff",
+              color: isFavorited ? "#ffffff" : "#01472e",
+              borderRadius: "9999px",
+              padding: "12px 28px",
+              transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            <Star className={`w-4 h-4 ${isFavorited ? "fill-current" : ""}`} />
+            <span className="uppercase font-bold text-[10px] tracking-[0.3em]">
+              {isFavorited ? "FAVORIT" : "FAVORIT"}
+            </span>
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(recipe);
+            }}
+            className="flex items-center gap-2 group-hover:translate-y-0 translate-y-8"
+            style={{
+              background: "rgba(255,255,255,0.9)",
+              color: "#b91c1c",
+              borderRadius: "9999px",
+              padding: "10px 24px",
+              transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.05s",
+            }}
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span className="uppercase font-bold text-[9px] tracking-[0.3em]">
+              TA BORT
+            </span>
+          </button>
+        </div>
+      </div>
 
-          <div>
-            <h3 className="font-semibold text-gray-700 mb-2">Instruktioner:</h3>
-            <ol className="list-decimal list-inside text-sm text-gray-600 space-y-1 mb-6">
-              {recipe.instructions.map((instruction, i) => (
-                <li key={i}>{instruction}</li>
-              ))}
-            </ol>
-
-            <h3 className="font-semibold text-gray-700 mb-2">Tid🕓:</h3>
-            <div className="bg-green-100 rounded-lg p-3">
-              <p className="text-sm text-gray-700">
-                <span className="font-medium">Förberedelse:</span>{" "}
-                {recipe.estimatedTime.preparationTime}
-                <br />
-                <span className="font-medium">Tillagning:</span>{" "}
-                {recipe.estimatedTime.cookingTime}
+      {/* Expanded details */}
+      {expanded && (
+        <div
+          className="mt-4 p-6 md:p-8"
+          style={{
+            borderRadius: "2.5rem",
+            background: "rgba(254,250,224,0.8)",
+            border: "1px solid rgba(163,177,138,0.3)",
+            animation: "reveal-up 0.6s cubic-bezier(0.16,1,0.3,1) forwards",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p
+                className="uppercase font-bold text-[9px] tracking-[0.2em] mb-3"
+                style={{ color: "rgba(1,71,46,0.4)" }}
+              >
+                ALLA INGREDIENSER
               </p>
+              <ul className="space-y-1.5">
+                {recipe.fullIngredientsList.map((item, i) => (
+                  <li key={i} className="text-sm flex items-center gap-2" style={{ color: "rgba(1,71,46,0.6)" }}>
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a3b18a" }} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="space-y-5">
+              <div>
+                <p
+                  className="uppercase font-bold text-[9px] tracking-[0.2em] mb-3"
+                  style={{ color: "rgba(1,71,46,0.4)" }}
+                >
+                  INSTRUKTIONER
+                </p>
+                <ol className="space-y-2">
+                  {recipe.instructions.map((step, i) => (
+                    <li key={i} className="text-sm flex gap-3" style={{ color: "rgba(1,71,46,0.6)" }}>
+                      <span
+                        className="uppercase font-bold text-[10px] flex-shrink-0 w-5"
+                        style={{ color: "rgba(1,71,46,0.25)" }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="p-4" style={{ borderRadius: "1.25rem", background: "rgba(204,213,174,0.4)" }}>
+                <p
+                  className="uppercase font-bold text-[9px] tracking-[0.2em] mb-2"
+                  style={{ color: "rgba(1,71,46,0.4)" }}
+                >
+                  TID
+                </p>
+                <p className="text-sm" style={{ color: "rgba(1,71,46,0.7)" }}>
+                  <span className="font-bold">Förb:</span> {recipe.estimatedTime.preparationTime}
+                </p>
+                <p className="text-sm" style={{ color: "rgba(1,71,46,0.7)" }}>
+                  <span className="font-bold">Tillg:</span> {recipe.estimatedTime.cookingTime}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
 import { ApiRecipe } from "@/types/recipe";
 import { RecipeCardReceptComponent } from "./recipe-card-recept-component";
 import { EmptyState } from "./empty-state";
+import { useEffect, useRef, useState } from "react";
 
 type RecipeListReceptComponentProps = {
   savedRecipes: (ApiRecipe & { savedRecipeId: string })[];
@@ -16,42 +17,91 @@ export function RecipeListReceptComponent({
   onToggleFavorite,
   onDelete,
 }: RecipeListReceptComponentProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const isRecipeFavorited = (savedRecipeId: string) => {
     return favoriteRecipes.some(
-      (favoriteRecipe) => favoriteRecipe.savedRecipeId === savedRecipeId
+      (fav) => fav.savedRecipeId === savedRecipeId
     );
   };
 
   return (
-    <section className="container mx-auto px-4 py-16 max-w-5xl">
-      <Card className="shadow-2xl border-0 bg-white/90 backdrop-blur-sm border-green-100">
-        <CardHeader className="text-center pb-8">
-          <CardTitle className="text-xl font-bold text-gray-800 pt-5">
-            Din kokbok
-          </CardTitle>
-          <p className="text-gray-600 mt-2">
-            Här är dina sparade recept. Du kan stjärmarkera dem som favoriter
-            eller ta bort dem.
+    <section
+      ref={sectionRef}
+      style={{
+        background: "#e9edc9",
+        borderTopLeftRadius: "5rem",
+        borderTopRightRadius: "5rem",
+      }}
+      className="relative -mt-16 pt-24 md:pt-32 pb-24 px-6 md:px-12"
+    >
+      <div className="max-w-7xl mx-auto">
+        {/* Heading row: large text + count */}
+        <div
+          className={`flex flex-col md:flex-row items-center md:items-center justify-between gap-8 mb-16 ${
+            isVisible ? "animate-reveal" : "opacity-0"
+          }`}
+        >
+          <h2
+            className="leading-[0.9] tracking-[-0.03em] text-center md:text-left"
+            style={{
+              fontFamily: "var(--font-anton), sans-serif",
+              fontSize: "clamp(2.5rem, 8vw, 6rem)",
+              color: "#01472e",
+              whiteSpace: "nowrap",
+            }}
+          >
+            DINA RECEPT
+          </h2>
+
+          <p
+            className="uppercase font-bold text-sm tracking-[0.15em]"
+            style={{ color: "rgba(1,71,46,0.6)" }}
+          >
+            {savedRecipes.length} SPARADE
           </p>
-        </CardHeader>
-        <CardContent className="p-8 pt-0">
+        </div>
+
+        {/* Content */}
+        <div className={isVisible ? "animate-reveal-delay-2" : "opacity-0"}>
           {savedRecipes.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {savedRecipes.map((recipe, index) => (
-                <RecipeCardReceptComponent
+                <div
                   key={index}
-                  recipe={recipe}
-                  isFavorited={isRecipeFavorited(recipe.savedRecipeId)}
-                  onToggleFavorite={onToggleFavorite}
-                  onDelete={onDelete}
-                />
+                  className={isVisible ? "animate-reveal" : "opacity-0"}
+                  style={{
+                    animationDelay: isVisible
+                      ? `${0.1 * (index + 1) + 0.3}s`
+                      : undefined,
+                  }}
+                >
+                  <RecipeCardReceptComponent
+                    recipe={recipe}
+                    isFavorited={isRecipeFavorited(recipe.savedRecipeId)}
+                    onToggleFavorite={onToggleFavorite}
+                    onDelete={onDelete}
+                  />
+                </div>
               ))}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </section>
   );
 }
