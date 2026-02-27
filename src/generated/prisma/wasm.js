@@ -145,7 +145,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Dilov\\Documents\\brogramming\\MatMatch\\src\\generated\\prisma",
+      "value": "C:\\Users\\dilov\\Documents\\Dilovan\\brogramming\\MatMatch\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -159,11 +159,12 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Dilov\\Documents\\brogramming\\MatMatch\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\dilov\\Documents\\Dilovan\\brogramming\\MatMatch\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.19.2",

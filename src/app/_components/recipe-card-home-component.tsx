@@ -123,12 +123,13 @@ export function RecipeCardHomeComponent({
       {/* Expanded card details — visible when clicked */}
       {expanded && (
         <div
-          className="mt-4 p-6 md:p-8"
+          className="mt-4 p-6 md:p-8 overflow-y-auto md:no-scrollbar"
           style={{
             borderRadius: "2.5rem",
             background: "rgba(254,250,224,0.8)",
             border: "1px solid rgba(163,177,138,0.3)",
             animation: "reveal-up 0.6s cubic-bezier(0.16,1,0.3,1) forwards",
+            maxHeight: "560px",
           }}
         >
           {/* Save button */}
@@ -159,9 +160,10 @@ export function RecipeCardHomeComponent({
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Ingredients columns */}
-            <div className="space-y-5">
+          <div className="space-y-6">
+            {/* Top row: Har Hemma + Alla Ingredienser */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Har Hemma */}
               <div>
                 <p
                   className="uppercase font-bold text-xs tracking-[0.2em] mb-3"
@@ -178,17 +180,19 @@ export function RecipeCardHomeComponent({
                   ))}
                 </ul>
               </div>
+
+              {/* Alla Ingredienser */}
               <div>
                 <p
                   className="uppercase font-bold text-xs tracking-[0.2em] mb-3"
-                  style={{ color: "rgba(185,28,28,0.8)" }}
+                  style={{ color: "rgba(1,71,46,0.7)" }}
                 >
-                  SAKNAS
+                  ALLA INGREDIENSER
                 </p>
                 <ul className="space-y-1.5">
-                  {recipe.missingIngredients.map((item, i) => (
-                    <li key={i} className="text-sm font-medium flex items-center gap-2" style={{ color: "rgba(185,28,28,0.8)" }}>
-                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "rgba(185,28,28,0.6)" }} />
+                  {recipe.fullIngredientsList.map((item, i) => (
+                    <li key={i} className="text-sm font-medium flex items-center gap-2" style={{ color: "rgba(1,71,46,0.85)" }}>
+                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#a3b18a" }} />
                       {item}
                     </li>
                   ))}
@@ -196,47 +200,30 @@ export function RecipeCardHomeComponent({
               </div>
             </div>
 
-            {/* All ingredients */}
+            {/* Divider */}
+            <div style={{ borderTop: "1px solid rgba(163,177,138,0.4)" }} />
+
+            {/* Bottom: Instructions full width */}
             <div>
               <p
                 className="uppercase font-bold text-xs tracking-[0.2em] mb-3"
                 style={{ color: "rgba(1,71,46,0.7)" }}
               >
-                ALLA INGREDIENSER
+                INSTRUKTIONER
               </p>
-              <ul className="space-y-1.5">
-                {recipe.fullIngredientsList.map((item, i) => (
-                  <li key={i} className="text-sm font-medium flex items-center gap-2" style={{ color: "rgba(1,71,46,0.85)" }}>
-                    <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#a3b18a" }} />
-                    {item}
+              <ol className="space-y-2">
+                {recipe.instructions.map((step, i) => (
+                  <li key={i} className="text-sm font-medium flex gap-3" style={{ color: "rgba(1,71,46,0.8)" }}>
+                    <span
+                      className="uppercase font-bold text-xs tracking-[0.05em] flex-shrink-0 w-5"
+                      style={{ color: "rgba(1,71,46,0.5)" }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {step}
                   </li>
                 ))}
-              </ul>
-            </div>
-
-            {/* Instructions */}
-            <div className="space-y-5">
-              <div>
-                <p
-                  className="uppercase font-bold text-xs tracking-[0.2em] mb-3"
-                  style={{ color: "rgba(1,71,46,0.7)" }}
-                >
-                  INSTRUKTIONER
-                </p>
-                <ol className="space-y-2">
-                  {recipe.instructions.map((step, i) => (
-                    <li key={i} className="text-sm font-medium flex gap-3" style={{ color: "rgba(1,71,46,0.8)" }}>
-                      <span
-                        className="uppercase font-bold text-xs tracking-[0.05em] flex-shrink-0 w-5"
-                        style={{ color: "rgba(1,71,46,0.5)" }}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              </div>
+              </ol>
             </div>
           </div>
         </div>

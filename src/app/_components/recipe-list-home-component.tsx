@@ -35,7 +35,7 @@ export function RecipeListHomeComponent({
   return (
     <div ref={gridRef} className="max-w-7xl mx-auto px-6 md:px-12 pb-24">
       {/* 3-column grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
         {recipes.map((recipe, index) => {
           const isSaved = savedRecipes.some(
             (sr) => sr.recipeName === recipe.recipeName

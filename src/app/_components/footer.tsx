@@ -7,8 +7,6 @@ export function Footer() {
       style={{
         background: "#01472e",
         color: "#ccd5ae",
-        borderTopLeftRadius: "5rem",
-        borderTopRightRadius: "5rem",
       }}
       className="pt-20 md:pt-28 pb-10 px-6 md:px-12"
     >
@@ -29,9 +27,12 @@ export function Footer() {
               <br />
               INSPIRERAD
             </h3>
-            <p style={{ color: "rgba(204,213,174,0.5)" }} className="text-sm max-w-sm leading-relaxed">
+            <p
+              style={{ color: "rgba(204,213,174,0.5)" }}
+              className="text-sm max-w-sm leading-relaxed"
+            >
               MatMatch hjälper dig använda det du har hemma. Ingredienser in,
-              recept ut — smart, snabbt och hållbart.
+              recept ut - smart, snabbt och hållbart.
             </p>
 
             {/* Underline-only input */}
@@ -142,7 +143,8 @@ export function Footer() {
             className="uppercase font-bold text-[10px] tracking-[0.2em]"
             style={{ color: "rgba(204,213,174,0.3)" }}
           >
-            &copy; {new Date().getFullYear()} MATMATCH. ALLA RÄTTIGHETER FÖRBEHÅLLNA.
+            &copy; {new Date().getFullYear()} MATMATCH. ALLA RÄTTIGHETER
+            FÖRBEHÅLLNA.
           </p>
           <div className="flex gap-6">
             <span

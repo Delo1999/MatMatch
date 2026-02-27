@@ -270,6 +270,15 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* Hide scrollbar but keep scrollable */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
