@@ -50,12 +50,12 @@ export function RecipeListReceptComponent({
       <div className="max-w-7xl mx-auto">
         {/* Heading row: large text + count */}
         <div
-          className={`flex flex-col md:flex-row items-center md:items-center justify-between gap-8 mb-16 ${
+          className={`flex flex-col items-center gap-4 mb-16 ${
             isVisible ? "animate-reveal" : "opacity-0"
           }`}
         >
           <h2
-            className="leading-[0.9] tracking-[-0.03em] text-center md:text-left"
+            className="leading-[0.9] tracking-[-0.03em] text-center"
             style={{
               fontFamily: "var(--font-anton), sans-serif",
               fontSize: "clamp(2.5rem, 8vw, 6rem)",
@@ -79,7 +79,7 @@ export function RecipeListReceptComponent({
           {savedRecipes.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
               {savedRecipes.map((recipe, index) => (
                 <div
                   key={index}

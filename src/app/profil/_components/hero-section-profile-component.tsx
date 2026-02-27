@@ -31,8 +31,8 @@ export function HeroSectionProfileComponent() {
 
   return (
     <section
-      className="relative h-screen overflow-hidden flex flex-col justify-center items-center"
-      style={{ background: "#01472e" }}
+      className="relative overflow-hidden flex flex-col justify-center items-center"
+      style={{ background: "#01472e", minHeight: "45vh" }}
     >
       {/* Floating shapes */}
       <div
@@ -56,12 +56,12 @@ export function HeroSectionProfileComponent() {
         }}
       />
 
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 text-center py-16 md:py-20">
         <h1
-          className="leading-[0.75] tracking-[-0.05em]"
+          className="leading-[0.85] tracking-[-0.04em]"
           style={{
             fontFamily: "var(--font-anton), sans-serif",
-            fontSize: "23vw",
+            fontSize: "clamp(3rem, 10vw, 8rem)",
             color: "#ccd5ae",
           }}
         >
@@ -74,14 +74,15 @@ export function HeroSectionProfileComponent() {
         </h1>
       </div>
 
-      <div className="absolute bottom-12 left-0 right-0 px-8 md:px-16">
-        <div
-          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 max-w-5xl mx-auto"
-          style={{
-            animation: "reveal-up 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s forwards",
-            opacity: 0,
-          }}
-        >
+      {/* Bottom subtitle */}
+      <div
+        className="relative z-10 px-8 md:px-16 pb-12 w-full max-w-5xl mx-auto"
+        style={{
+          animation: "reveal-up 1.2s cubic-bezier(0.16,1,0.3,1) 0.8s forwards",
+          opacity: 0,
+        }}
+      >
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4">
           <p className="text-sm md:text-base leading-relaxed max-w-md" style={{ color: "rgba(204,213,174,0.5)" }}>
             Anpassa din MatMatch-upplevelse med personliga inställningar.
           </p>
