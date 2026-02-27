@@ -106,7 +106,14 @@ export function Nav() {
       </nav>
 
       {/* Mobile Navigation */}
-      <nav className="md:hidden">
+      <nav
+        className="md:hidden"
+        style={mobileMenuOpen ? {
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          background: "rgba(254,250,224,0.95)",
+        } : undefined}
+      >
         <div className="flex items-center justify-between px-5 py-4">
           <div className="w-8"></div>
 
@@ -122,7 +129,7 @@ export function Nav() {
             {mobileMenuOpen ? (
               <X className="w-5 h-5 text-forest" />
             ) : (
-              <Menu className="w-5 h-5 text-forest" />
+              <Menu className="w-5 h-5 text-white" />
             )}
           </button>
         </div>
