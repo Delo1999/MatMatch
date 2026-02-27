@@ -19,10 +19,10 @@ export function RecipeCardHomeComponent({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="relative group">
+    <div className="relative">
       {/* Card with aspect-ratio 4/5 */}
       <div
-        className="relative overflow-hidden cursor-pointer"
+        className="relative overflow-hidden cursor-pointer group"
         style={{
           aspectRatio: "4/3",
           borderRadius: "2.5rem",
