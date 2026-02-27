@@ -46,12 +46,12 @@ export function RecipeCardReceptComponent({
           </div>
 
           {/* Center: recipe name */}
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center overflow-hidden px-2">
             <h3
-              className="leading-[0.9] tracking-[-0.03em] text-center"
+              className="leading-[0.9] tracking-[-0.03em] text-center line-clamp-3"
               style={{
                 fontFamily: "var(--font-anton), sans-serif",
-                fontSize: "clamp(1.3rem, 2.5vw, 2.2rem)",
+                fontSize: "clamp(1.1rem, 2.5vw, 2.2rem)",
                 fontWeight: "400",
                 color: "#01472e",
               }}
@@ -80,9 +80,9 @@ export function RecipeCardReceptComponent({
           </div>
         </div>
 
-        {/* Hover overlay with glass effect and action buttons */}
+        {/* Hover overlay — desktop only */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 pointer-events-none"
+          className="absolute inset-0 hidden md:flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 pointer-events-none"
           style={{
             background: "rgba(1,71,46,0.15)",
             backdropFilter: "blur(6px)",
@@ -121,7 +121,7 @@ export function RecipeCardReceptComponent({
               >
                 <Star className={`w-4 h-4 ${isFavorited ? "fill-current" : ""}`} />
                 <span className="uppercase font-bold text-xs tracking-[0.2em]">
-                  {isFavorited ? "FAVORIT" : "FAVORIT"}
+                  FAVORIT
                 </span>
               </button>
               <button
@@ -145,6 +145,41 @@ export function RecipeCardReceptComponent({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile-only action buttons — always visible below card */}
+      <div className="flex md:hidden items-center gap-3 mt-3 px-1">
+        <button
+          onClick={() => onToggleFavorite(recipe.savedRecipeId)}
+          className="flex-1 flex items-center justify-center gap-2 py-3 transition-all"
+          style={{
+            borderRadius: "1.25rem",
+            background: isFavorited ? "#f59e0b" : "rgba(204,213,174,0.6)",
+            border: `2px solid ${isFavorited ? "#f59e0b" : "rgba(1,71,46,0.15)"}`,
+            color: isFavorited ? "#ffffff" : "#01472e",
+            transition: "all 0.3s ease",
+          }}
+        >
+          <Star className={`w-4 h-4 ${isFavorited ? "fill-current" : ""}`} />
+          <span className="uppercase font-bold text-xs tracking-[0.2em]">
+            {isFavorited ? "FAVORIT" : "FAVORIT"}
+          </span>
+        </button>
+        <button
+          onClick={() => onDelete(recipe)}
+          className="flex-1 flex items-center justify-center gap-2 py-3 transition-all"
+          style={{
+            borderRadius: "1.25rem",
+            background: "rgba(185,28,28,0.08)",
+            border: "2px solid rgba(185,28,28,0.2)",
+            color: "#b91c1c",
+          }}
+        >
+          <Trash2 className="w-4 h-4" />
+          <span className="uppercase font-bold text-xs tracking-[0.2em]">
+            TA BORT
+          </span>
+        </button>
       </div>
 
       {/* Expanded card details */}

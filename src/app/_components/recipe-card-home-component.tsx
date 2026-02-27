@@ -46,12 +46,12 @@ export function RecipeCardHomeComponent({
           </div>
 
           {/* Center: recipe name */}
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center overflow-hidden px-2">
             <h3
-              className="leading-[0.9] tracking-[-0.03em] text-center"
+              className="leading-[0.9] tracking-[-0.03em] text-center line-clamp-3"
               style={{
                 fontFamily: "var(--font-anton), sans-serif",
-                fontSize: "clamp(1.3rem, 2.5vw, 2.2rem)",
+                fontSize: "clamp(1.1rem, 2.5vw, 2.2rem)",
                 fontWeight: "400",
                 color: "#01472e",
               }}
