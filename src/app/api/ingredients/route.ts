@@ -4,7 +4,7 @@ import { config } from "@/config/env";
 import { getCurrentUser } from "@/lib/auth";
 
 // Set to true to use mock data for testing
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 export async function POST(req: NextRequest) {
   const { ingredients } = await req.json();
@@ -14,7 +14,10 @@ export async function POST(req: NextRequest) {
     const mockRecipes = [
       {
         recipeName: "Quick Pasta Carbonara",
-        ingredientsYouHave: ingredients.slice(0, Math.min(3, ingredients.length)),
+        ingredientsYouHave: ingredients.slice(
+          0,
+          Math.min(3, ingredients.length),
+        ),
         missingIngredients: ["Eggs", "Parmesan cheese", "Black pepper"],
         fullIngredientsList: [
           "200g pasta",
@@ -41,7 +44,10 @@ export async function POST(req: NextRequest) {
       },
       {
         recipeName: "Simple Veggie Stir-Fry",
-        ingredientsYouHave: ingredients.slice(0, Math.min(2, ingredients.length)),
+        ingredientsYouHave: ingredients.slice(
+          0,
+          Math.min(2, ingredients.length),
+        ),
         missingIngredients: ["Soy sauce", "Garlic", "Ginger"],
         fullIngredientsList: [
           "2 cups mixed vegetables",
@@ -66,7 +72,10 @@ export async function POST(req: NextRequest) {
       },
       {
         recipeName: "Classic Grilled Cheese Sandwich",
-        ingredientsYouHave: ingredients.slice(0, Math.min(2, ingredients.length)),
+        ingredientsYouHave: ingredients.slice(
+          0,
+          Math.min(2, ingredients.length),
+        ),
         missingIngredients: ["Bread", "Cheese", "Butter"],
         fullIngredientsList: [
           "2 slices bread",
@@ -122,7 +131,7 @@ export async function POST(req: NextRequest) {
     console.error("GEMINI_API_KEY is not configured");
     return NextResponse.json(
       { error: "API key not configured" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -134,18 +143,18 @@ export async function POST(req: NextRequest) {
     let promptContent = `You are a helpful and resourceful chef. Your primary goal is to suggest delicious and 
        practical recipes based on the ingredients a user has available, **prioritizing the use of the provided 
        ingredients and minimizing the need for additional items**. Create 3 quick recipes using: ${ingredients.join(
-         ", "
+         ", ",
        )}.`;
 
     if (userAllergies.length > 0) {
       promptContent += ` **IMPORTANT: The user is allergic to: ${userAllergies.join(
-        ", "
+        ", ",
       )}. NEVER include these ingredients or any dishes that commonly contain them. Avoid cross-contamination risks.**`;
     }
 
     if (userDietaryPrefs.length > 0) {
       promptContent += ` **DIETARY PREFERENCES: The user prefers: ${userDietaryPrefs.join(
-        ", "
+        ", ",
       )}. Please prioritize recipes that align with these preferences.**`;
     }
 
@@ -230,7 +239,7 @@ export async function POST(req: NextRequest) {
           error:
             "Tyvärr kunde jag inte hitta några recept för dessa ingredienser. Försök med fler eller mer specifika ingredienser.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     /*
@@ -247,7 +256,7 @@ export async function POST(req: NextRequest) {
     console.error("Error generating recipe:", error);
     return NextResponse.json(
       { error: "Sorry, there was an error generating your recipe." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
