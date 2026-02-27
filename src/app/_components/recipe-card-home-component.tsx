@@ -129,7 +129,7 @@ export function RecipeCardHomeComponent({
             background: "rgba(254,250,224,0.8)",
             border: "1px solid rgba(163,177,138,0.3)",
             animation: "reveal-up 0.6s cubic-bezier(0.16,1,0.3,1) forwards",
-            maxHeight: "560px",
+            height: "560px",
           }}
         >
           {/* Save button */}
